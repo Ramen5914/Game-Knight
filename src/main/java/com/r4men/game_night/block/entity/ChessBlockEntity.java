@@ -1,6 +1,7 @@
 package com.r4men.game_night.block.entity;
 
 import com.r4men.game_night.block.GNBlockEntities;
+import com.r4men.game_night.engine.chess.Board;
 import com.r4men.game_night.gui.menu.ChessMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,6 +23,7 @@ import org.jspecify.annotations.NonNull;
 
 public class ChessBlockEntity extends BlockEntity implements MenuProvider {
     private String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    private Board board;
     private boolean isSetup = false;
     private long timeControlSeconds = 0;
     private long incrementSeconds = 0;
@@ -52,13 +54,13 @@ public class ChessBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     protected void loadAdditional(@NonNull ValueInput input) {
         super.loadAdditional(input);
-        this.fen = input.getStringOr("fen", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        this.board = new Board(input.getStringOr("fen", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
     }
 
     @Override
     protected void saveAdditional(@NonNull ValueOutput output) {
         super.saveAdditional(output);
-        output.putString("fen", this.fen);
+        output.putString("fen", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
 
     @Override
