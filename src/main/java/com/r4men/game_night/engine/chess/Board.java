@@ -3,7 +3,7 @@ package com.r4men.game_night.engine.chess;
 import com.r4men.game_night.engine.chess.helper.*;
 import com.r4men.game_night.engine.chess.type.Move;
 import com.r4men.game_night.engine.chess.type.Piece;
-import com.r4men.game_night.util.Pair;
+import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
