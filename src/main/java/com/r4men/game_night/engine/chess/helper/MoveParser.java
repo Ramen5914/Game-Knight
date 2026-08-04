@@ -7,21 +7,16 @@ import com.r4men.game_night.engine.chess.type.Piece;
 import oshi.util.tuples.Triplet;
 
 public final class MoveParser {
-    public static Move fromUci(Board board, String move) {
-        if (!move.matches("[a-hA-H][1-8][a-hA-H][1-8][qrbnQBRN]?")) {
-            throw new IllegalArgumentException("Invalid move string: " + move);
-        }
 
-        Triplet<Integer, Integer, Piece.PieceType> parsed = Util.convertUciTo8x8Move(move);
-        int from8x8 = parsed.getA();
-        int to8x8 = parsed.getB();
-
+    // TODO add in promo piece logic
+    public static Move fromInts(Board board, int from8x8, int to8x8) {
         if (from8x8 == to8x8) {
             return null;
         } else {
             int from10x12 = Util.convert8x8to10x12(from8x8);
             int to10x12 = Util.convert8x8to10x12(to8x8);
-            Piece.PieceType promotionPiece = parsed.getC();
+            // TODO mentioned in above todo
+            Piece.PieceType promotionPiece = null;
 
             Piece fromPiece = board.getPieceAt10x12(from10x12);
             Piece toPiece = board.getPieceAt10x12(to10x12);
@@ -81,5 +76,17 @@ public final class MoveParser {
 
             return new Move(from8x8, to8x8, flag, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), capturedPiece);
         }
+    }
+
+    public static Move fromUci(Board board, String move) {
+        if (!move.matches("[a-hA-H][1-8][a-hA-H][1-8][qrbnQBRN]?")) {
+            throw new IllegalArgumentException("Invalid move string: " + move);
+        }
+
+        Triplet<Integer, Integer, Piece.PieceType> parsed = Util.convertUciTo8x8Move(move);
+        int from8x8 = parsed.getA();
+        int to8x8 = parsed.getB();
+
+        return fromInts(board, from8x8, to8x8);
     }
 }

@@ -246,11 +246,11 @@ public final class Util {
     }
 
     public static int getRankDiff10x12(int from10x12, int to10x12) {
-        return getRank10x12(to10x12) - getRank10x12(from10x12);
+        return Math.abs(getRank10x12(to10x12) - getRank10x12(from10x12));
     }
 
     public static int getFileDiff10x12(int from10x12, int to10x12) {
-        return getFile10x12(to10x12) - getFile10x12(from10x12);
+        return Math.abs(getFile10x12(to10x12) - getFile10x12(from10x12));
     }
 
     public static boolean isIntOffBoard10x12(int index) {

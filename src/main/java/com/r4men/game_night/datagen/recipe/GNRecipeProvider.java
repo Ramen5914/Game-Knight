@@ -5,6 +5,7 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -18,12 +19,12 @@ public class GNRecipeProvider implements DataProvider {
     public GNRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {}
 
     @Override
-    public CompletableFuture<?> run(CachedOutput cachedOutput) {
+    public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cachedOutput) {
         return CompletableFuture.completedFuture(null);
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Game Night Recipes";
     }
 }

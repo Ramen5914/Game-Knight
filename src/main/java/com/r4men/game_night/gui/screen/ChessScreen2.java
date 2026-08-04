@@ -3,15 +3,14 @@ package com.r4men.game_night.gui.screen;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.r4men.game_night.GNConfig;
 import com.r4men.game_night.GameNight;
-import com.r4men.game_night.gui.menu.ChessMenu;
+import com.r4men.game_night.gui.GNScreen;
+import com.r4men.game_night.gui.menu.ChessMenu2;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -19,8 +18,7 @@ import java.util.Map;
 
 import static com.r4men.game_night.GameNightClient.FLIP_BOARD;
 
-
-public class ChessScreen extends AbstractContainerScreen<ChessMenu> {
+public class ChessScreen2 extends GNScreen<ChessMenu2> {
     private final Identifier BOARD = GameNight.getIdentifier("textures/gui/container/chess.png");
 
     private int clickedSquare = -1;
@@ -41,11 +39,10 @@ public class ChessScreen extends AbstractContainerScreen<ChessMenu> {
             Map.entry('R', GameNight.getIdentifier("container/chess/white_rook"))
     );
 
-    public ChessScreen(ChessMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title, 256, 256);
+    public ChessScreen2(ChessMenu2 menu, Component title) {
+        super(menu, title, 256, 256);
 
         this.titleLabelY = -1000000;
-        this.inventoryLabelY = -1000000;
     }
 
     @Override
@@ -94,12 +91,11 @@ public class ChessScreen extends AbstractContainerScreen<ChessMenu> {
                 }
             }
         }
+
+        this.extractLabels(graphics, mouseX, mouseY);
     }
 
-    @Override
-    protected void extractLabels(@NotNull GuiGraphicsExtractor graphics, int xm, int ym) {
-        super.extractLabels(graphics, xm, ym);
-
+    private void extractLabels(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         if (GNConfig.SHOW_COORDINATES.get()) {
             for (int i = 0; i < 8; i++) {
                 int color;
@@ -117,11 +113,6 @@ public class ChessScreen extends AbstractContainerScreen<ChessMenu> {
     }
 
     @Override
-    protected void extractTooltip(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        super.extractTooltip(graphics, mouseX, mouseY);
-    }
-
-    @Override
     public boolean keyPressed(@NotNull KeyEvent event) {
         if (FLIP_BOARD.get().isActiveAndMatches(InputConstants.getKey(event))) {
             GameNight.LOGGER.info("Flipping board");
@@ -136,11 +127,6 @@ public class ChessScreen extends AbstractContainerScreen<ChessMenu> {
     public boolean keyReleased(@NotNull KeyEvent event) {
 
         return super.keyReleased(event);
-    }
-
-    @Override
-    protected boolean isHovering(int left, int top, int w, int h, double xm, double ym) {
-        return super.isHovering(left, top, w, h, xm, ym);
     }
 
     @Override

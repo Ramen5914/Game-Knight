@@ -3,6 +3,7 @@ package com.r4men.game_night.engine.chess;
 import com.r4men.game_night.engine.chess.helper.*;
 import com.r4men.game_night.engine.chess.type.Move;
 import com.r4men.game_night.engine.chess.type.Piece;
+import org.jetbrains.annotations.NotNull;
 import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
@@ -159,6 +160,10 @@ public class Board {
         MoveApplier.makeMove(this, move, false);
     }
 
+    public void makeMove(int from8x8, int to8x8) {
+        Move move = MoveParser.fromInts(this, from8x8, to8x8);
+        MoveApplier.makeMove(this, move, false);
+    }
 
     public void makeMove(Move move) {
         MoveApplier.makeMove(this, move, false);
@@ -174,6 +179,10 @@ public class Board {
 
     public String toFen() {
         return FenCodec.toFen(this);
+    }
+
+    public @NotNull List<Integer> generate8x8MovesForPiece(int s8x8) {
+        return MoveGenerator.generate8x8MovesForPiece(this, s8x8);
     }
 
 //    public void makeMove(String move) {

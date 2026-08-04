@@ -254,7 +254,7 @@ public final class MoveApplier {
 //            return -1;
 //        }
 
-        return 1;
+        return -1;
     }
 
     static void removeEnPassantPawn(Board board, Move move) {

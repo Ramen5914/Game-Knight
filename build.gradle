@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.141'
+    id 'net.neoforged.moddev' version '2.0.143'
     id 'idea'
 }
 
@@ -31,10 +31,18 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 neoForge {
     version = project.neo_version
 
+    validateAccessTransformers = true
+
+
     runs {
         client {
             client()
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        clientAuth {
+            client()
+            devLogin = true
         }
 
         server {
@@ -59,10 +67,17 @@ neoForge {
         }
     }
 
+    ideSyncTask tasks.named("runData")
+
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)
         }
+    }
+
+    unitTest {
+        enable()
+        testedMod = mods.game_night
     }
 }
 
@@ -71,7 +86,14 @@ configurations {
 }
 
 dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

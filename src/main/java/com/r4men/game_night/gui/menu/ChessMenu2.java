@@ -3,32 +3,32 @@ package com.r4men.game_night.gui.menu;
 import com.r4men.game_night.block.GNBlocks;
 import com.r4men.game_night.block.entity.ChessBlockEntity;
 import com.r4men.game_night.gui.GNMenuTypes;
-import com.r4men.game_night.network.ChessData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ChessMenu extends AbstractContainerMenu {
+public class ChessMenu2 extends AbstractContainerMenu {
     private final ChessBlockEntity blockEntity;
     ContainerLevelAccess access;
 
     // Client Constructor
-    public ChessMenu(int containerId, Inventory playerInv, FriendlyByteBuf extraData) {
-        BlockEntity be = playerInv.player.level().getBlockEntity(extraData.readBlockPos());
-        this(containerId, playerInv, ContainerLevelAccess.NULL, be);
+    public ChessMenu2(int containerId, FriendlyByteBuf extraData) {
+        assert Minecraft.getInstance().level != null;
+        BlockEntity be = Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos());
+
+        this(containerId, ContainerLevelAccess.NULL, be);
     }
 
     // Server Constructor
-    public ChessMenu(int containerId, Inventory playerInv, ContainerLevelAccess access, BlockEntity be) {
-        super(GNMenuTypes.CHESS_MENU.get(), containerId);
+    public ChessMenu2(int containerId, ContainerLevelAccess access, BlockEntity be) {
+        super(GNMenuTypes.CHESS_MENU_2.get(), containerId);
 
         this.access = access;
 

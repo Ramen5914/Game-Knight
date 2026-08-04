@@ -1,9 +1,6 @@
 package com.r4men.game_night;
 
-import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.common.ModConfigSpec;
-
-import java.awt.*;
 
 public class GNConfig {
     // Server
@@ -17,6 +14,7 @@ public class GNConfig {
     public static final ModConfigSpec CLIENT_SPEC;
 
     public static final ModConfigSpec.ConfigValue<Boolean> SHOW_COORDINATES;
+    public static final ModConfigSpec.ConfigValue<Integer> SELECT_COLOR;
 
     static {
         ENABLE_ELO_SYSTEM = SERVER_BUILDER
@@ -32,6 +30,11 @@ public class GNConfig {
                 .comment("Show square coordinates on the edge of the board")
                 .translation("game_night.configuration.chess.show_coordinates")
                 .define("show_coordinates", true);
+
+        SELECT_COLOR = CLIENT_BUILDER
+                .comment("The color to highlight the clicked square and possible moves (#AARRGGBB)")
+                .translation("game_night.configuration.chess.select_color")
+                .define("select_color", 0xA0888888);
 
         CLIENT_BUILDER.pop();
 

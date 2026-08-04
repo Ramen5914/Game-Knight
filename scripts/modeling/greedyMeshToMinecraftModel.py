@@ -3,7 +3,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-
 def clean_number(value: float) -> int | float:
   rounded = round(value, 4)
   if float(rounded).is_integer():

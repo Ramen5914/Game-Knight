@@ -3,6 +3,7 @@ package com.r4men.game_night.block.entity;
 import com.r4men.game_night.block.GNBlockEntities;
 import com.r4men.game_night.engine.chess.Board;
 import com.r4men.game_night.gui.menu.ChessMenu;
+import com.r4men.game_night.gui.menu.ChessMenu2;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -12,18 +13,24 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jspecify.annotations.NonNull;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 public class ChessBlockEntity extends BlockEntity implements MenuProvider {
-    private String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    private Board board;
+    private static final String STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    private Board board = new Board(STARTING_FEN);
     private boolean isSetup = false;
     private long timeControlSeconds = 0;
     private long incrementSeconds = 0;
@@ -48,41 +55,28 @@ public class ChessBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory, @NotNull Player player) {
-        return new ChessMenu(i, inventory, player.level().getBlockEntity(this.worldPosition));
+        assert level != null;
+        return new ChessMenu2(i, ContainerLevelAccess.create(level, worldPosition), this);
     }
 
     @Override
-    protected void loadAdditional(@NonNull ValueInput input) {
+    protected void loadAdditional(@NotNull ValueInput input) {
         super.loadAdditional(input);
-        this.board = new Board(input.getStringOr("fen", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+        this.board = new Board(input.getStringOr("fen", STARTING_FEN));
     }
 
     @Override
-    protected void saveAdditional(@NonNull ValueOutput output) {
+    protected void saveAdditional(@NotNull ValueOutput output) {
         super.saveAdditional(output);
-        output.putString("fen", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-    }
-
-    @Override
-    public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
-        return this.saveWithoutMetadata(registries);
-    }
-
-    @Override
-    public void handleUpdateTag(@NonNull ValueInput input) {
-        super.handleUpdateTag(input);
+        output.putString("fen", this.board.toFen());
     }
 
     public Direction getFacing() {
         return this.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
     }
 
-    public String getFen() {
-        return fen;
-    }
-
     public String getSimplifiedFen() {
-        String pieceLayout =  fen.split(" ")[0];
+        String pieceLayout =  this.board.toFen().split(" ")[0];
         StringBuilder simpleFen = new StringBuilder();
 
         for (char c : pieceLayout.toCharArray()) {
@@ -97,9 +91,8 @@ public class ChessBlockEntity extends BlockEntity implements MenuProvider {
         return simpleFen.toString();
     }
 
-    public void setFen(String fen) {
-        this.fen = fen;
-        setChanged();
+    public static void tick(Level level, BlockPos pos, BlockState state, ChessBlockEntity be) {
+        // TODO
     }
 
     public boolean getIsSetup() {
@@ -207,6 +200,15 @@ public class ChessBlockEntity extends BlockEntity implements MenuProvider {
 
     public void setBlackPlayer(Player blackPlayer) {
         this.blackPlayer = blackPlayer;
+        setChanged();
+    }
+
+    public List<Integer> get8x8MovesForPiece(int piece) {
+        return board.generate8x8MovesForPiece(piece);
+    }
+
+    public void makeMove(int from8x8, int to8x8) {
+        board.makeMove(from8x8, to8x8);
         setChanged();
     }
 }

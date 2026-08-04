@@ -2,6 +2,7 @@ package com.r4men.game_night.gui;
 
 import com.r4men.game_night.GameNight;
 import com.r4men.game_night.gui.menu.ChessMenu;
+import com.r4men.game_night.gui.menu.ChessMenu2;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.bus.api.IEventBus;
@@ -14,7 +15,9 @@ public class GNMenuTypes {
             DeferredRegister.create(Registries.MENU, GameNight.ID);
 
     public static final DeferredHolder<MenuType<?>, MenuType<ChessMenu>> CHESS_MENU =
-            MENUS.register("chess_menu", () -> IMenuTypeExtension.create(ChessMenu::new));
+            MENUS.register("chess_menu", () -> IMenuTypeExtension.create((windowId, inv, extraData) -> new ChessMenu(windowId, inv, extraData)));
+    public static final DeferredHolder<MenuType<?>, MenuType<ChessMenu2>> CHESS_MENU_2 =
+            MENUS.register("chess_menu_2", () -> IMenuTypeExtension.create((windowId, inv, extraData) -> new ChessMenu2(windowId, extraData)));
 
     public static void register(IEventBus eventBus) {
         MENUS.register(eventBus);

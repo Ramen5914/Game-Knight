@@ -3,7 +3,7 @@ package com.r4men.game_night.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class DebugGrid implements SubmitNodeCollector.CustomGeometryRenderer {
     private final float x;
@@ -19,7 +19,7 @@ public class DebugGrid implements SubmitNodeCollector.CustomGeometryRenderer {
     }
 
     @Override
-    public void render(PoseStack.@NonNull Pose pose, @NonNull VertexConsumer vc) {
+    public void render(PoseStack.@NotNull Pose pose, @NotNull VertexConsumer vc) {
         box(pose, vc, this.x, this.y, this.z, this.size);
     }
 

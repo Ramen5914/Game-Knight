@@ -1,9 +1,11 @@
 package com.r4men.game_night.engine.chess.helper;
 
+import com.r4men.game_night.GameNight;
 import com.r4men.game_night.engine.chess.Board;
 import com.r4men.game_night.engine.chess.type.Direction;
 import com.r4men.game_night.engine.chess.type.Move;
 import com.r4men.game_night.engine.chess.type.Piece;
+import org.jetbrains.annotations.NotNull;
 import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
@@ -127,6 +129,42 @@ public final class MoveGenerator {
     }
 
     private static void generatePawnMoves(List<Move> moveList, Board board, int from10x12, Piece piece) {
+        int from8x8 = Util.convert10x12to8x8(from10x12);
 
+        if (piece.isWhite()) {
+            if (board.getPieceAt10x12(from10x12 + Direction.D10X12.N.toInt()).isEmpty()) {
+                moveList.add(new Move(from8x8, from8x8 + Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
+
+                if (board.getPieceAt10x12(from10x12 + Direction.D10X12.N.toInt() * 2).isEmpty()) {
+                    moveList.add(new Move(from8x8, from8x8 + Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
+                }
+            }
+
+        } else {
+            if (board.getPieceAt10x12(from10x12 - Direction.D10X12.N.toInt()).isEmpty()) {
+                moveList.add(new Move(from8x8, from8x8 - Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
+
+                if (board.getPieceAt10x12(from10x12 - Direction.D10X12.N.toInt() * 2).isEmpty()) {
+                    moveList.add(new Move(from8x8, from8x8 - Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
+                }
+            }
+        }
+    }
+
+    public static @NotNull List<Integer> generate8x8MovesForPiece(Board board, int s8x8) {
+        int from10x12 = Util.convert8x8to10x12(s8x8);
+        Piece piece = board.getPieceAt10x12(from10x12);
+
+        if (piece.isEmpty()) return List.of();
+
+        List<Move> moveList = new ArrayList<>(256);
+        generateMovesForPiece(moveList, board, from10x12, board.getPieceAt10x12(from10x12));
+
+        List<Integer> moves = new ArrayList<>(moveList.size());
+        for (Move move : moveList) {
+            moves.add(move.getTo8x8());
+        }
+
+        return moves;
     }
 }

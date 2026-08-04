@@ -20,10 +20,10 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 import java.util.function.Supplier;
 
@@ -100,12 +100,12 @@ public record ChessBlockEntityRenderer(
     }
 
     @Override
-    public @NonNull ChessRenderState createRenderState() {
+    public @NotNull ChessRenderState createRenderState() {
         return new ChessRenderState();
     }
 
     @Override
-    public void extractRenderState(@NonNull ChessBlockEntity be, @NonNull ChessRenderState state, float partialTicks, @NonNull Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+    public void extractRenderState(@NotNull ChessBlockEntity be, @NotNull ChessRenderState state, float partialTicks, @NotNull Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
         BlockEntityRenderer.super.extractRenderState(be, state, partialTicks, cameraPosition, breakProgress);
 
         Level level = Minecraft.getInstance().level;
@@ -130,7 +130,7 @@ public record ChessBlockEntityRenderer(
     }
 
     @Override
-    public void submit(@NonNull ChessRenderState state, @NonNull PoseStack poseStack, @NonNull SubmitNodeCollector collector, @NonNull CameraRenderState cameraRenderState) {
+    public void submit(@NotNull ChessRenderState state, @NotNull PoseStack poseStack, @NotNull SubmitNodeCollector collector, @NotNull CameraRenderState cameraRenderState) {
         poseStack.pushPose();
 
         String[] boardState = state.fen.split("/");
@@ -169,7 +169,7 @@ public record ChessBlockEntityRenderer(
         poseStack.popPose();
     }
 
-    private void renderPiece(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector collector, @NonNull ChessRenderState state, char piece) {
+    private void renderPiece(@NotNull PoseStack poseStack, @NotNull SubmitNodeCollector collector, @NotNull ChessRenderState state, char piece) {
         ItemStackRenderState itemState = null;
         switch (piece) {
             case 'p': itemState = state.blackPawnItemState; break;

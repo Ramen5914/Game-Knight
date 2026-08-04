@@ -33,3 +33,4 @@ repo
 
 # MacOS
 .DS_Store
+*.pyc

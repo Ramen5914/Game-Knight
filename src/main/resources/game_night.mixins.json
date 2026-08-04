@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.r4men.game_night.mixin",
+  "plugin": "com.r4men.game_night.GNMixinPlugin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "UniversalKeyConflictMixin"
+  ],
+  "client": [
+  ]
+}

@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import BinaryIO
 
-
 @dataclass
 class VoxelModel:
   size: tuple[int, int, int]
