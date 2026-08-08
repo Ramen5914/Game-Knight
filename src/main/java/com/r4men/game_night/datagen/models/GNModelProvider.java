@@ -17,8 +17,38 @@ import java.util.List;
 import java.util.Optional;
 
 public class GNModelProvider extends ModelProvider {
+    public static final TextureSlot BOARD = TextureSlot.create("board", TextureSlot.ALL);
+    public static final ModelTemplate SQUARE_BOARD_TEMPLATE = new ModelTemplate(
+            Optional.of(
+                    GameNight.getIdentifier("block/square_board")
+            ),
+            Optional.empty(),
+            BOARD
+    );
+    public static final TexturedModel.Provider SQUARE_BOARD_PROVIDER = TexturedModel.createDefault(
+            // Block to texture mapping
+            block -> new TextureMapping()
+                    .put(BOARD, TextureMapping.getBlockTexture(block)),
+            // The template to generate from
+            SQUARE_BOARD_TEMPLATE
+    );
+
     public GNModelProvider(PackOutput packOutput) {
-        super(packOutput, GameNight.ID);
+        super(packOutput, GameNight.MOD_ID);
+    }
+
+    private static void registerPiece(ItemModelGenerators itemModels, String name) {
+        itemModels.itemModelOutput.register(
+                GameNight.getIdentifier("chess/" + name),
+                new ClientItem(
+                        new CuboidItemModelWrapper.Unbaked(
+                                GameNight.getIdentifier("chess/pieces/" + name),
+                                Optional.empty(),
+                                List.of()
+                        ),
+                        ClientItem.Properties.DEFAULT
+                )
+        );
     }
 
     @Override
@@ -27,157 +57,33 @@ public class GNModelProvider extends ModelProvider {
         blockModels.createTrivialBlock(GNBlocks.MONOPOLY.get(), SQUARE_BOARD_PROVIDER);
 
         // Black pieces
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/black_bishop"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/black_bishop"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/black_king"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/black_king"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/black_knight"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/black_knight"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/black_pawn"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/black_pawn"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/black_queen"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/black_queen"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/black_rook"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/black_rook"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
+        registerPiece(itemModels, "black_bishop");
+        registerPiece(itemModels, "black_king");
+        registerPiece(itemModels, "black_knight");
+        registerPiece(itemModels, "black_pawn");
+        registerPiece(itemModels, "black_queen");
+        registerPiece(itemModels, "black_rook");
+
+        registerPiece(itemModels, "black_bishop_cuboid");
+        registerPiece(itemModels, "black_king_cuboid");
+        registerPiece(itemModels, "black_knight_cuboid");
+        registerPiece(itemModels, "black_pawn_cuboid");
+        registerPiece(itemModels, "black_queen_cuboid");
+        registerPiece(itemModels, "black_rook_cuboid");
 
         // White pieces
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/white_bishop"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/white_bishop"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/white_king"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/white_king"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/white_knight"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/white_knight"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/white_pawn"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/white_pawn"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/white_queen"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/white_queen"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
-        itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/white_rook"),
-                new ClientItem(
-                        new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/white_rook"),
-                                Optional.empty(),
-                                List.of()
-                        ),
-                        ClientItem.Properties.DEFAULT
-                )
-        );
+        registerPiece(itemModels, "white_bishop");
+        registerPiece(itemModels, "white_king");
+        registerPiece(itemModels, "white_knight");
+        registerPiece(itemModels, "white_pawn");
+        registerPiece(itemModels, "white_queen");
+        registerPiece(itemModels, "white_rook");
+
+        registerPiece(itemModels, "white_bishop_cuboid");
+        registerPiece(itemModels, "white_king_cuboid");
+        registerPiece(itemModels, "white_knight_cuboid");
+        registerPiece(itemModels, "white_pawn_cuboid");
+        registerPiece(itemModels, "white_queen_cuboid");
+        registerPiece(itemModels, "white_rook_cuboid");
     }
-
-    public static final TextureSlot BOARD = TextureSlot.create("board", TextureSlot.ALL);
-
-    public static final ModelTemplate SQUARE_BOARD_TEMPLATE = new ModelTemplate(
-            Optional.of(
-                    GameNight.getIdentifier("block/square_board")
-            ),
-            Optional.empty(),
-            BOARD
-    );
-
-    public static final TexturedModel.Provider SQUARE_BOARD_PROVIDER = TexturedModel.createDefault(
-            // Block to texture mapping
-            block -> new TextureMapping()
-                    .put(BOARD, TextureMapping.getBlockTexture(block)),
-            // The template to generate from
-            SQUARE_BOARD_TEMPLATE
-    );
 }
