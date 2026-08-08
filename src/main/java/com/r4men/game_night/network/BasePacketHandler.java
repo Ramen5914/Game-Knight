@@ -25,7 +25,8 @@ public abstract class BasePacketHandler {
 
     protected abstract void registerServerToClient(PacketRegistrar registrar);
 
-    protected record SimplePacketPayload(CustomPacketPayload.Type<CustomPacketPayload> type) implements CustomPacketPayload {
+    protected record SimplePacketPayload(
+            CustomPacketPayload.Type<CustomPacketPayload> type) implements CustomPacketPayload {
         private SimplePacketPayload(Identifier identifier) {
             this(new CustomPacketPayload.Type<>(identifier));
         }
