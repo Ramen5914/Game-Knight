@@ -33,7 +33,6 @@ neoForge {
 
     validateAccessTransformers = true
 
-
     runs {
         client {
             client()
