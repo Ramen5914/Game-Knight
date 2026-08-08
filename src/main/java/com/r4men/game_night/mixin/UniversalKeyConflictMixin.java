@@ -20,7 +20,7 @@ public class UniversalKeyConflictMixin {
             remap = false
     )
     private boolean changeUniversalIsActive(boolean original) {
-        return original && !(Minecraft.getInstance().screen instanceof GNScreen<?>);
+        return original && !(Minecraft.getInstance().screen instanceof GNScreen);
     }
 
     @ModifyReturnValue(

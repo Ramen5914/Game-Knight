@@ -22,10 +22,6 @@ import static com.r4men.game_night.GameNightClient.FLIP_BOARD;
 
 public class ChessScreen extends AbstractContainerScreen<ChessMenu> {
     private final Identifier BOARD = GameNight.getIdentifier("textures/gui/container/chess.png");
-
-    private int clickedSquare = -1;
-    private List<Integer> legalMoves = null;
-
     private final Map<Character, Identifier> PIECE_SPRITES = Map.ofEntries(
             Map.entry('b', GameNight.getIdentifier("container/chess/black_bishop")),
             Map.entry('k', GameNight.getIdentifier("container/chess/black_king")),
@@ -40,6 +36,8 @@ public class ChessScreen extends AbstractContainerScreen<ChessMenu> {
             Map.entry('Q', GameNight.getIdentifier("container/chess/white_queen")),
             Map.entry('R', GameNight.getIdentifier("container/chess/white_rook"))
     );
+    private int clickedSquare = -1;
+    private List<Integer> legalMoves = null;
 
     public ChessScreen(ChessMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 256, 256);
@@ -90,7 +88,7 @@ public class ChessScreen extends AbstractContainerScreen<ChessMenu> {
                 Identifier piece = PIECE_SPRITES.get(pieces[y].charAt(x));
 
                 if (piece != null) {
-                    graphics.blitSprite(RenderPipelines.GUI_TEXTURED, piece, leftPos + (imageWidth/8 * x), topPos + (imageHeight/8 * y), imageWidth/8, imageHeight/8);
+                    graphics.blitSprite(RenderPipelines.GUI_TEXTURED, piece, leftPos + (imageWidth / 8 * x), topPos + (imageHeight / 8 * y), imageWidth / 8, imageHeight / 8);
                 }
             }
         }

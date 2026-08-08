@@ -3,8 +3,8 @@ package com.r4men.game_night.gui.screen;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.r4men.game_night.GNConfig;
 import com.r4men.game_night.GameNight;
+import com.r4men.game_night.engine.chess.Board;
 import com.r4men.game_night.gui.GNScreen;
-import com.r4men.game_night.gui.menu.ChessMenu2;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -18,12 +18,10 @@ import java.util.Map;
 
 import static com.r4men.game_night.GameNightClient.FLIP_BOARD;
 
-public class ChessScreen2 extends GNScreen<ChessMenu2> {
+public class ChessScreen2 extends GNScreen {
     private final Identifier BOARD = GameNight.getIdentifier("textures/gui/container/chess.png");
 
-    private int clickedSquare = -1;
-    private List<Integer> legalMoves = null;
-
+    private final Board board = new Board();
     private final Map<Character, Identifier> PIECE_SPRITES = Map.ofEntries(
             Map.entry('b', GameNight.getIdentifier("container/chess/black_bishop")),
             Map.entry('k', GameNight.getIdentifier("container/chess/black_king")),
@@ -38,9 +36,11 @@ public class ChessScreen2 extends GNScreen<ChessMenu2> {
             Map.entry('Q', GameNight.getIdentifier("container/chess/white_queen")),
             Map.entry('R', GameNight.getIdentifier("container/chess/white_rook"))
     );
+    private int clickedSquare = -1;
+    private List<Integer> legalMoves = null;
 
-    public ChessScreen2(ChessMenu2 menu, Component title) {
-        super(menu, title, 256, 256);
+    public ChessScreen2(Component title) {
+        super(title, 256, 256);
 
         this.titleLabelY = -1000000;
     }
@@ -61,7 +61,19 @@ public class ChessScreen2 extends GNScreen<ChessMenu2> {
     public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
 
-        String[] pieces = menu.getSimplifiedFen().split("/");
+        // TODO
+//        String[] pieces = board.toFen().split("/");
+
+        String[] pieces = {
+                "rnbqkbnr",
+                "pppppppp",
+                "        ",
+                "        ",
+                "        ",
+                "        ",
+                "PPPPPPPP",
+                "RNBQKBNR"
+        };
 
         if (clickedSquare >= 0) {
             if (pieces[7 - clickedSquare / 8].charAt(clickedSquare % 8) != ' ') {
@@ -87,7 +99,7 @@ public class ChessScreen2 extends GNScreen<ChessMenu2> {
                 Identifier piece = PIECE_SPRITES.get(pieces[y].charAt(x));
 
                 if (piece != null) {
-                    graphics.blitSprite(RenderPipelines.GUI_TEXTURED, piece, leftPos + (imageWidth/8 * x), topPos + (imageHeight/8 * y), imageWidth/8, imageHeight/8);
+                    graphics.blitSprite(RenderPipelines.GUI_TEXTURED, piece, leftPos + (imageWidth / 8 * x), topPos + (imageHeight / 8 * y), imageWidth / 8, imageHeight / 8);
                 }
             }
         }
@@ -143,7 +155,7 @@ public class ChessScreen2 extends GNScreen<ChessMenu2> {
             if (this.legalMoves.contains(targetSquare)) {
                 GameNight.LOGGER.info("Moving piece from {} to {}", this.clickedSquare, targetSquare);
 
-                menu.makeMove(this.clickedSquare, targetSquare);
+                board.makeMove(this.clickedSquare, targetSquare);
 
                 this.clickedSquare = -1;
                 this.legalMoves = null;
@@ -157,7 +169,7 @@ public class ChessScreen2 extends GNScreen<ChessMenu2> {
             if (this.clickedSquare >= 0) {
                 GameNight.LOGGER.info("Clicked square: {}", this.clickedSquare);
 
-                this.legalMoves = menu.getLegalMovesForPiece(this.clickedSquare);
+                this.legalMoves = board.generate8x8MovesForPiece(this.clickedSquare);
             }
         } else {
             this.clickedSquare = -1;
@@ -190,7 +202,11 @@ public class ChessScreen2 extends GNScreen<ChessMenu2> {
 
     @Override
     public boolean mouseDragged(@NotNull MouseButtonEvent event, double dx, double dy) {
-
         return super.mouseDragged(event, dx, dy);
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
     }
 }
