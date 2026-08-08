@@ -16,7 +16,8 @@ public class GNRecipeProvider implements DataProvider {
     public static final int INGOT = BLOCK / 9;
     public static final int NUGGET = INGOT / 9;
 
-    public GNRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {}
+    public GNRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+    }
 
     @Override
     public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cachedOutput) {

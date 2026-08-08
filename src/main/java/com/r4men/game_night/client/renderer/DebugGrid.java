@@ -24,18 +24,18 @@ public class DebugGrid implements SubmitNodeCollector.CustomGeometryRenderer {
     }
 
     public void box(PoseStack.Pose pose, VertexConsumer vc, float x, float y, float z, float size) {
-        float offset = size/2f;
+        float offset = size / 2f;
 
-        int r = (int) (z/8f * 255f);
-        int g = (int) (z/8f * 255f);
-        int b = (int) (z/8f * 255f);
+        int r = (int) (z / 8f * 255f);
+        int g = (int) (z / 8f * 255f);
+        int b = (int) (z / 8f * 255f);
 
-        quad(pose, vc, x-offset, y+offset, z-offset, x+offset, y+offset, z+offset, r, g, b, 255);
-        quad(pose, vc, x-offset, y-offset, z-offset, x+offset, y-offset, z+offset, r, g, b, 255);
-        quad(pose, vc, x-offset, y-offset, z+offset, x+offset, y+offset, z+offset, r, g, b, 255);
-        quad(pose, vc, x-offset, y-offset, z-offset, x+offset, y+offset, z-offset, r, g, b, 255);
-        quad(pose, vc, x+offset, y-offset, z-offset, x+offset, y+offset, z+offset, r, g, b, 255);
-        quad(pose, vc, x-offset, y-offset, z-offset, x-offset, y+offset, z+offset, r, g, b, 255);
+        quad(pose, vc, x - offset, y + offset, z - offset, x + offset, y + offset, z + offset, r, g, b, 255);
+        quad(pose, vc, x - offset, y - offset, z - offset, x + offset, y - offset, z + offset, r, g, b, 255);
+        quad(pose, vc, x - offset, y - offset, z + offset, x + offset, y + offset, z + offset, r, g, b, 255);
+        quad(pose, vc, x - offset, y - offset, z - offset, x + offset, y + offset, z - offset, r, g, b, 255);
+        quad(pose, vc, x + offset, y - offset, z - offset, x + offset, y + offset, z + offset, r, g, b, 255);
+        quad(pose, vc, x - offset, y - offset, z - offset, x - offset, y + offset, z + offset, r, g, b, 255);
     }
 
     private void quad(PoseStack.Pose pose, VertexConsumer vc, float x1, float y1, float z1, float x2, float y2, float z2, int r, int g, int b, int a) {

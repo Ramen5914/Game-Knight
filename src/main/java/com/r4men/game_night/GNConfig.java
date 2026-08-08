@@ -3,18 +3,15 @@ package com.r4men.game_night;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class GNConfig {
-    // Server
-    private static final ModConfigSpec.Builder SERVER_BUILDER = new ModConfigSpec.Builder();
     public static final ModConfigSpec SERVER_SPEC;
-
     public static final ModConfigSpec.ConfigValue<Boolean> ENABLE_ELO_SYSTEM;
-
-    // Client
-    private static final ModConfigSpec.Builder CLIENT_BUILDER = new ModConfigSpec.Builder();
     public static final ModConfigSpec CLIENT_SPEC;
-
     public static final ModConfigSpec.ConfigValue<Boolean> SHOW_COORDINATES;
     public static final ModConfigSpec.ConfigValue<Integer> SELECT_COLOR;
+    // Server
+    private static final ModConfigSpec.Builder SERVER_BUILDER = new ModConfigSpec.Builder();
+    // Client
+    private static final ModConfigSpec.Builder CLIENT_BUILDER = new ModConfigSpec.Builder();
 
     static {
         ENABLE_ELO_SYSTEM = SERVER_BUILDER

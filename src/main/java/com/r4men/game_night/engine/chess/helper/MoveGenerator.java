@@ -1,6 +1,5 @@
 package com.r4men.game_night.engine.chess.helper;
 
-import com.r4men.game_night.GameNight;
 import com.r4men.game_night.engine.chess.Board;
 import com.r4men.game_night.engine.chess.type.Direction;
 import com.r4men.game_night.engine.chess.type.Move;
@@ -52,7 +51,7 @@ public final class MoveGenerator {
             case QUEEN -> generateQueenMoves(moveList, board, from10x12, piece);
             case KING -> generateKingMoves(moveList, board, from10x12, piece);
             default -> throw new IllegalArgumentException("Invalid piece type: " + piece.getPieceType());
-        };
+        }
     }
 
     static int generateKingMoves(List<Move> moveList, Board board, int from10x12, Piece piece) {
