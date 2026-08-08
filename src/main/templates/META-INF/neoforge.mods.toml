@@ -1,37 +1,37 @@
-license="${mod_license}"
-issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
+license = "${mod_license}"
+issueTrackerURL = "https://change.me.to.your.issue.tracker.example.invalid/"
 
 [[mods]]
-modId="${mod_id}"
-version="${mod_version}"
-displayName="${mod_name}"
-updateJSONURL="https://change.me.example.invalid/updates.json"
-displayURL="https://change.me.to.your.mods.homepage.example.invalid/"
-logoFile="examplemod.png"
-credits=""
-authors=""
-description='''
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+updateJSONURL = "https://change.me.example.invalid/updates.json"
+displayURL = "https://change.me.to.your.mods.homepage.example.invalid/"
+logoFile = "examplemod.png"
+credits = ""
+authors = ""
+description = '''
 Example mod description.
 '''
 
 [[accessTransformers]]
-file="META-INF/accesstransformer.cfg"
+file = "META-INF/accesstransformer.cfg"
 
 [[mixins]]
-config="game_night.mixins.json"
-requiredMods=[]
-behaviorVersion="0.17.3"
+config = "game_night.mixins.json"
+requiredMods = []
+behaviorVersion = "0.17.3"
 
 [[dependencies.${mod_id}]]
-modId="neoforge"
-type="required"
-versionRange="[${neo_version},)"
-ordering="NONE"
-side="BOTH"
+modId = "neoforge"
+type = "required"
+versionRange = "[${neo_version},)"
+ordering = "NONE"
+side = "BOTH"
 
 [[dependencies.${mod_id}]]
-modId="minecraft"
-type="required"
-versionRange="${minecraft_version_range}"
-ordering="NONE"
-side="BOTH"
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
