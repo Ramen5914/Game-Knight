@@ -1,25 +1,92 @@
 {
-	"format_version": "1.9.0",
-	"credit": "Generated from greedy mesh output",
-	"texture_size": [64, 64],
-	"textures": {
-		"1": "game_night:pieces/chess/white/q_cuboid",
-		"particle": "game_night:pieces/chess/white/q_cuboid"
-	},
-	"elements": [
-		{
-			"name": "0",
-			"from": [2.5, 0, 2.5],
-			"to": [13.5, 28, 13.5],
-			"rotation": {"angle": 0, "axis": "y", "origin": [2.5, 0, 2.5]},
-			"faces": {
-				"north": {"uv": [0, 0, 2.75, 7], "texture": "#1"},
-				"east": {"uv": [2.75, 0, 5.5, 7], "texture": "#1"},
-				"south": {"uv": [5.5, 0, 8.25, 7], "texture": "#1"},
-				"west": {"uv": [0, 7, 2.75, 14], "texture": "#1"},
-				"up": {"uv": [5.5, 9.75, 2.75, 7], "texture": "#1"},
-				"down": {"uv": [8.25, 7, 5.5, 9.75], "texture": "#1"}
-			}
-		}
-	]
+  "format_version": "1.9.0",
+  "credit": "Generated from greedy mesh output",
+  "texture_size": [
+    64,
+    64
+  ],
+  "textures": {
+    "1": "game_night:pieces/chess/white/q_cuboid",
+    "particle": "game_night:pieces/chess/white/q_cuboid"
+  },
+  "elements": [
+    {
+      "name": "0",
+      "from": [
+        2.5,
+        0,
+        2.5
+      ],
+      "to": [
+        13.5,
+        28,
+        13.5
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          2.5,
+          0,
+          2.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            2.75,
+            7
+          ],
+          "texture": "#1"
+        },
+        "east": {
+          "uv": [
+            2.75,
+            0,
+            5.5,
+            7
+          ],
+          "texture": "#1"
+        },
+        "south": {
+          "uv": [
+            5.5,
+            0,
+            8.25,
+            7
+          ],
+          "texture": "#1"
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            2.75,
+            14
+          ],
+          "texture": "#1"
+        },
+        "up": {
+          "uv": [
+            5.5,
+            9.75,
+            2.75,
+            7
+          ],
+          "texture": "#1"
+        },
+        "down": {
+          "uv": [
+            8.25,
+            7,
+            5.5,
+            9.75
+          ],
+          "texture": "#1"
+        }
+      }
+    }
+  ]
 }
