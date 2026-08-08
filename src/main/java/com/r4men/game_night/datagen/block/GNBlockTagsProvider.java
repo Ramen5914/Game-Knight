@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class GNBlockTagsProvider extends BlockTagsProvider {
     public GNBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-        super(output, lookupProvider, GameNight.ID);
+        super(output, lookupProvider, GameNight.MOD_ID);
     }
 
     @Override

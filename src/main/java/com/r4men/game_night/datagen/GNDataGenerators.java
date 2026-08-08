@@ -15,7 +15,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import java.util.List;
 import java.util.Set;
 
-@EventBusSubscriber(modid = GameNight.ID)
+@EventBusSubscriber(modid = GameNight.MOD_ID)
 public class GNDataGenerators {
 
     @SubscribeEvent

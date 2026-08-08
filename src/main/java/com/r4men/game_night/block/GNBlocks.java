@@ -15,7 +15,7 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 public class GNBlocks {
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(GameNight.ID);
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(GameNight.MOD_ID);
 
     public static final DeferredBlock<Block> CHESS = registerBlock("chess", ChessBlock::new, BlockBehaviour.Properties::noOcclusion);
 

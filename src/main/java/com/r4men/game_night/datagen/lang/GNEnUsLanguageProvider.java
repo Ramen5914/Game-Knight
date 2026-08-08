@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class GNEnUsLanguageProvider extends LanguageProvider {
     public GNEnUsLanguageProvider(PackOutput output) {
-        super(output, GameNight.ID, "en_us");
+        super(output, GameNight.MOD_ID, "en_us");
     }
 
     @Override

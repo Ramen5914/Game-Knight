@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public class GNBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, GameNight.ID);
+            DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, GameNight.MOD_ID);
 
     public static final Supplier<BlockEntityType<ChessBlockEntity>> CHESS_BE =
             BLOCK_ENTITIES.register("chess_be", () -> new BlockEntityType<>(

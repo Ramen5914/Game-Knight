@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public class GNTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
-            .create(Registries.CREATIVE_MODE_TAB, GameNight.ID);
+            .create(Registries.CREATIVE_MODE_TAB, GameNight.MOD_ID);
 
     public static final Supplier<CreativeModeTab> GAME_NIGHT_TAB = CREATIVE_MODE_TABS.register(
             "gn_tab",
