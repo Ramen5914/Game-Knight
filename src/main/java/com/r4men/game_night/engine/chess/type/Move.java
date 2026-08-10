@@ -1,10 +1,23 @@
 package com.r4men.game_night.engine.chess.type;
 
 import com.r4men.game_night.engine.chess.helper.Util;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import org.jetbrains.annotations.NotNull;
 
 public record Move(int move, int enPassantSquare10x12, int castlingRights, int halfmoveClock,
                    @NotNull Piece capturedPiece) {
+    public static final StreamCodec<FriendlyByteBuf, Move> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, Move::move,
+            ByteBufCodecs.INT, Move::enPassantSquare10x12,
+            ByteBufCodecs.INT, Move::castlingRights,
+            ByteBufCodecs.INT, Move::halfmoveClock,
+            NeoForgeStreamCodecs.enumCodec(Piece.class), Move::capturedPiece,
+            Move::new
+    );
+
     public Move(int from8x8, int to8x8, Flag flag, int enPassantSquare10x12, int castlingRights, int halfmoveClock, Piece capturedPiece) {
         if (from8x8 >= 64 || from8x8 < 0) {
             throw new IllegalArgumentException("'from8x8' square must be in the range [0, 64). Received: " + from8x8);
