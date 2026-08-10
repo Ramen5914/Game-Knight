@@ -16,9 +16,9 @@ public class GNBlockTagsProvider extends BlockTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
-        tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(GNBlocks.CHESS.get())
-                .add(GNBlocks.MONOPOLY.get());
+    protected void addTags(HolderLookup.@NotNull Provider provider) {
+        tag(BlockTags.MINEABLE_WITH_AXE)
+                .add(GNBlocks.CHESS.getKey())
+                .add(GNBlocks.MONOPOLY.getKey());
     }
 }
