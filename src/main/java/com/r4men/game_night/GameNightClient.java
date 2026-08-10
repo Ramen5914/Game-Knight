@@ -22,7 +22,7 @@ import org.lwjgl.glfw.GLFW;
 
 @Mod(value = GameNight.MOD_ID, dist = Dist.CLIENT)
 public class GameNightClient {
-    public static final KeyMapping.Category CHESS_CATEGORY = new KeyMapping.Category(GameNight.getIdentifier("chess"));
+    public static final KeyMapping.Category CHESS_CATEGORY = new KeyMapping.Category(GameNight.id("chess"));
     public static final Lazy<KeyMapping> FLIP_BOARD = Lazy.of(() -> new KeyMapping(
             "key.game_night.flip_board",
             GNKeyConflictContext.CHESS,

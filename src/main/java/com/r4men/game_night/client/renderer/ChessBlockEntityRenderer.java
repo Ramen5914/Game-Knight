@@ -62,31 +62,31 @@ public record ChessBlockEntityRenderer(
     private static final float squareSize = boardSize / 16f / squareCount;
 
     public static ChessBlockEntityRenderer create(BlockEntityRendererProvider.Context context) {
-        Identifier blackBishopModel = GameNight.getIdentifier("chess/black_bishop");
-        Identifier blackKingModel = GameNight.getIdentifier("chess/black_king");
-        Identifier blackKnightModel = GameNight.getIdentifier("chess/black_knight");
-        Identifier blackPawnModel = GameNight.getIdentifier("chess/black_pawn");
-        Identifier blackQueenModel = GameNight.getIdentifier("chess/black_queen");
-        Identifier blackRookModel = GameNight.getIdentifier("chess/black_rook");
-        Identifier whiteBishopModel = GameNight.getIdentifier("chess/white_bishop");
-        Identifier whiteKingModel = GameNight.getIdentifier("chess/white_king");
-        Identifier whiteKnightModel = GameNight.getIdentifier("chess/white_knight");
-        Identifier whitePawnModel = GameNight.getIdentifier("chess/white_pawn");
-        Identifier whiteQueenModel = GameNight.getIdentifier("chess/white_queen");
-        Identifier whiteRookModel = GameNight.getIdentifier("chess/white_rook");
+        Identifier blackBishopModel = GameNight.id("chess/black_bishop");
+        Identifier blackKingModel = GameNight.id("chess/black_king");
+        Identifier blackKnightModel = GameNight.id("chess/black_knight");
+        Identifier blackPawnModel = GameNight.id("chess/black_pawn");
+        Identifier blackQueenModel = GameNight.id("chess/black_queen");
+        Identifier blackRookModel = GameNight.id("chess/black_rook");
+        Identifier whiteBishopModel = GameNight.id("chess/white_bishop");
+        Identifier whiteKingModel = GameNight.id("chess/white_king");
+        Identifier whiteKnightModel = GameNight.id("chess/white_knight");
+        Identifier whitePawnModel = GameNight.id("chess/white_pawn");
+        Identifier whiteQueenModel = GameNight.id("chess/white_queen");
+        Identifier whiteRookModel = GameNight.id("chess/white_rook");
 
-        Identifier blackBishopCuboidModel = GameNight.getIdentifier("chess/black_bishop_cuboid");
-        Identifier blackKingCuboidModel = GameNight.getIdentifier("chess/black_king_cuboid");
-        Identifier blackKnightCuboidModel = GameNight.getIdentifier("chess/black_knight_cuboid");
-        Identifier blackPawnCuboidModel = GameNight.getIdentifier("chess/black_pawn_cuboid");
-        Identifier blackQueenCuboidModel = GameNight.getIdentifier("chess/black_queen_cuboid");
-        Identifier blackRookCuboidModel = GameNight.getIdentifier("chess/black_rook_cuboid");
-        Identifier whiteBishopCuboidModel = GameNight.getIdentifier("chess/white_bishop_cuboid");
-        Identifier whiteKingCuboidModel = GameNight.getIdentifier("chess/white_king_cuboid");
-        Identifier whiteKnightCuboidModel = GameNight.getIdentifier("chess/white_knight_cuboid");
-        Identifier whitePawnCuboidModel = GameNight.getIdentifier("chess/white_pawn_cuboid");
-        Identifier whiteQueenCuboidModel = GameNight.getIdentifier("chess/white_queen_cuboid");
-        Identifier whiteRookCuboidModel = GameNight.getIdentifier("chess/white_rook_cuboid");
+        Identifier blackBishopCuboidModel = GameNight.id("chess/black_bishop_cuboid");
+        Identifier blackKingCuboidModel = GameNight.id("chess/black_king_cuboid");
+        Identifier blackKnightCuboidModel = GameNight.id("chess/black_knight_cuboid");
+        Identifier blackPawnCuboidModel = GameNight.id("chess/black_pawn_cuboid");
+        Identifier blackQueenCuboidModel = GameNight.id("chess/black_queen_cuboid");
+        Identifier blackRookCuboidModel = GameNight.id("chess/black_rook_cuboid");
+        Identifier whiteBishopCuboidModel = GameNight.id("chess/white_bishop_cuboid");
+        Identifier whiteKingCuboidModel = GameNight.id("chess/white_king_cuboid");
+        Identifier whiteKnightCuboidModel = GameNight.id("chess/white_knight_cuboid");
+        Identifier whitePawnCuboidModel = GameNight.id("chess/white_pawn_cuboid");
+        Identifier whiteQueenCuboidModel = GameNight.id("chess/white_queen_cuboid");
+        Identifier whiteRookCuboidModel = GameNight.id("chess/white_rook_cuboid");
 
         return new ChessBlockEntityRenderer(
                 context.itemModelResolver(),

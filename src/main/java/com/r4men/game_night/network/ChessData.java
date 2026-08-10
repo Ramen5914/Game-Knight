@@ -8,7 +8,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import org.jspecify.annotations.NonNull;
 
 public record ChessData(String name, int age) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<ChessData> TYPE = new CustomPacketPayload.Type<>(GameNight.getIdentifier("chess_data"));
+    public static final CustomPacketPayload.Type<ChessData> TYPE = new CustomPacketPayload.Type<>(GameNight.id("chess_data"));
 
     public static final StreamCodec<ByteBuf, ChessData> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.STRING_UTF8,

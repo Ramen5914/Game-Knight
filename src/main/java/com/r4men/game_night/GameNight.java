@@ -50,7 +50,7 @@ public class GameNight {
         return instance.packetHandler;
     }
 
-    public static Identifier getIdentifier(String regName) {
+    public static Identifier id(String regName) {
         return Identifier.fromNamespaceAndPath(MOD_ID, regName);
     }
 

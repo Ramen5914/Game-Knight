@@ -20,7 +20,7 @@ public class GNModelProvider extends ModelProvider {
     public static final TextureSlot BOARD = TextureSlot.create("board", TextureSlot.ALL);
     public static final ModelTemplate SQUARE_BOARD_TEMPLATE = new ModelTemplate(
             Optional.of(
-                    GameNight.getIdentifier("block/square_board")
+                    GameNight.id("block/square_board")
             ),
             Optional.empty(),
             BOARD
@@ -39,10 +39,10 @@ public class GNModelProvider extends ModelProvider {
 
     private static void registerPiece(ItemModelGenerators itemModels, String name) {
         itemModels.itemModelOutput.register(
-                GameNight.getIdentifier("chess/" + name),
+                GameNight.id("chess/" + name),
                 new ClientItem(
                         new CuboidItemModelWrapper.Unbaked(
-                                GameNight.getIdentifier("chess/pieces/" + name),
+                                GameNight.id("chess/pieces/" + name),
                                 Optional.empty(),
                                 List.of()
                         ),
