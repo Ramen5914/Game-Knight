@@ -165,4 +165,20 @@ public final class FenCodec {
 
         return sb.toString();
     }
+
+    public static String toSimpleFen(Board board) {
+        String pieceLayout = board.toFen().split(" ")[0];
+        StringBuilder simpleFen = new StringBuilder();
+
+        for (char c : pieceLayout.toCharArray()) {
+            if (Character.isDigit(c)) {
+                int i = Character.getNumericValue(c);
+                simpleFen.repeat(" ", i);
+            } else {
+                simpleFen.append(c);
+            }
+        }
+
+        return simpleFen.toString();
+    }
 }

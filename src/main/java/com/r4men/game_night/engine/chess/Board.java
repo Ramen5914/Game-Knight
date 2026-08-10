@@ -181,6 +181,10 @@ public class Board {
         return FenCodec.toFen(this);
     }
 
+    public String toSimpleFen() {
+        return FenCodec.toSimpleFen(this);
+    }
+
     public @NotNull List<Integer> generate8x8MovesForPiece(int s8x8) {
         return MoveGenerator.generate8x8MovesForPiece(this, s8x8);
     }
