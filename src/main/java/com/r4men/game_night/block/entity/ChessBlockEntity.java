@@ -2,6 +2,8 @@ package com.r4men.game_night.block.entity;
 
 import com.r4men.game_night.block.GNBlockEntities;
 import com.r4men.game_night.engine.chess.Board;
+import com.r4men.game_night.engine.chess.helper.FenCodec;
+import com.r4men.game_night.engine.chess.type.Move;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -38,6 +40,10 @@ public class ChessBlockEntity extends BlockEntity {
 
     public Direction getFacing() {
         return this.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+    }
+
+    public String getFen() {
+        return FenCodec.toFen(this.board);
     }
 
     public String getSimplifiedFen() {
@@ -170,6 +176,11 @@ public class ChessBlockEntity extends BlockEntity {
 
     public void makeMove(int from8x8, int to8x8) {
         board.makeMove(from8x8, to8x8);
+        setChanged();
+    }
+
+    public void makeMove(Move move) {
+        board.makeMove(move);
         setChanged();
     }
 }
