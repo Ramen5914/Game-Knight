@@ -1,6 +1,6 @@
 {
   "values": [
-    "game_night:chess",
-    "game_night:monopoly"
+    "game_knight:chess",
+    "game_knight:monopoly"
   ]
 }

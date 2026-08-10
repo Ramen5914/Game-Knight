@@ -1,12 +1,12 @@
 license = "${mod_license}"
-issueTrackerURL = "https://change.me.to.your.issue.tracker.example.invalid/"
+issueTrackerURL = "https://github.com/Ramen5914/Game-Knight/issues"
 
 [[mods]]
 modId = "${mod_id}"
 version = "${mod_version}"
 displayName = "${mod_name}"
-updateJSONURL = "https://change.me.example.invalid/updates.json"
-displayURL = "https://change.me.to.your.mods.homepage.example.invalid/"
+updateJSONURL = "https://r4men.com/mods/game-knight/updates.json"
+displayURL = "https://r4men.com/mods/game-knight"
 iconFile = "examplemod_icon.png"
 bannerFile = "examplemod_banner.png"
 credits = ""
@@ -19,7 +19,7 @@ Example mod description.
 file = "META-INF/accesstransformer.cfg"
 
 [[mixins]]
-config = "game_night.mixins.json"
+config = "game_knight.mixins.json"
 requiredMods = []
 behaviorVersion = "0.17.3"
 
