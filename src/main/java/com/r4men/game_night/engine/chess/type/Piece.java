@@ -1,37 +1,30 @@
 package com.r4men.game_night.engine.chess.type;
 
-public class Piece {
-    public static final Piece EMPTY = new Piece();
-    public static final Piece OFF_BOARD = new Piece(PieceType.OFF_BOARD, Color.OFF_BOARD, 'X');
+public enum Piece {
+    EMPTY(PieceType.EMPTY, Color.EMPTY, ' '),
+    OFF_BOARD(PieceType.OFF_BOARD, Color.OFF_BOARD, 'X'),
+    WHITE_BISHOP(PieceType.BISHOP, Color.WHITE, 'B'),
+    WHITE_KING(PieceType.KING, Color.WHITE, 'K'),
+    WHITE_KNIGHT(PieceType.KNIGHT, Color.WHITE, 'N'),
+    WHITE_PAWN(PieceType.PAWN, Color.WHITE, 'P'),
+    WHITE_QUEEN(PieceType.QUEEN, Color.WHITE, 'Q'),
+    WHITE_ROOK(PieceType.ROOK, Color.WHITE, 'R'),
 
-    public static final Piece WHITE_BISHOP = new Piece(PieceType.BISHOP, Color.WHITE, 'B');
-    public static final Piece WHITE_KING = new Piece(PieceType.KING, Color.WHITE, 'K');
-    public static final Piece WHITE_KNIGHT = new Piece(PieceType.KNIGHT, Color.WHITE, 'N');
-    public static final Piece WHITE_PAWN = new Piece(PieceType.PAWN, Color.WHITE, 'P');
-    public static final Piece WHITE_QUEEN = new Piece(PieceType.QUEEN, Color.WHITE, 'Q');
-    public static final Piece WHITE_ROOK = new Piece(PieceType.ROOK, Color.WHITE, 'R');
-
-    public static final Piece BLACK_BISHOP = new Piece(PieceType.BISHOP, Color.BLACK, 'b');
-    public static final Piece BLACK_KING = new Piece(PieceType.KING, Color.BLACK, 'k');
-    public static final Piece BLACK_KNIGHT = new Piece(PieceType.KNIGHT, Color.BLACK, 'n');
-    public static final Piece BLACK_PAWN = new Piece(PieceType.PAWN, Color.BLACK, 'p');
-    public static final Piece BLACK_QUEEN = new Piece(PieceType.QUEEN, Color.BLACK, 'q');
-    public static final Piece BLACK_ROOK = new Piece(PieceType.ROOK, Color.BLACK, 'r');
+    BLACK_BISHOP(PieceType.BISHOP, Color.BLACK, 'b'),
+    BLACK_KING(PieceType.KING, Color.BLACK, 'k'),
+    BLACK_KNIGHT(PieceType.KNIGHT, Color.BLACK, 'n'),
+    BLACK_PAWN(PieceType.PAWN, Color.BLACK, 'p'),
+    BLACK_QUEEN(PieceType.QUEEN, Color.BLACK, 'q'),
+    BLACK_ROOK(PieceType.ROOK, Color.BLACK, 'r');
 
     private final PieceType pieceType;
     private final Color color;
     private final char pieceChar;
 
-    private Piece(PieceType pieceType, Color color, char pieceChar) {
+    Piece(PieceType pieceType, Color color, char pieceChar) {
         this.pieceType = pieceType;
         this.color = color;
         this.pieceChar = pieceChar;
-    }
-
-    private Piece() {
-        this.pieceType = PieceType.EMPTY;
-        this.color = Color.EMPTY;
-        this.pieceChar = ' ';
     }
 
     public static Piece fromChar(char c) {
@@ -49,6 +42,7 @@ public class Piece {
             case 'r' -> BLACK_ROOK;
             case 'q' -> BLACK_QUEEN;
             case ' ' -> EMPTY;
+            case 'X' -> OFF_BOARD;
             default -> throw new IllegalArgumentException("Illegal piece character " + c);
         };
     }
