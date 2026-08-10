@@ -3,8 +3,6 @@ package com.r4men.game_night;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.r4men.game_night.block.GNBlockEntities;
 import com.r4men.game_night.client.renderer.ChessBlockEntityRenderer;
-import com.r4men.game_night.gui.GNMenuTypes;
-import com.r4men.game_night.gui.screen.ChessScreen;
 import com.r4men.game_night.util.GNKeyConflictContext;
 import net.minecraft.client.KeyMapping;
 import net.neoforged.api.distmarker.Dist;
@@ -42,7 +40,7 @@ public class GameNightClient {
     }
 
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
-        event.register(GNMenuTypes.CHESS_MENU.get(), ChessScreen::new);
+//        event.register(GNMenuTypes.CHESS_MENU.get(), ChessScreen::new);
     }
 
     public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
