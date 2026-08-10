@@ -27,7 +27,7 @@ repositories {
 
     maven {
         name = "ModMaven"
-        url = "https:/;/modmaven.dev"
+        url = "https://modmaven.dev"
     }
 
     exclusiveContent {

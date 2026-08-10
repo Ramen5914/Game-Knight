@@ -12,7 +12,7 @@ bannerFile = "${banner_file}"
 credits = "${credits}"
 authors = "${authors}"
 description = '''
-Example mod description.
+${mod_description}
 '''
 
 [[accessTransformers]]
