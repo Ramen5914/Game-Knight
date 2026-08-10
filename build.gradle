@@ -20,6 +20,15 @@ sourceSets.main.resources {
 }
 
 repositories {
+    maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com"
+    }
+
+    maven {
+        name = "ModMaven"
+        url = "https:/;/modmaven.dev"
+    }
 }
 
 base {
@@ -85,6 +94,9 @@ configurations {
 }
 
 dependencies {
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
