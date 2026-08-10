@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "game_knight:block/chess",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "game_knight:block/chess"
+    },
+    "facing=south": {
+      "model": "game_knight:block/chess",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "game_knight:block/chess",
+      "y": 270
+    }
+  }
+}

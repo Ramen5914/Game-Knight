@@ -1,0 +1,12 @@
+{
+  "block.game_knight.chess": "Chess",
+  "block.game_knight.monopoly": "Monopoly",
+  "game_knight.configuration.chess": "Chess",
+  "game_knight.configuration.chess.show_coordinates": "Show Coordinates",
+  "game_knight.configuration.enable_elo_system": "Enable Elo System",
+  "game_knight.configuration.go": "Go",
+  "game_knight.games.chess.setup.mode": "Mode",
+  "game_knight.games.chess.setup.start": "Start",
+  "game_knight.games.chess.title": "Chess",
+  "itemGroup.game_knight.kn_tab": "Game Night"
+}

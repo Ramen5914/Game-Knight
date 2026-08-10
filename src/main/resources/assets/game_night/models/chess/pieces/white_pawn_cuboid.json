@@ -6,8 +6,8 @@
     64
   ],
   "textures": {
-    "1": "game_night:pieces/chess/white/p_cuboid",
-    "particle": "game_night:pieces/chess/white/p_cuboid"
+    "1": "game_knight:pieces/chess/white/p_cuboid",
+    "particle": "game_knight:pieces/chess/white/p_cuboid"
   },
   "elements": [
     {

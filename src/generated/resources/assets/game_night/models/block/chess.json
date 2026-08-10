@@ -1,6 +1,0 @@
-{
-  "parent": "game_night:block/square_board",
-  "textures": {
-    "board": "game_night:block/chess"
-  }
-}

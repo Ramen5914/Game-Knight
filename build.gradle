@@ -29,6 +29,17 @@ repositories {
         name = "ModMaven"
         url = "https:/;/modmaven.dev"
     }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 base {
@@ -75,8 +86,6 @@ neoForge {
         }
     }
 
-    ideSyncTask tasks.named("runData")
-
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)
@@ -85,7 +94,7 @@ neoForge {
 
     unitTest {
         enable()
-        testedMod = mods.game_night
+        testedMod = mods.game_knight
     }
 }
 
@@ -94,6 +103,11 @@ configurations {
 }
 
 dependencies {
+    // Iris
+    implementation "curse.maven:irisshaders-455508:8571918"
+    // Sodium
+    implementation "curse.maven:sodium-394468:8396481"
+
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 

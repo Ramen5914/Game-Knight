@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "game_knight:block/monopoly"
+    }
+  }
+}

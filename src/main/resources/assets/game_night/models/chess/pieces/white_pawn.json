@@ -6,8 +6,8 @@
     64
   ],
   "textures": {
-    "0": "game_night:pieces/chess/white/p",
-    "particle": "game_night:pieces/chess/white/p"
+    "0": "game_knight:pieces/chess/white/p",
+    "particle": "game_knight:pieces/chess/white/p"
   },
   "elements": [
     {
