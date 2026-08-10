@@ -166,8 +166,8 @@ public record ChessBlockEntityRenderer(
     }
 
     private PieceLod selectLod(double distanceSqr) {
-        if (distanceSqr <= 12) return PieceLod.FULL;
-        if (distanceSqr <= 48) return PieceLod.CUBOID;
+        if (distanceSqr <= 4 * 4) return PieceLod.FULL;
+        if (distanceSqr <= 16 * 16) return PieceLod.CUBOID;
         else return PieceLod.EMPTY;
     }
 
