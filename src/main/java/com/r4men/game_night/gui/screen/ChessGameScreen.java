@@ -18,31 +18,38 @@ import java.util.Map;
 
 import static com.r4men.game_night.GameNightClient.FLIP_BOARD;
 
-public class ChessScreen2 extends GNScreen {
-    private final Identifier BOARD = GameNight.getIdentifier("textures/gui/container/chess.png");
-
-    private final Board board = new Board();
+public class ChessGameScreen extends GNScreen {
+    private static final Identifier NAME_BADGE = GameNight.id("badges/name_badge");
+    private static final Identifier BOARD = GameNight.id("textures/gui/container/chess.png");
+    private final Board board;
     private final Map<Character, Identifier> PIECE_SPRITES = Map.ofEntries(
-            Map.entry('b', GameNight.getIdentifier("container/chess/black_bishop")),
-            Map.entry('k', GameNight.getIdentifier("container/chess/black_king")),
-            Map.entry('n', GameNight.getIdentifier("container/chess/black_knight")),
-            Map.entry('p', GameNight.getIdentifier("container/chess/black_pawn")),
-            Map.entry('q', GameNight.getIdentifier("container/chess/black_queen")),
-            Map.entry('r', GameNight.getIdentifier("container/chess/black_rook")),
-            Map.entry('B', GameNight.getIdentifier("container/chess/white_bishop")),
-            Map.entry('K', GameNight.getIdentifier("container/chess/white_king")),
-            Map.entry('N', GameNight.getIdentifier("container/chess/white_knight")),
-            Map.entry('P', GameNight.getIdentifier("container/chess/white_pawn")),
-            Map.entry('Q', GameNight.getIdentifier("container/chess/white_queen")),
-            Map.entry('R', GameNight.getIdentifier("container/chess/white_rook"))
+            Map.entry('b', GameNight.id("container/chess/black_bishop")),
+            Map.entry('k', GameNight.id("container/chess/black_king")),
+            Map.entry('n', GameNight.id("container/chess/black_knight")),
+            Map.entry('p', GameNight.id("container/chess/black_pawn")),
+            Map.entry('q', GameNight.id("container/chess/black_queen")),
+            Map.entry('r', GameNight.id("container/chess/black_rook")),
+            Map.entry('B', GameNight.id("container/chess/white_bishop")),
+            Map.entry('K', GameNight.id("container/chess/white_king")),
+            Map.entry('N', GameNight.id("container/chess/white_knight")),
+            Map.entry('P', GameNight.id("container/chess/white_pawn")),
+            Map.entry('Q', GameNight.id("container/chess/white_queen")),
+            Map.entry('R', GameNight.id("container/chess/white_rook"))
     );
+    private boolean viewingBoardAsWhite = true;
     private int clickedSquare = -1;
     private List<Integer> legalMoves = null;
+    private String whitePlayer;
+    private String blackPlayer;
 
-    public ChessScreen2(Component title) {
+    public ChessGameScreen(Component title, String fen, String whitePlayer, String blackPlayer) {
         super(title, 256, 256);
 
         this.titleLabelY = -1000000;
+
+        this.whitePlayer = whitePlayer;
+        this.blackPlayer = blackPlayer;
+        this.board = new Board(fen);
     }
 
     @Override
@@ -61,19 +68,7 @@ public class ChessScreen2 extends GNScreen {
     public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
 
-        // TODO
-//        String[] pieces = board.toFen().split("/");
-
-        String[] pieces = {
-                "rnbqkbnr",
-                "pppppppp",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "PPPPPPPP",
-                "RNBQKBNR"
-        };
+        String[] pieces = board.toSimpleFen().split("/");
 
         if (clickedSquare >= 0) {
             if (pieces[7 - clickedSquare / 8].charAt(clickedSquare % 8) != ' ') {
@@ -82,29 +77,39 @@ public class ChessScreen2 extends GNScreen {
 
                 graphics.fill(x0, y0, x0 + imageWidth / 8, y0 + imageHeight / 8, GNConfig.SELECT_COLOR.get());
 
-                for (int move : legalMoves) {
-                    int width = imageWidth / 8 / 3;
-                    int height = imageHeight / 8 / 3;
+                if (legalMoves != null) {
+                    for (int move : legalMoves) {
+                        int width = imageWidth / 8 / 3;
+                        int height = imageHeight / 8 / 3;
 
-                    int x1 = this.leftPos + (move % 8) * (imageWidth / 8) + (imageWidth / 8 / 2) - width / 2;
-                    int y1 = this.topPos + (7 - (move / 8)) * (imageHeight / 8) + (imageHeight / 8 / 2) - height / 2;
+                        int x1 = this.leftPos + (move % 8) * (imageWidth / 8) + (imageWidth / 8 / 2) - width / 2;
+                        int y1 = this.topPos + (7 - (move / 8)) * (imageHeight / 8) + (imageHeight / 8 / 2) - height / 2;
 
-                    graphics.fill(x1, y1, x1 + width, y1 + height, GNConfig.SELECT_COLOR.get());
+                        graphics.fill(x1, y1, x1 + width, y1 + height, GNConfig.SELECT_COLOR.get());
+                    }
                 }
             }
         }
 
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
+                int x1 = x;
+                int y1 = y;
+                if (!viewingBoardAsWhite) {
+                    x1 = 7 - x;
+                    y1 = 7 - y;
+                }
+
                 Identifier piece = PIECE_SPRITES.get(pieces[y].charAt(x));
 
                 if (piece != null) {
-                    graphics.blitSprite(RenderPipelines.GUI_TEXTURED, piece, leftPos + (imageWidth / 8 * x), topPos + (imageHeight / 8 * y), imageWidth / 8, imageHeight / 8);
+                    graphics.blitSprite(RenderPipelines.GUI_TEXTURED, piece, leftPos + (imageWidth / 8 * x1), topPos + (imageHeight / 8 * y1), imageWidth / 8, imageHeight / 8);
                 }
             }
         }
 
         this.extractLabels(graphics, mouseX, mouseY);
+
     }
 
     private void extractLabels(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
@@ -118,21 +123,55 @@ public class ChessScreen2 extends GNScreen {
                     color = 0xFF000000;
                 }
 
-                graphics.text(this.font, Character.toString(97 + i), 1 + (i * (this.imageWidth / 8)), this.imageHeight - this.font.lineHeight + 1, color, false);
-                graphics.text(this.font, Character.toString(56 - i), this.imageHeight - this.font.width(Character.toString(56 - i)), 1 + (i * (this.imageWidth / 8)), color, false);
+                if (viewingBoardAsWhite) {
+                    graphics.text(this.font, Character.toString(97 + i), this.leftPos + 1 + (i * (this.imageWidth / 8)), this.topPos + this.imageHeight - this.font.lineHeight + 1, color, false);
+                    graphics.text(this.font, Character.toString(56 - i), this.leftPos + this.imageHeight - this.font.width(Character.toString(56 - i)), this.topPos + 1 + (i * (this.imageWidth / 8)), color, false);
+                } else {
+                    graphics.text(this.font, Character.toString(104 - i), this.leftPos + 1 + (i * (this.imageWidth / 8)), this.topPos + this.imageHeight - this.font.lineHeight + 1, color, false);
+                    graphics.text(this.font, Character.toString(49 + i), this.leftPos + this.imageHeight - this.font.width(Character.toString(56 - i)), this.topPos + 1 + (i * (this.imageWidth / 8)), color, false);
+                }
             }
         }
+
+
+        String topPlayer;
+        String bottomPlayer;
+        if (viewingBoardAsWhite) {
+            topPlayer = blackPlayer;
+            bottomPlayer = whitePlayer;
+        } else {
+            topPlayer = whitePlayer;
+            bottomPlayer = blackPlayer;
+        }
+
+        // Top Player
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, NAME_BADGE, this.leftPos + 1, this.topPos - this.font.lineHeight - 13, 12 + font.width(topPlayer), 20);
+        graphics.text(this.font, topPlayer, this.leftPos + 8, this.topPos - this.font.lineHeight - 7, 0xFF000000, false);
+
+
+        // Bottom Player
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, NAME_BADGE, this.leftPos + 1, this.topPos + imageHeight + this.font.lineHeight - 7, 12 + font.width(topPlayer), 20);
+        graphics.text(this.font, bottomPlayer, this.leftPos + 8, this.topPos + this.imageHeight + this.font.lineHeight - 1, 0xFF000000, false);
     }
 
     @Override
     public boolean keyPressed(@NotNull KeyEvent event) {
         if (FLIP_BOARD.get().isActiveAndMatches(InputConstants.getKey(event))) {
-            GameNight.LOGGER.info("Flipping board");
-
-            return true;
+            return flipBoard();
         }
 
         return super.keyPressed(event);
+    }
+
+    private boolean flipBoard() {
+        viewingBoardAsWhite = !viewingBoardAsWhite;
+
+        if (clickedSquare > 0) {
+            clickedSquare = 63 - clickedSquare;
+            this.legalMoves = board.generate8x8MovesForPiece(this.clickedSquare);
+        }
+
+        return true;
     }
 
     @Override
@@ -169,7 +208,7 @@ public class ChessScreen2 extends GNScreen {
             if (this.clickedSquare >= 0) {
                 GameNight.LOGGER.info("Clicked square: {}", this.clickedSquare);
 
-                this.legalMoves = board.generate8x8MovesForPiece(this.clickedSquare);
+                setLegalMoves();
             }
         } else {
             this.clickedSquare = -1;
@@ -177,6 +216,10 @@ public class ChessScreen2 extends GNScreen {
         }
 
         return super.mouseClicked(event, doubleClick);
+    }
+
+    private void setLegalMoves() {
+        this.legalMoves = board.generate8x8MovesForPiece(this.clickedSquare);
     }
 
     private int getClickedSquare(double x, double y) {
@@ -208,5 +251,10 @@ public class ChessScreen2 extends GNScreen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+    public void setPlayers(String whitePlayer, String blackPlayer) {
+        this.whitePlayer = whitePlayer;
+        this.blackPlayer = blackPlayer;
     }
 }
