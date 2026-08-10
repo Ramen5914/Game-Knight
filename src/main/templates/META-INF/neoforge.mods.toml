@@ -5,12 +5,12 @@ issueTrackerURL = "https://github.com/Ramen5914/Game-Knight/issues"
 modId = "${mod_id}"
 version = "${mod_version}"
 displayName = "${mod_name}"
-updateJSONURL = "https://r4men.com/mods/game-knight/updates.json"
-displayURL = "https://r4men.com/mods/game-knight"
-iconFile = "examplemod_icon.png"
-bannerFile = "examplemod_banner.png"
-credits = ""
-authors = ""
+updateJSONURL = "${update_json_url}"
+displayURL = "${display_url}"
+iconFile = "${icon_file}"
+bannerFile = "${banner_file}"
+credits = "${credits}"
+authors = "${authors}"
 description = '''
 Example mod description.
 '''
