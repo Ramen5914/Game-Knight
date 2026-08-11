@@ -11,7 +11,7 @@ Play your favorite board games (and more) with friends in Minecraft!
 [![GitHub Repo stars](https://img.shields.io/github/stars/ramen5914/Game-Knight?style=for-the-badge&logo=github&color=082274)](https://github.com/Ramen5914/Game-Knight)
 [![GitHub License](https://img.shields.io/github/license/Ramen5914/Game-Knight?style=for-the-badge&color=082274)](https://github.com/Ramen5914/Game-Knight?tab=MPL-2.0-1-ov-file)
 
-[![wakatime](https://wakatime.com/badge/github/Ramen5914/Game-Knight.svg?style=for-the-badge)](https://wakatime.com/badge/github/Ramen5914/Game-Knight)
+[![wakatime](https://wakatime.com/badge/github/Ramen5914/Game-Knight.svg?style=for-the-badge)](https://wakatime.com/@Ramen5914/projects/gapweyqiiu)
 
 ## Stats
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/TiZi1TT1?style=for-the-badge&logo=modrinth&color=00AF5C)](https://modrinth.com/mod/Game-Knight)
