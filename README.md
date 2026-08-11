@@ -6,7 +6,6 @@ Play your favorite board games (and more) with friends in Minecraft!
 ## Info
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Ramen5914/Game-Knight/build.yml?style=for-the-badge&logo=github)](https://github.com/Ramen5914/Game-Knight/actions/workflows/build.yml)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Ramen5914/Game-Knight?style=for-the-badge&logo=github&color=082274)](https://github.com/Ramen5914/Game-Knight/issues)
-[![Discord](https://img.shields.io/discord/1284033904344567828?style=for-the-badge&logo=discord&color=%235865f2)](https://discord.gg/Fp7AT6uaD8)
 
 [![GitHub watchers](https://img.shields.io/github/watchers/Ramen5914/Game-Knight?style=for-the-badge&logo=github&color=082274)](https://github.com/Ramen5914/Game-Knight/watchers)
 [![GitHub Repo stars](https://img.shields.io/github/stars/ramen5914/Game-Knight?style=for-the-badge&logo=github&color=082274)](https://github.com/Ramen5914/Game-Knight)
@@ -26,21 +25,8 @@ Play your favorite board games (and more) with friends in Minecraft!
 [![GitHub Release](https://img.shields.io/github/v/release/Ramen5914/Game-Knight?include_prereleases&sort=semver&display_name=tag&style=for-the-badge&logo=github&label=Latest%20Version&color=082274)](https://github.com/Ramen5914/Game-Knight/releases/latest)
 
 ## Mod Details
-Cobblemon Manufactory expands both the Create and Cobblemon experience by automating the entire Poké Ball crafting process.
-With custom sequenced assemblies, new intermediate items, and recipe balancing tuned for Create 6.0, you can build complex factories that mass-produce Poké Balls with full mechanical automation.
-Perfect for tech-focused players, multiplayer servers, and Cobblemon worlds that want deeper progression and automated infrastructure.
-
 ## Suggestions and Contributing
-If you have any suggestions for the mod, please open an issue on GitHub and/or join the Discord server linked above.
-The channel for this mod is [here](https://discord.com/channels/1284033904344567828/1450170030133084361).
-Pull requests are welcome as well!
-
 ## Credits
-My mod borrows heavily from [Bracken40](https://www.curseforge.com/members/bracken40/projects)'s [Create: Cobblemon Industrialized](https://www.curseforge.com/minecraft/mc-mods/create-cobblemon-industrialized) mod.
-Huge thanks to them for the original idea and permission to do a port.
-Source code for their mod is here: [GitHub](https://github.com/Lord-Of-Crumbs/Create-Cobblemon-Industrialized-Fabric-1.20.x). 
-
-**Nearly all textures come from Bracken40's mod.** I am slowing making my own textures, but for now I am using theirs with permission.
 
 ## Support Me :)
 You can support me at any of the places below!
