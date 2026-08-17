@@ -1,13 +1,15 @@
 import os
 import re
 import subprocess
+
 from chess import Board
+
 
 def main():
     board = Board()
     board.set_fen("r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1")
 
-    fenPositions = []
+    fenPositions: list[str] = []
 
     for move1 in board.legal_moves:
         board1 = board.copy()
@@ -24,25 +26,25 @@ def main():
                 fenPositions.append(board3.fen())
 
     os.chdir("/")
-    subprocess.run(["gradlew.bat", "build"], check=True)
+    _ = subprocess.run(["gradlew.bat", "build"], check=True)
 
     depth = 1
 
-    i = 0
     for fen in fenPositions:
-        # print(f'#{i+1}')
-
-        javaOutput = subprocess.run(['java', '-jar', './build/libs/JavaChess-0.0.1.jar', fen, str(depth)],
-                                    capture_output=True, text=True)
+        javaOutput = subprocess.run(
+            ["java", "-jar", "./build/libs/JavaChess-0.0.1.jar", fen, str(depth)],
+            capture_output=True,
+            text=True,
+            check=False
+        )
 
         javaPerft = int(javaOutput.stdout)
         stockfishPerft = run_stockfish_perft(fen, depth)
 
-        if (javaPerft != stockfishPerft):
-            print(f'FEN: {fen}\n\tMy Engine: {javaPerft}\n\tStockfish: {stockfishPerft}')
-
-        i += 1
-
+        if javaPerft != stockfishPerft:
+            print(
+                f"FEN: {fen}\n\tMy Engine: {javaPerft}\n\tStockfish: {stockfishPerft}"
+            )
 
 def run_stockfish_perft(fen: str, depth: int) -> int:
     stockfish_exe = r"C:/Users/omar/AppData/Roaming/org.encroissant.app/engines/stockfish/stockfish-windows-x86-64-avx2.exe"
@@ -63,5 +65,5 @@ def run_stockfish_perft(fen: str, depth: int) -> int:
     return int(match.group(1))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

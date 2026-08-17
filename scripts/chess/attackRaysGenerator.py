@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def main():
     print('{')
     for i in range(64):
