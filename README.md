@@ -1,7 +1,7 @@
 # Game Knight
 Play your favorite board games (and more) with friends in Minecraft!
 
-[![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fr4men.com%2Fmods%2Fgame-knight%2Fupdates.json&query=%24.supportedVersions&style=for-the-badge&logo=semver&label=Available%20For&color=%23082274)](https://r4men.com/mods/game-knight/updates.json)
+[![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fr4men.com%2Fmods%2Fgame-knight%2Fupdates.json&query=%24.supportedVersions&style=for-the-badge&logo=semver&label=Available%20For&color=%23082274)](https://github.com/Ramen5914/r4men.com/blob/main/public/mods/game-knight/updates.json)
 
 ## Info
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Ramen5914/Game-Knight/build.yml?style=for-the-badge&logo=github)](https://github.com/Ramen5914/Game-Knight/actions/workflows/build.yml)
