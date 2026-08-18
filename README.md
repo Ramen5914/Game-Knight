@@ -1,6 +1,6 @@
 ![Game Knight Banner](https://r4men.com/mods/game-knight/github-banner.png)
 
-[![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fr4men.com%2Fmods%2Fgame-knight%2Fupdates.json&query=%24.supportedVersions&style=for-the-badge&logo=semver&label=Available%20For&color=%23082274)](https://github.com/Ramen5914/r4men.com/blob/main/public/mods/game-knight/updates.json)
+[![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMS41IiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBjbGFzcz0iaC00IHctNCI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZjk5ZTZiIiBzdHJva2Utd2lkdGg9IjguMzMiIGQ9Ik02MS4wOTggMzIuMDI4VjYuNTI5TDg0LjAwMSAyNi43NHY1Mi45NDRMNTAuMzggOTMuNjA4IDE2Ljc1OSA3OS42ODRWMjYuNzRMMzkuNjYyIDYuNTI5djI1LjQ5OW0uMTQzLTYuNjAxaDIxLjE1TTM0LjIzIDU0LjQ5OHY3LjgxNW0zMS41NC03LjgxNXY3LjgxNW0tMTguNzM1IDE1LjMyaDYuNjkyTTIxLjcxOSA1MS42MDggNi40OTIgNDQuODg1bTE1LjIyNyAxOC42OTdMNi40OTIgNzAuMzA1bTcyLjU1MS0xOC42OTcgMTUuMjI3LTYuNzIzTTc5LjA0MyA2My41ODJsMTUuMjI3IDYuNzIzIj48L3BhdGg+PC9zdmc+&url=https%3A%2F%2Fr4men.com%2Fmods%2Fgame-knight%2Fupdates.json&query=%24.supportedVersions&style=for-the-badge&label=Neoforge&color=%23082274)](https://github.com/Ramen5914/r4men.com/blob/main/public/mods/game-knight/updates.json)
 
 Play your favorite board games (and more) with friends in Minecraft!
 
