@@ -113,7 +113,7 @@ public final class MoveApplier {
             board.setEnPassantSquare10x12(-1);
         }
 
-        if (move.isCastle()) {
+        if (move.isCastle() || movedPiece.isKing()) {
             if (movedPiece.isWhite()) {
                 board.andCastlingRights(0b1100);
             } else {
