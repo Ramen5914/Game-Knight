@@ -70,6 +70,7 @@ public final class MoveParser {
                 } else {
                     if (fromPiece.getColor().opposite() == toPiece.getColor()) {
                         flag = Move.Flag.CAPTURES_FLAG;
+                        capturedPiece = toPiece;
                     }
                 }
             }
