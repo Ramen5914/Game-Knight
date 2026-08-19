@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.r4men.game_knight.GKConfig;
 import com.r4men.game_knight.GameKnight;
 import com.r4men.game_knight.engine.chess.Board;
+import com.r4men.game_knight.engine.chess.type.Piece;
 import com.r4men.game_knight.gui.GKScreen;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
@@ -176,20 +177,21 @@ public class ChessGameScreen extends GKScreen {
 
     @Override
     public boolean keyReleased(@NotNull KeyEvent event) {
-
         return super.keyReleased(event);
     }
 
     @Override
     public void mouseMoved(double x, double y) {
-
         super.mouseMoved(x, y);
     }
 
     @Override
     public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean doubleClick) {
-        if (this.clickedSquare >= 0 && this.legalMoves != null && clickedOnBoard(event.x(), event.y())) {
-            int targetSquare = getClickedSquare(event.x(), event.y());
+        double x = event.x();
+        double y = event.y();
+
+        if (this.clickedSquare >= 0 && this.legalMoves != null && clickedOnBoard(x, y)) {
+            int targetSquare = getClickedSquare(x, y);
 
             if (this.legalMoves.contains(targetSquare)) {
                 GameKnight.LOGGER.info("Moving piece from {} to {}", this.clickedSquare, targetSquare);
@@ -202,8 +204,16 @@ public class ChessGameScreen extends GKScreen {
             }
         }
 
-        if (clickedOnBoard(event.x(), event.y())) {
-            this.clickedSquare = getClickedSquare(event.x(), event.y());
+        if (clickedOnBoard(x, y)) {
+            int clickedSquare = getClickedSquare(x, y);
+            boolean validClick = (board.getBitBoard(board.getPlayerToMove(), Piece.PieceType.OCC) & (1L << clickedSquare)) > 0;
+
+            if (validClick && this.clickedSquare != clickedSquare) {
+                this.clickedSquare = clickedSquare;
+            } else {
+                this.clickedSquare = -1;
+                legalMoves = null;
+            }
 
             if (this.clickedSquare >= 0) {
                 GameKnight.LOGGER.info("Clicked square: {}", this.clickedSquare);
