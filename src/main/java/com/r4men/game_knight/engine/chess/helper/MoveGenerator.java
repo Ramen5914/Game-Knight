@@ -134,7 +134,7 @@ public final class MoveGenerator {
             if (board.getPieceAt10x12(from10x12 + Direction.D10X12.N.toInt()).isEmpty()) {
                 moveList.add(new Move(from8x8, from8x8 + Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
 
-                if (board.getPieceAt10x12(from10x12 + Direction.D10X12.N.toInt() * 2).isEmpty()) {
+                if (board.getPieceAt10x12(from10x12 + Direction.D10X12.N.toInt() * 2).isEmpty() && Util.getRank10x12(from10x12) == 1) {
                     moveList.add(new Move(from8x8, from8x8 + Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
                 }
             }
@@ -143,7 +143,7 @@ public final class MoveGenerator {
             if (board.getPieceAt10x12(from10x12 - Direction.D10X12.N.toInt()).isEmpty()) {
                 moveList.add(new Move(from8x8, from8x8 - Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
 
-                if (board.getPieceAt10x12(from10x12 - Direction.D10X12.N.toInt() * 2).isEmpty()) {
+                if (board.getPieceAt10x12(from10x12 - Direction.D10X12.N.toInt() * 2).isEmpty() && Util.getRank10x12(from10x12) == 6) {
                     moveList.add(new Move(from8x8, from8x8 - Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
                 }
             }
