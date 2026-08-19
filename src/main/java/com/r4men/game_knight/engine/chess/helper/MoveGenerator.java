@@ -157,7 +157,7 @@ public final class MoveGenerator {
         if (piece.isEmpty()) return List.of();
 
         List<Move> moveList = new ArrayList<>(256);
-        generateMovesForPiece(moveList, board, from10x12, board.getPieceAt10x12(from10x12));
+        generateMovesForPiece(moveList, board, from10x12, piece);
 
         List<Integer> moves = new ArrayList<>(moveList.size());
         for (Move move : moveList) {
