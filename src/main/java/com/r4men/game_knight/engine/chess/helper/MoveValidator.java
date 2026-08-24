@@ -37,31 +37,31 @@ public final class MoveValidator {
     }
 
     static boolean isValidPawnMove(Board board, Move move, Piece.Color color) {
-        int from = move.getFrom10x12();
-        int to = move.getTo10x12();
+        int from10x12 = move.getFrom10x12();
+        int to10x12 = move.getTo10x12();
 
-        Piece destinationPiece = board.getPieceAt10x12(to);
+        Piece destinationPiece = board.getPieceAt10x12(to10x12);
         Direction.D10X12 direction = color == Piece.Color.WHITE ? Direction.D10X12.N : Direction.D10X12.S;
 
         if (move.isCapture()) {
-            int east = from + direction.toInt() + Direction.D10X12.E.toInt();
-            int west = from + direction.toInt() + Direction.D10X12.W.toInt();
+            int east = from10x12 + direction.toInt() + Direction.D10X12.E.toInt();
+            int west = from10x12 + direction.toInt() + Direction.D10X12.W.toInt();
 
-            if (!(to == east || to == west)) {
+            if (!(to10x12 == east || to10x12 == west)) {
                 return false;
             }
 
             if (move.isEnPassantCapture()) {
-                return to == board.getEnPassantSquare10x12() && destinationPiece == move.capturedPiece();
+                return to10x12 == board.getEnPassantSquare10x12() && destinationPiece == move.capturedPiece();
             } else {
                 return destinationPiece.getColor() == color.opposite();
             }
         } else {
             if (move.isDoublePawnPush()) {
-                return Util.getRankDiff10x12(from, to) == 2 && Util.isPathClear10x12(board, from, to);
+                return Util.getRankDiff10x12(from10x12, to10x12) == 2 && Util.isPathClear10x12(board, from10x12, to10x12);
             }
 
-            return Util.isRayFrom10x12(from, to, direction) && board.getPieceAt10x12(to).isEmpty();
+            return Util.getRankDiff10x12(from10x12, to10x12) == 1 && Util.getFileDiff10x12(from10x12, to10x12) == 0 && destinationPiece.isEmpty();
         }
     }
 
