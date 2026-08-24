@@ -121,10 +121,10 @@ public final class MoveApplier {
             }
         }
 
-        board.advancePlayerToMove();
-
         if (AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
             undoMove(board, move);
+        } else {
+            board.advancePlayerToMove();
         }
     }
 
