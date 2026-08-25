@@ -6,7 +6,7 @@ import com.r4men.game_knight.engine.chess.type.Move;
 import com.r4men.game_knight.engine.chess.type.Piece;
 
 public final class MoveApplier {
-    public static void makeMove(Board board, Move move, boolean ignoreSelfCheck) {
+    public static void makeMove(Board board, Move move, boolean ignoreCheck) {
         if (move == null) {
             return;
         }
@@ -121,10 +121,12 @@ public final class MoveApplier {
             }
         }
 
-        if (AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
-            undoMove(board, move);
-        } else {
-            board.advancePlayerToMove();
+        if (!ignoreCheck) {
+            if (AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
+                undoMove(board, move);
+            } else {
+                board.advancePlayerToMove();
+            }
         }
     }
 
