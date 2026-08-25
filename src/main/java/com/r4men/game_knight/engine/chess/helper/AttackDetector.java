@@ -120,17 +120,26 @@ public final class AttackDetector {
         return false;
     }
 
-    // TODO
     private static boolean isValidBishopAttack(Board board, int from10x12, int to10x12) {
-        return false;
+        Direction.D10X12 direction = Util.getD10X12FromSquares(from10x12, to10x12);
+
+        if (direction.isDiagonal()) {
+            return Util.isRayFrom10x12(from10x12, to10x12, direction) && Util.isPathClear10x12(board, from10x12, to10x12);
+        } else {
+            return false;
+        }
     }
 
-    // TODO
     private static boolean isValidRookAttack(Board board, int from10x12, int to10x12) {
-        return false;
+        Direction.D10X12 direction = Util.getD10X12FromSquares(from10x12, to10x12);
+
+        if (direction.isOrthogonal()) {
+            return Util.isRayFrom10x12(from10x12, to10x12, direction) && Util.isPathClear10x12(board, from10x12, to10x12);
+        } else {
+            return false;
+        }
     }
 
-    // TODO
     private static boolean isValidQueenAttack(Board board, int from10x12, int to10x122) {
         return isValidBishopAttack(board, from10x12, to10x122) || isValidRookAttack(board, from10x12, to10x122);
     }
