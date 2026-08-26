@@ -93,7 +93,7 @@ public class ChessGameScreen extends GKScreen {
             int x0 = this.leftPos + (adjustedSquare % 8) * (imageWidth / 8);
             int y0 = this.topPos + (7 - adjustedSquare / 8) * (imageHeight / 8);
 
-                graphics.fill(x0, y0, x0 + imageWidth / 8, y0 + imageHeight / 8, this.selectColor);
+            graphics.fill(x0, y0, x0 + imageWidth / 8, y0 + imageHeight / 8, this.selectColor);
 
             if (legalMoves != null) {
                 for (int move : legalMoves) {
