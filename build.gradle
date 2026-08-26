@@ -87,8 +87,6 @@ neoForge {
         }
     }
 
-    ideSyncTask tasks.named("runData")
-
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)
