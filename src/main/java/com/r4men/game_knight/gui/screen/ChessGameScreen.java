@@ -7,6 +7,7 @@ import com.r4men.game_knight.engine.chess.Board;
 import com.r4men.game_knight.engine.chess.helper.Util;
 import com.r4men.game_knight.engine.chess.type.Piece;
 import com.r4men.game_knight.gui.GKScreen;
+import com.r4men.game_knight.util.GKUtil;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -47,6 +48,11 @@ public class ChessGameScreen extends GKScreen {
     private String whitePlayer;
     private String blackPlayer;
 
+    private int selectColor;
+    private int moveColor;
+    private int captureColor;
+    private int captureSameColor;
+
     public ChessGameScreen(Component title, String fen, String whitePlayer, String blackPlayer) {
         super(title, 256, 256);
 
@@ -60,6 +66,11 @@ public class ChessGameScreen extends GKScreen {
     @Override
     protected void init() {
         super.init();
+
+        selectColor = GKUtil.getArgbIntFromRgbaString(GKConfig.SELECT_COLOR.get());
+        moveColor = GKUtil.getArgbIntFromRgbaString(GKConfig.MOVE_COLOR.get());
+        captureColor = GKUtil.getArgbIntFromRgbaString(GKConfig.CAPTURE_COLOR.get());
+        captureSameColor = GKUtil.getArgbIntFromRgbaString(GKConfig.CAPTURE_SAME_COLOR.get());
     }
 
     @Override
@@ -82,7 +93,7 @@ public class ChessGameScreen extends GKScreen {
             int x0 = this.leftPos + (adjustedSquare % 8) * (imageWidth / 8);
             int y0 = this.topPos + (7 - adjustedSquare / 8) * (imageHeight / 8);
 
-            graphics.fill(x0, y0, x0 + imageWidth / 8, y0 + imageHeight / 8, GKConfig.SELECT_COLOR.get());
+                graphics.fill(x0, y0, x0 + imageWidth / 8, y0 + imageHeight / 8, this.selectColor);
 
             if (legalMoves != null) {
                 for (int move : legalMoves) {
@@ -95,9 +106,9 @@ public class ChessGameScreen extends GKScreen {
                     int y = topPos + (imageHeight / 8 * (7 - adjustedMove / 8));
 
                     if (board.getPieceAt10x12(Util.convert8x8to10x12(move)).isEmpty()) {
-                        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, MOVE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, 0xA0888888);
+                        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, MOVE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, this.moveColor);
                     } else {
-                        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, CAPTURE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, 0xA0FF3333);
+                        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, CAPTURE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, this.captureColor);
                     }
                 }
             }
