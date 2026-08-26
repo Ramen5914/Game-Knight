@@ -107,6 +107,8 @@ public class ChessGameScreen extends GKScreen {
 
                     if (board.getPieceAt10x12(Util.convert8x8to10x12(move)).isEmpty()) {
                         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, MOVE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, this.moveColor);
+                    } else if (board.getPieceAt10x12(Util.convert8x8to10x12(move)).matchesColor(board.getPlayerToMove())){
+                        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, CAPTURE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, this.captureSameColor);
                     } else {
                         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, CAPTURE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, this.captureColor);
                     }
