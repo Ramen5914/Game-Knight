@@ -167,7 +167,8 @@ public final class Util {
         int dx = x2 - x1;
         int dy = y2 - y1;
 
-        if (dx == 0 && dy == 0) throw new IllegalArgumentException("Squares are the same: " + from10x12 + " and " + to10x12);
+        if (dx == 0 && dy == 0)
+            throw new IllegalArgumentException("Squares are the same: " + from10x12 + " and " + to10x12);
 
         if (dy > 0) {
             if (dx > 0) return Direction.D10X12.NE;
