@@ -1,6 +1,5 @@
 package com.r4men.game_knight.engine.chess.helper;
 
-import com.r4men.game_knight.GameKnight;
 import com.r4men.game_knight.engine.chess.Board;
 import com.r4men.game_knight.engine.chess.type.Direction;
 import com.r4men.game_knight.engine.chess.type.Move;
@@ -49,7 +48,7 @@ public final class MoveGenerator {
 
         return switch (piece.getPieceType()) {
             case PAWN -> generatePawnMoves(moveList, board, from10x12, piece);
-            case KNIGHT -> generateKnightMoves(moveList, board, from10x12, piece);
+            case KNIGHT -> generateKnightMoves(moveList, board, from10x12, color);
             case BISHOP -> generateBishopMoves(moveList, board, from10x12, color);
             case ROOK -> generateRookMoves(moveList, board, from10x12, color);
             case QUEEN -> generateQueenMoves(moveList, board, from10x12, color);
@@ -190,7 +189,7 @@ public final class MoveGenerator {
         return count;
     }
 
-    private static int generateKnightMoves(List<Move> moveList, Board board, int from10x12, Piece piece) {
+    private static int generateKnightMoves(List<Move> moveList, Board board, int from10x12, Piece.Color color) {
         int count = 0;
 
         return count;
