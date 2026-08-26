@@ -32,9 +32,9 @@ public class PacketHandler extends BasePacketHandler {
     // Client to server packets
     @Override
     protected void registerClientToServer(PacketRegistrar registrar) {
-         registrar.play(PacketChessBoardOpen.TYPE, PacketChessBoardOpen.STREAM_CODEC);
-         registrar.play(PacketOpenChessScreenRequest.TYPE, PacketOpenChessScreenRequest.STREAM_CODEC);
-         registrar.play(PacketMakeChessMove.TYPE, PacketMakeChessMove.STREAM_CODEC);
+        registrar.play(PacketChessBoardOpen.TYPE, PacketChessBoardOpen.STREAM_CODEC);
+        registrar.play(PacketOpenChessScreenRequest.TYPE, PacketOpenChessScreenRequest.STREAM_CODEC);
+        registrar.play(PacketMakeChessMove.TYPE, PacketMakeChessMove.STREAM_CODEC);
     }
 
     // Server to client packets
