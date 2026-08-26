@@ -114,8 +114,15 @@ public final class AttackDetector {
         return to10x12 == startSquare + Direction.D10X12.E.toInt() || to10x12 == startSquare + Direction.D10X12.W.toInt();
     }
 
-    // TODO
     private static boolean isValidKnightAttack(int from10x12, int to10x12) {
+        if (Util.isIntOffBoard10x12(from10x12) || Util.isIntOffBoard10x12(to10x12)) {
+            return false;
+        }
+
+        int rankDiff = Util.getRankDistance10x12(from10x12, to10x12);
+        int fileDiff = Util.getFileDistance10x12(from10x12, to10x12);
+
+        return rankDiff > 0 && fileDiff > 0 && rankDiff + fileDiff == 3;
     }
 
     private static boolean isValidBishopAttack(Board board, int from10x12, int to10x12) {
