@@ -73,25 +73,31 @@ public class ChessGameScreen extends GKScreen {
     public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
 
-        String[] pieces = board.toSimpleFen().split("/");
-
         if (clickedSquare >= 0) {
-            if (pieces[7 - clickedSquare / 8].charAt(clickedSquare % 8) != ' ') {
-                int x0 = this.leftPos + (clickedSquare % 8) * (imageWidth / 8);
-                int y0 = this.topPos + (7 - clickedSquare / 8) * (imageHeight / 8);
+            int adjustedSquare = clickedSquare;
+            if (!viewingBoardAsWhite) {
+                adjustedSquare = 63 - clickedSquare;
+            }
 
-                graphics.fill(x0, y0, x0 + imageWidth / 8, y0 + imageHeight / 8, GKConfig.SELECT_COLOR.get());
+            int x0 = this.leftPos + (adjustedSquare % 8) * (imageWidth / 8);
+            int y0 = this.topPos + (7 - adjustedSquare / 8) * (imageHeight / 8);
 
-                if (legalMoves != null) {
-                    for (int move : legalMoves) {
-                        int x = leftPos + (imageWidth / 8 * (move % 8));
-                        int y = topPos + (imageHeight / 8 * (7 - move / 8));
+            graphics.fill(x0, y0, x0 + imageWidth / 8, y0 + imageHeight / 8, GKConfig.SELECT_COLOR.get());
 
-                        if (board.getPieceAt10x12(Util.convert8x8to10x12(move)).isEmpty()) {
-                            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, MOVE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, 0xA0888888);
-                        } else {
-                            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, CAPTURE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, 0xA0FF3333);
-                        }
+            if (legalMoves != null) {
+                for (int move : legalMoves) {
+                    int adjustedMove = move;
+                    if (!viewingBoardAsWhite) {
+                        adjustedMove = 63 - adjustedMove;
+                    }
+
+                    int x = leftPos + (imageWidth / 8 * (adjustedMove % 8));
+                    int y = topPos + (imageHeight / 8 * (7 - adjustedMove / 8));
+
+                    if (board.getPieceAt10x12(Util.convert8x8to10x12(move)).isEmpty()) {
+                        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, MOVE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, 0xA0888888);
+                    } else {
+                        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, CAPTURE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, 0xA0FF3333);
                     }
                 }
             }
@@ -106,7 +112,7 @@ public class ChessGameScreen extends GKScreen {
                     y1 = 7 - y;
                 }
 
-                Identifier piece = PIECE_SPRITES.get(pieces[y].charAt(x));
+                Identifier piece = PIECE_SPRITES.get(board.getPieceAt10x12(Util.convert8x8to10x12((7 - y) * 8 + x)).getPieceChar());
 
                 if (piece != null) {
                     graphics.blitSprite(RenderPipelines.GUI_TEXTURED, piece, leftPos + (imageWidth / 8 * x1), topPos + (imageHeight / 8 * y1), imageWidth / 8, imageHeight / 8);
@@ -115,7 +121,6 @@ public class ChessGameScreen extends GKScreen {
         }
 
         this.extractLabels(graphics, mouseX, mouseY);
-
     }
 
     private void extractLabels(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
@@ -171,11 +176,6 @@ public class ChessGameScreen extends GKScreen {
     private boolean flipBoard() {
         viewingBoardAsWhite = !viewingBoardAsWhite;
 
-        if (this.clickedSquare >= 0) {
-            this.clickedSquare = 63 - this.clickedSquare;
-            this.legalMoves = board.generate8x8MovesForPiece(this.clickedSquare);
-        }
-
         return true;
     }
 
@@ -197,6 +197,10 @@ public class ChessGameScreen extends GKScreen {
         if (this.clickedSquare >= 0 && this.legalMoves != null && clickedOnBoard(x, y)) {
             int targetSquare = getClickedSquare(x, y);
 
+            if (!viewingBoardAsWhite) {
+                targetSquare = 63 - targetSquare;
+            }
+
             if (this.legalMoves.contains(targetSquare)) {
                 GameKnight.LOGGER.info("Moving piece from {} to {}", this.clickedSquare, targetSquare);
 
@@ -210,6 +214,11 @@ public class ChessGameScreen extends GKScreen {
 
         if (clickedOnBoard(x, y)) {
             int clickedSquare = getClickedSquare(x, y);
+
+            if (!viewingBoardAsWhite) {
+                clickedSquare = 63 - clickedSquare;
+            }
+
             boolean validClick = (board.getBitBoard(board.getPlayerToMove(), Piece.PieceType.OCC) & (1L << clickedSquare)) > 0;
 
             if (validClick && this.clickedSquare != clickedSquare) {
