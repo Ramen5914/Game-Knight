@@ -7,7 +7,8 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.Nullable;
 
 public class PacketUtils {
-    private PacketUtils() {}
+    private PacketUtils() {
+    }
 
     @Nullable
     public static BlockEntity blockEntity(IPayloadContext context, BlockPos pos) {

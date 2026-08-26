@@ -158,7 +158,7 @@ public final class Util {
         return Long.bitCount(bb) == 1;
     }
 
-    public static @Nullable Direction.D10X12 getD10X12FromSquares(int from10x12, int to10x12) {
+    public static Direction.D10X12 getD10X12FromSquares(int from10x12, int to10x12) {
         int x1 = from10x12 % 10;
         int y1 = from10x12 / 10;
         int x2 = to10x12 % 10;
@@ -167,7 +167,8 @@ public final class Util {
         int dx = x2 - x1;
         int dy = y2 - y1;
 
-        if (dx == 0 && dy == 0) return null;
+        if (dx == 0 && dy == 0)
+            throw new IllegalArgumentException("Squares are the same: " + from10x12 + " and " + to10x12);
 
         if (dy > 0) {
             if (dx > 0) return Direction.D10X12.NE;

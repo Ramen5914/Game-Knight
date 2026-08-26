@@ -2,7 +2,6 @@ package com.r4men.game_knight.engine.chess.helper;
 
 import com.r4men.game_knight.engine.chess.Board;
 import com.r4men.game_knight.engine.chess.type.Direction;
-import com.r4men.game_knight.engine.chess.type.Move;
 import com.r4men.game_knight.engine.chess.type.Piece;
 
 public final class AttackDetector {
@@ -99,64 +98,62 @@ public final class AttackDetector {
         assert (direction != null);
 
         return switch (piece.getPieceType()) {
-            case PAWN -> isValidPawnAttack(from10x12, to10x12, piece);
-            case KNIGHT -> isValidKnightAttack(board, from10x12, to10x12);
+            case PAWN -> isValidPawnAttack(from10x12, to10x12, piece.getColor());
+            case KNIGHT -> isValidKnightAttack(from10x12, to10x12);
             case BISHOP -> isValidBishopAttack(board, from10x12, to10x12);
             case ROOK -> isValidRookAttack(board, from10x12, to10x12);
             case QUEEN -> isValidQueenAttack(board, from10x12, to10x12);
-            case KING -> isValidKingAttack(board, from10x12, to10x12);
+            case KING -> isValidKingAttack(from10x12, to10x12);
             default -> false;
         };
     }
 
-    private static boolean isValidPawnAttack(int from10x12, int to10x12, Piece piece) {
-        int startSquare = from10x12 + (piece.isWhite() ? Direction.D10X12.N.toInt() : Direction.D10X12.S.toInt());
+    private static boolean isValidPawnAttack(int from10x12, int to10x12, Piece.Color color) {
+        int startSquare = from10x12 + (color == Piece.Color.WHITE ? Direction.D10X12.N.toInt() : Direction.D10X12.S.toInt());
 
         return to10x12 == startSquare + Direction.D10X12.E.toInt() || to10x12 == startSquare + Direction.D10X12.W.toInt();
     }
 
-    // TODO
-    private static boolean isValidKnightAttack(Board board, int from10x12, int to10x12) {
-        return false;
+    private static boolean isValidKnightAttack(int from10x12, int to10x12) {
+        if (Util.isIntOffBoard10x12(from10x12) || Util.isIntOffBoard10x12(to10x12)) {
+            return false;
+        }
+
+        int rankDiff = Util.getRankDistance10x12(from10x12, to10x12);
+        int fileDiff = Util.getFileDistance10x12(from10x12, to10x12);
+
+        return rankDiff > 0 && fileDiff > 0 && rankDiff + fileDiff == 3;
     }
 
-    // TODO
     private static boolean isValidBishopAttack(Board board, int from10x12, int to10x12) {
-        return false;
+        Direction.D10X12 direction = Util.getD10X12FromSquares(from10x12, to10x12);
+
+        if (direction.isDiagonal()) {
+            return Util.isRayFrom10x12(from10x12, to10x12, direction) && Util.isPathClear10x12(board, from10x12, to10x12);
+        } else {
+            return false;
+        }
     }
 
-    // TODO
     private static boolean isValidRookAttack(Board board, int from10x12, int to10x12) {
-        return false;
+        Direction.D10X12 direction = Util.getD10X12FromSquares(from10x12, to10x12);
+
+        if (direction.isOrthogonal()) {
+            return Util.isRayFrom10x12(from10x12, to10x12, direction) && Util.isPathClear10x12(board, from10x12, to10x12);
+        } else {
+            return false;
+        }
     }
 
-    // TODO
     private static boolean isValidQueenAttack(Board board, int from10x12, int to10x122) {
         return isValidBishopAttack(board, from10x12, to10x122) || isValidRookAttack(board, from10x12, to10x122);
     }
 
-    // TODO
-    private static boolean isValidKingAttack(Board board, int from10x12, int to10x12) {
+    private static boolean isValidKingAttack(int from10x12, int to10x12) {
         int rankDiff = Util.getRankDiff10x12(from10x12, to10x12);
         int fileDiff = Util.getFileDiff10x12(from10x12, to10x12);
 
         return Math.abs(rankDiff) <= 1 && Math.abs(fileDiff) <= 1 && (rankDiff != 0 || fileDiff != 0);
-    }
-
-
-//    private boolean isValidKnightMove(Move move, Piece destinationPiece, int from10x12, int to10x12) {
-//        int rankDiff = Util.getRankDistance10x12(from10x12, to10x12);
-//        int fileDiff = Util.getFileDistance10x12(from10x12, to10x12);
-//
-//        return rankDiff > 0 && fileDiff > 0 && rankDiff + fileDiff == 3;
-//    }
-
-    // TODO make this not use makeMove or undoMove, only check for check here
-    static boolean isInCheck(Board board, Move move) {
-        MoveApplier.makeMove(board, move, true);
-        boolean inCheck = AttackDetector.isKingInCheck(board, board.getPlayerToMove().opposite());
-        MoveApplier.undoMove(board, move);
-        return inCheck;
     }
 
     public static boolean isKingInCheck(Board board, Piece.Color color) {
