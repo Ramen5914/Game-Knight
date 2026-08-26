@@ -149,7 +149,6 @@ public class ChessGameScreen extends GKScreen {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, NAME_BADGE, this.leftPos + 1, this.topPos - this.font.lineHeight - 13, 12 + font.width(topPlayer), 20);
         graphics.text(this.font, topPlayer, this.leftPos + 8, this.topPos - this.font.lineHeight - 7, 0xFF000000, false);
 
-
         // Bottom Player
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, NAME_BADGE, this.leftPos + 1, this.topPos + imageHeight + this.font.lineHeight - 7, 12 + font.width(topPlayer), 20);
         graphics.text(this.font, bottomPlayer, this.leftPos + 8, this.topPos + this.imageHeight + this.font.lineHeight - 1, 0xFF000000, false);
@@ -167,8 +166,8 @@ public class ChessGameScreen extends GKScreen {
     private boolean flipBoard() {
         viewingBoardAsWhite = !viewingBoardAsWhite;
 
-        if (clickedSquare > 0) {
-            clickedSquare = 63 - clickedSquare;
+        if (this.clickedSquare >= 0) {
+            this.clickedSquare = 63 - this.clickedSquare;
             this.legalMoves = board.generate8x8MovesForPiece(this.clickedSquare);
         }
 
