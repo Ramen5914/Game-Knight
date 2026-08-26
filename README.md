@@ -18,9 +18,9 @@ Play your favorite board games (and more) with your friends, all inside Minecraf
 
 ## Mod Details
 
-## Suggestions and Contributing
+Game Knight is an in-development Minecraft board and card game mod. It aims to bring games like chess to your world with playable boards, pieces, and multiplayer support.
 
-## Credits
+> **Alpha notice:** Chess is currently the only available game and is only partially functional. Expect missing features, bugs, and balance changes as development continues!
 
 ## Support Me :)
 
