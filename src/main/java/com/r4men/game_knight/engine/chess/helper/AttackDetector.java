@@ -152,22 +152,6 @@ public final class AttackDetector {
         return Math.abs(rankDiff) <= 1 && Math.abs(fileDiff) <= 1 && (rankDiff != 0 || fileDiff != 0);
     }
 
-
-//    private boolean isValidKnightMove(Move move, Piece destinationPiece, int from10x12, int to10x12) {
-//        int rankDiff = Util.getRankDistance10x12(from10x12, to10x12);
-//        int fileDiff = Util.getFileDistance10x12(from10x12, to10x12);
-//
-//        return rankDiff > 0 && fileDiff > 0 && rankDiff + fileDiff == 3;
-//    }
-
-    // TODO make this not use makeMove or undoMove, only check for check here
-    static boolean isInCheck(Board board, Move move) {
-        MoveApplier.makeMove(board, move, true);
-        boolean inCheck = AttackDetector.isKingInCheck(board, board.getPlayerToMove().opposite());
-        MoveApplier.undoMove(board, move);
-        return inCheck;
-    }
-
     public static boolean isKingInCheck(Board board, Piece.Color color) {
         int kingSquare8x8 = Long.numberOfTrailingZeros(board.getBitBoard(color, Piece.PieceType.KING));
 
