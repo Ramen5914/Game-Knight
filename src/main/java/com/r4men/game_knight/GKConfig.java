@@ -8,6 +8,10 @@ public class GKConfig {
     public static final ModConfigSpec CLIENT_SPEC;
     public static final ModConfigSpec.ConfigValue<Boolean> SHOW_COORDINATES;
     public static final ModConfigSpec.ConfigValue<Integer> SELECT_COLOR;
+    public static final ModConfigSpec.ConfigValue<Integer> MOVE_COLOR;
+    public static final ModConfigSpec.ConfigValue<Integer> CAPTURE_SAME_COLOR;
+    public static final ModConfigSpec.ConfigValue<Integer> CAPTURE_COLOR;
+
     // Server
     private static final ModConfigSpec.Builder SERVER_BUILDER = new ModConfigSpec.Builder();
     // Client
@@ -32,6 +36,21 @@ public class GKConfig {
                 .comment("The color to highlight the clicked square and possible moves (#AARRGGBB)")
                 .translation("game_knight.configuration.chess.select_color")
                 .define("select_color", 0xA0888888);
+
+        MOVE_COLOR = CLIENT_BUILDER
+                .comment("The color to highlight the moved square (#AARRGGBB)")
+                .translation("game_knight.configuration.chess.move_color")
+                .define("move_color", 0xA0888888);
+
+        CAPTURE_SAME_COLOR = CLIENT_BUILDER
+                .comment("The color to highlight the moved square (#AARRGGBB)")
+                .translation("game_knight.configuration.chess.move_color")
+                .define("move_color", 0xA0888888);
+
+        CAPTURE_COLOR = CLIENT_BUILDER
+                .comment("The color to highlight the captured square (#AARRGGBB)")
+                .translation("game_knight.configuration.chess.capture_color")
+                .define("capture_color", 0xA0f23f3f);
 
         CLIENT_BUILDER.pop();
 
