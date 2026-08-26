@@ -135,21 +135,17 @@ public final class MoveGenerator {
         for (Direction.D10X12 direction : Arrays.stream(Direction.D10X12.values()).filter(Direction.D10X12::isOrthogonal).toList()) {
             int to10x12 = from10x12 + direction.toInt();
             while (board.getPieceAt10x12(to10x12).isEmpty()) {
-                Move move = new Move(from8x8, Util.convert10x12to8x8(to10x12), Move.Flag.QUIET_MOVE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY);
-
-                MoveApplier.makeMove(board, move, true);
-                if (!AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
-                    moveList.add(move);
-                    count++;
-                }
-                MoveApplier.undoMove(board, move);
+                if (isLegalMove(moveList, board,
+                        new Move(from8x8, Util.convert10x12to8x8(to10x12), Move.Flag.QUIET_MOVE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY)
+                )) count++;
 
                 to10x12 += direction.toInt();
             }
 
             if (board.getPieceAt10x12(to10x12).matchesColor(oppositeColor)) {
-                moveList.add(new Move(from8x8, Util.convert10x12to8x8(to10x12), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, board.getPieceAt10x12(to10x12)));
-                count++;
+                if (isLegalMove(moveList, board,
+                        new Move(from8x8, Util.convert10x12to8x8(to10x12), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, board.getPieceAt10x12(to10x12))
+                )) count++;
             }
         }
 
@@ -168,21 +164,17 @@ public final class MoveGenerator {
         for (Direction.D10X12 direction : Arrays.stream(Direction.D10X12.values()).filter(Direction.D10X12::isDiagonal).toList()) {
             int to10x12 = from10x12 + direction.toInt();
             while (board.getPieceAt10x12(to10x12).isEmpty()) {
-                Move move = new Move(from8x8, Util.convert10x12to8x8(to10x12), Move.Flag.QUIET_MOVE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY);
-
-                MoveApplier.makeMove(board, move, true);
-                if (!AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
-                    moveList.add(move);
-                    count++;
-                }
-                MoveApplier.undoMove(board, move);
+                if (isLegalMove(moveList, board,
+                        new Move(from8x8, Util.convert10x12to8x8(to10x12), Move.Flag.QUIET_MOVE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY)
+                )) count++;
 
                 to10x12 += direction.toInt();
             }
 
             if (board.getPieceAt10x12(to10x12).matchesColor(oppositeColor)) {
-                moveList.add(new Move(from8x8, Util.convert10x12to8x8(to10x12), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, board.getPieceAt10x12(to10x12)));
-                count++;
+                if (isLegalMove(moveList, board,
+                        new Move(from8x8, Util.convert10x12to8x8(to10x12), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, board.getPieceAt10x12(to10x12))
+                )) count++;
             }
         }
 
@@ -224,6 +216,18 @@ public final class MoveGenerator {
         }
 
         return count;
+    }
+
+    private static boolean isLegalMove(List<Move> moveList, Board board, Move move) {
+        MoveApplier.makeMove(board, move, true);
+        if (!AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
+            moveList.add(move);
+            MoveApplier.undoMove(board, move);
+            return true;
+        }
+
+        MoveApplier.undoMove(board, move);
+        return false;
     }
 
     public static @NotNull List<Integer> generate8x8MovesForPiece(Board board, int s8x8) {
