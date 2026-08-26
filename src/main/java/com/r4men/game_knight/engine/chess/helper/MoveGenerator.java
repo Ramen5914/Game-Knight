@@ -224,29 +224,34 @@ public final class MoveGenerator {
         return count;
     }
 
+    // TODO add pawn attack moves
+    // TODO add pawn en passant moves
+    // TODO check for check before adding move to movelist
     private static int generatePawnMoves(List<Move> moveList, Board board, int from10x12, Piece piece) {
         int count = 0;
-
         int from8x8 = Util.convert10x12to8x8(from10x12);
+
+        int enPassantSquare10x12 = board.getEnPassantSquare10x12();
+        int castlingRights = board.getCastlingRights();
+        int halfmoveClock = board.getHalfmoveClock();
 
         if (piece.isWhite()) {
             if (board.getPieceAt10x12(from10x12 + Direction.D10X12.N.toInt()).isEmpty()) {
-                moveList.add(new Move(from8x8, from8x8 + Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
+                moveList.add(new Move(from8x8, from8x8 + Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
                 count++;
 
                 if (board.getPieceAt10x12(from10x12 + Direction.D10X12.N.toInt() * 2).isEmpty() && Util.getRank10x12(from10x12) == 1) {
-                    moveList.add(new Move(from8x8, from8x8 + Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
+                    moveList.add(new Move(from8x8, from8x8 + Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
                     count++;
                 }
             }
-
         } else {
             if (board.getPieceAt10x12(from10x12 - Direction.D10X12.N.toInt()).isEmpty()) {
-                moveList.add(new Move(from8x8, from8x8 - Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
+                moveList.add(new Move(from8x8, from8x8 - Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
                 count++;
 
                 if (board.getPieceAt10x12(from10x12 - Direction.D10X12.N.toInt() * 2).isEmpty() && Util.getRank10x12(from10x12) == 6) {
-                    moveList.add(new Move(from8x8, from8x8 - Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, board.getEnPassantSquare10x12(), board.getCastlingRights(), board.getHalfmoveClock(), Piece.EMPTY));
+                    moveList.add(new Move(from8x8, from8x8 - Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
                     count++;
                 }
             }
