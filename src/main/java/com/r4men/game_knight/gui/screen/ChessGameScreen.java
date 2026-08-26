@@ -4,8 +4,10 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.r4men.game_knight.GKConfig;
 import com.r4men.game_knight.GameKnight;
 import com.r4men.game_knight.engine.chess.Board;
+import com.r4men.game_knight.engine.chess.helper.Util;
 import com.r4men.game_knight.engine.chess.type.Piece;
 import com.r4men.game_knight.gui.GKScreen;
+import com.r4men.game_knight.util.GKUtil;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -22,6 +24,9 @@ import static com.r4men.game_knight.GameKnightClient.FLIP_BOARD;
 public class ChessGameScreen extends GKScreen {
     private static final Identifier NAME_BADGE = GameKnight.id("badges/name_badge");
     private static final Identifier BOARD = GameKnight.id("textures/gui/container/chess.png");
+    private static final Identifier MOVE_HIGHLIGHT = GameKnight.id("container/chess/move");
+    private static final Identifier CAPTURE_HIGHLIGHT = GameKnight.id("container/chess/capture");
+    private static final Identifier SELF_CAPTURE_HIGHLIGHT = GameKnight.id("textures/gui/container/self_capture.png");
     private final Board board;
     private final Map<Character, Identifier> PIECE_SPRITES = Map.ofEntries(
             Map.entry('b', GameKnight.id("container/chess/black_bishop")),
@@ -43,6 +48,11 @@ public class ChessGameScreen extends GKScreen {
     private String whitePlayer;
     private String blackPlayer;
 
+    private int selectColor;
+    private int moveColor;
+    private int captureColor;
+    private int captureSameColor;
+
     public ChessGameScreen(Component title, String fen, String whitePlayer, String blackPlayer) {
         super(title, 256, 256);
 
@@ -56,6 +66,11 @@ public class ChessGameScreen extends GKScreen {
     @Override
     protected void init() {
         super.init();
+
+        selectColor = GKUtil.getArgbIntFromRgbaString(GKConfig.SELECT_COLOR.get());
+        moveColor = GKUtil.getArgbIntFromRgbaString(GKConfig.MOVE_COLOR.get());
+        captureColor = GKUtil.getArgbIntFromRgbaString(GKConfig.CAPTURE_COLOR.get());
+        captureSameColor = GKUtil.getArgbIntFromRgbaString(GKConfig.CAPTURE_SAME_COLOR.get());
     }
 
     @Override
@@ -76,17 +91,18 @@ public class ChessGameScreen extends GKScreen {
                 int x0 = this.leftPos + (clickedSquare % 8) * (imageWidth / 8);
                 int y0 = this.topPos + (7 - clickedSquare / 8) * (imageHeight / 8);
 
-                graphics.fill(x0, y0, x0 + imageWidth / 8, y0 + imageHeight / 8, GKConfig.SELECT_COLOR.get());
+                graphics.fill(x0, y0, x0 + imageWidth / 8, y0 + imageHeight / 8, this.selectColor);
 
                 if (legalMoves != null) {
                     for (int move : legalMoves) {
-                        int width = imageWidth / 8 / 3;
-                        int height = imageHeight / 8 / 3;
+                        int x = leftPos + (imageWidth / 8 * (move % 8));
+                        int y = topPos + (imageHeight / 8 * (7 - move / 8));
 
-                        int x1 = this.leftPos + (move % 8) * (imageWidth / 8) + (imageWidth / 8 / 2) - width / 2;
-                        int y1 = this.topPos + (7 - (move / 8)) * (imageHeight / 8) + (imageHeight / 8 / 2) - height / 2;
-
-                        graphics.fill(x1, y1, x1 + width, y1 + height, GKConfig.SELECT_COLOR.get());
+                        if (board.getPieceAt10x12(Util.convert8x8to10x12(move)).isEmpty()) {
+                            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, MOVE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, this.moveColor);
+                        } else {
+                            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, CAPTURE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, this.captureColor);
+                        }
                     }
                 }
             }

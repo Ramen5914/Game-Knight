@@ -79,8 +79,6 @@ public class ChessSetupScreen extends GKScreen {
                 int x0 = this.leftPos + (clickedSquare % 8) * (imageWidth / 8);
                 int y0 = this.topPos + (7 - clickedSquare / 8) * (imageHeight / 8);
 
-                graphics.fill(x0, y0, x0 + imageWidth / 8, y0 + imageHeight / 8, GKConfig.SELECT_COLOR.get());
-
                 if (legalMoves != null) {
                     for (int move : legalMoves) {
                         int width = imageWidth / 8 / 3;
@@ -89,7 +87,6 @@ public class ChessSetupScreen extends GKScreen {
                         int x1 = this.leftPos + (move % 8) * (imageWidth / 8) + (imageWidth / 8 / 2) - width / 2;
                         int y1 = this.topPos + (7 - (move / 8)) * (imageHeight / 8) + (imageHeight / 8 / 2) - height / 2;
 
-                        graphics.fill(x1, y1, x1 + width, y1 + height, GKConfig.SELECT_COLOR.get());
                     }
                 }
             }
