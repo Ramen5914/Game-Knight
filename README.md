@@ -6,6 +6,7 @@
 Play your favorite board games (and more) with your friends, all inside Minecraft!
 
 ## Info
+
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Ramen5914/Game-Knight/build.yml?style=for-the-badge&logo=github)](https://github.com/Ramen5914/Game-Knight/actions/workflows/build.yml)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Ramen5914/Game-Knight?style=for-the-badge&logo=github&color=082274)](https://github.com/Ramen5914/Game-Knight/issues)
 
@@ -16,10 +17,13 @@ Play your favorite board games (and more) with your friends, all inside Minecraf
 [![wakatime](https://wakatime.com/badge/github/Ramen5914/Game-Knight.svg?style=for-the-badge)](https://wakatime.com/@Ramen5914/projects/gapweyqiiu)
 
 ## Mod Details
+
 ## Suggestions and Contributing
+
 ## Credits
 
 ## Support Me :)
+
 You can support me at any of the places below!
 
 [![Static Badge](https://img.shields.io/badge/Github_Sponsors-%23EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ramen5914)
@@ -28,6 +32,7 @@ You can support me at any of the places below!
 [![Static Badge](https://img.shields.io/badge/Buy_Me_A_Coffee-%23FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/OmarRahman)
 
 ## Stats
+
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/TiZi1TT1?style=for-the-badge&logo=modrinth&color=00AF5C)](https://modrinth.com/mod/Game-Knight)
 [![Modrinth Version](https://img.shields.io/modrinth/v/TiZi1TT1?style=for-the-badge&logo=modrinth&label=Latest%20Version&color=00AF5C)](https://modrinth.com/mod/Game-Knight)
 [![Modrinth Followers](https://img.shields.io/modrinth/followers/TiZi1TT1?style=for-the-badge&logo=modrinth&color=00AF5C)](https://modrinth.com/mod/Game-Knight)
