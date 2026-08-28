@@ -35,22 +35,22 @@ public class GKConfig {
                 .define("show_coordinates", true);
 
         SELECT_COLOR = CLIENT_BUILDER
-                .comment("The color to highlight the clicked square and possible moves (#AARRGGBB)")
+                .comment("The color to highlight the clicked square and possible moves (#RRGGBBAA)")
                 .translation("game_knight.configuration.chess.select_color")
                 .define("select_color", "#888888A0", GKConfig::isValidRgbaHex);
 
         MOVE_COLOR = CLIENT_BUILDER
-                .comment("The color to highlight the moved square (#AARRGGBB)")
+                .comment("The color to highlight the moved square (#RRGGBBAA)")
                 .translation("game_knight.configuration.chess.move_color")
                 .define("move_color", "#888888A0", GKConfig::isValidRgbaHex);
 
         CAPTURE_SAME_COLOR = CLIENT_BUILDER
-                .comment("The color to highlight the moved square (#AARRGGBB)")
+                .comment("The color to highlight the moved square (#RRGGBBAA)")
                 .translation("game_knight.configuration.chess.move_color")
                 .define("move_color", "#888888A0", GKConfig::isValidRgbaHex);
 
         CAPTURE_COLOR = CLIENT_BUILDER
-                .comment("The color to highlight the captured square (#AARRGGBB)")
+                .comment("The color to highlight the captured square (#RRGGBBAA)")
                 .translation("game_knight.configuration.chess.capture_color")
                 .define("capture_color", "#F23F3FA0", GKConfig::isValidRgbaHex);
 
