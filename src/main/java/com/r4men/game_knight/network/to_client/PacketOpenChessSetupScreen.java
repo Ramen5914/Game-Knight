@@ -1,7 +1,7 @@
 package com.r4men.game_knight.network.to_client;
 
 import com.r4men.game_knight.GameKnight;
-import com.r4men.game_knight.gui.screen.ChessGameScreen;
+import com.r4men.game_knight.gui.screen.ChessSetupScreen;
 import com.r4men.game_knight.network.IGameKnightPacket;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.SharedConstants;
@@ -29,6 +29,6 @@ public record PacketOpenChessSetupScreen(String fen, String whitePlayer,
 
     @Override
     public void handle(IPayloadContext context) {
-        Minecraft.getInstance().setScreenAndShow(new ChessGameScreen(Component.literal("Chess"), fen, whitePlayer, blackPlayer, true));
+        Minecraft.getInstance().setScreenAndShow(new ChessSetupScreen(Component.literal("Chess Setup")));
     }
 }

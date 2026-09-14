@@ -21,8 +21,7 @@ public final class LichessAccountClient {
     private LichessAccountClient() {
     }
 
-    public static LichessAccountStatus fetchAccountStatus(String accessToken)
-            throws IOException, InterruptedException {
+    public static LichessAccountStatus fetchAccountStatus(String accessToken) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(ACCOUNT_ENDPOINT))
                 .timeout(Duration.ofSeconds(15))
