@@ -1,0 +1,38 @@
+license = "${mod_license}"
+issueTrackerURL = "https://github.com/Ramen5914/Game-Knight/issues"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+updateJSONURL = "${update_json_url}"
+displayURL = "${display_url}"
+iconFile = "${icon_file}"
+bannerFile = "${banner_file}"
+credits = "${credits}"
+authors = "${authors}"
+description = '''
+${mod_description}
+'''
+
+[[accessTransformers]]
+file = "META-INF/accesstransformer.cfg"
+
+[[mixins]]
+config = "game_knight.mixins.json"
+requiredMods = []
+behaviorVersion = "0.17.3"
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[${neo_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"

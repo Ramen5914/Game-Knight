@@ -1,0 +1,38 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+/.idea
+
+# VSCode
+.vscode
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+runs
+run-data
+
+repo
+
+# Generated Files Cache
+/src/generated/resources/.cache/
+
+# MacOS
+.DS_Store
+
+# python
+*.pyc
