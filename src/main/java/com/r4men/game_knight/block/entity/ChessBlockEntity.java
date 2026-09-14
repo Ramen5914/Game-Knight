@@ -6,13 +6,13 @@ import com.r4men.game_knight.engine.chess.helper.FenCodec;
 import com.r4men.game_knight.engine.chess.type.Move;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ChessBlockEntity extends BlockEntity {
     private static final String STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -26,8 +26,8 @@ public class ChessBlockEntity extends BlockEntity {
     private boolean gameStarted = false;
     private boolean gameOver = false;
     private char winner = 0; // 'w' for white, 'b' for black, 'd' for draw, 0 for ongoing
-    private Player whitePlayer = null;
-    private Player blackPlayer = null;
+    private UUID whitePlayer = null;
+    private UUID blackPlayer = null;
     private String gameOverReason = "";
 
     public ChessBlockEntity(BlockPos pos, BlockState state) {
@@ -152,21 +152,21 @@ public class ChessBlockEntity extends BlockEntity {
         setChanged();
     }
 
-    public Player getWhitePlayer() {
+    public UUID getWhitePlayerUUID() {
         return whitePlayer;
     }
 
-    public void setWhitePlayer(Player whitePlayer) {
-        this.whitePlayer = whitePlayer;
+    public void setWhitePlayer(UUID uuid) {
+        this.whitePlayer = uuid;
         setChanged();
     }
 
-    public Player getBlackPlayer() {
+    public UUID getBlackPlayerUUID() {
         return blackPlayer;
     }
 
-    public void setBlackPlayer(Player blackPlayer) {
-        this.blackPlayer = blackPlayer;
+    public void setBlackPlayer(UUID uuid) {
+        this.blackPlayer = uuid;
         setChanged();
     }
 

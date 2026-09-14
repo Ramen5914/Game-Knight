@@ -8,6 +8,7 @@ import com.r4men.game_knight.engine.chess.helper.Util;
 import com.r4men.game_knight.engine.chess.type.Piece;
 import com.r4men.game_knight.gui.GKScreen;
 import com.r4men.game_knight.util.GKUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.r4men.game_knight.GameKnightClient.FLIP_BOARD;
 
@@ -53,7 +55,7 @@ public class ChessGameScreen extends GKScreen {
     private int captureColor;
     private int captureSameColor;
 
-    public ChessGameScreen(Component title, String fen, String whitePlayer, String blackPlayer) {
+    public ChessGameScreen(Component title, String fen, String whitePlayer, String blackPlayer, Boolean viewFromWhite) {
         super(title, 256, 256);
 
         this.titleLabelY = -1000000;
@@ -61,16 +63,18 @@ public class ChessGameScreen extends GKScreen {
         this.whitePlayer = whitePlayer;
         this.blackPlayer = blackPlayer;
         this.board = new Board(fen);
+
+        this.selectColor = GKUtil.getArgbIntFromRgbaString(GKConfig.SELECT_COLOR.get());
+        this.moveColor = GKUtil.getArgbIntFromRgbaString(GKConfig.MOVE_COLOR.get());
+        this.captureColor = GKUtil.getArgbIntFromRgbaString(GKConfig.CAPTURE_COLOR.get());
+        this.captureSameColor = GKUtil.getArgbIntFromRgbaString(GKConfig.CAPTURE_SAME_COLOR.get());
+
+        this.viewingBoardAsWhite = viewFromWhite;
     }
 
     @Override
     protected void init() {
         super.init();
-
-        selectColor = GKUtil.getArgbIntFromRgbaString(GKConfig.SELECT_COLOR.get());
-        moveColor = GKUtil.getArgbIntFromRgbaString(GKConfig.MOVE_COLOR.get());
-        captureColor = GKUtil.getArgbIntFromRgbaString(GKConfig.CAPTURE_COLOR.get());
-        captureSameColor = GKUtil.getArgbIntFromRgbaString(GKConfig.CAPTURE_SAME_COLOR.get());
     }
 
     @Override
@@ -157,7 +161,6 @@ public class ChessGameScreen extends GKScreen {
             }
         }
 
-
         String topPlayer;
         String bottomPlayer;
         if (viewingBoardAsWhite) {
@@ -173,7 +176,7 @@ public class ChessGameScreen extends GKScreen {
         graphics.text(this.font, topPlayer, this.leftPos + 8, this.topPos - this.font.lineHeight - 7, 0xFF000000, false);
 
         // Bottom Player
-        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, NAME_BADGE, this.leftPos + 1, this.topPos + imageHeight + this.font.lineHeight - 7, 12 + font.width(topPlayer), 20);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, NAME_BADGE, this.leftPos + 1, this.topPos + imageHeight + this.font.lineHeight - 7, 12 + font.width(bottomPlayer), 20);
         graphics.text(this.font, bottomPlayer, this.leftPos + 8, this.topPos + this.imageHeight + this.font.lineHeight - 1, 0xFF000000, false);
     }
 

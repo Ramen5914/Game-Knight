@@ -29,6 +29,6 @@ public record PacketOpenChessSetupScreen(String fen, String whitePlayer,
 
     @Override
     public void handle(IPayloadContext context) {
-        Minecraft.getInstance().setScreenAndShow(new ChessGameScreen(Component.literal("Chess"), fen, whitePlayer, blackPlayer));
+        Minecraft.getInstance().setScreenAndShow(new ChessGameScreen(Component.literal("Chess"), fen, whitePlayer, blackPlayer, true));
     }
 }

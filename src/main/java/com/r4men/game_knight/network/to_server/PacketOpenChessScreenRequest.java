@@ -10,6 +10,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -31,16 +32,24 @@ public record PacketOpenChessScreenRequest(BlockPos pos) implements IGameKnightP
     public void handle(IPayloadContext context) {
         if (PacketUtils.blockEntity(context, pos) instanceof ChessBlockEntity be) {
             ServerPlayer player = (ServerPlayer) context.player();
-
-            String name = player.getName().getString();
+            MinecraftServer server = player.level().getServer();
 
             // TODO remove this line
             be.setIsSetup(true);
 
+            if (be.getWhitePlayerUUID() == null) {
+                be.setWhitePlayer(player.getUUID());
+            } else if (be.getBlackPlayerUUID() == null && !player.getUUID().equals(be.getWhitePlayerUUID())) {
+                be.setBlackPlayer(player.getUUID());
+            }
+
+            String whitePlayer = be.getWhitePlayerUUID() == null ? "Waiting..." : server.getPlayerList().getPlayer(be.getWhitePlayerUUID()).getName().getString();
+            String blackPlayer = be.getBlackPlayerUUID() == null ? "Waiting..." : server.getPlayerList().getPlayer(be.getBlackPlayerUUID()).getName().getString();
+
             if (be.getIsSetup()) {
-                PacketDistributor.sendToPlayer(player, new PacketOpenChessGameScreen(be.getFen(), name, name));
+                PacketDistributor.sendToPlayer(player, new PacketOpenChessGameScreen(be.getFen(), whitePlayer, blackPlayer, player.getUUID().equals(be.getWhitePlayerUUID())));
             } else {
-                PacketDistributor.sendToPlayer(player, new PacketOpenChessSetupScreen(be.getFen(), name, name));
+                PacketDistributor.sendToPlayer(player, new PacketOpenChessSetupScreen(be.getFen(), whitePlayer, blackPlayer));
             }
         }
     }

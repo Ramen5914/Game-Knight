@@ -14,12 +14,13 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record PacketOpenChessGameScreen(String fen, String whitePlayer,
-                                        String blackPlayer) implements IGameKnightPacket {
+                                        String blackPlayer, Boolean viewFromWhite) implements IGameKnightPacket {
     public static final CustomPacketPayload.Type<PacketOpenChessGameScreen> TYPE = new CustomPacketPayload.Type<>(GameKnight.id("open_chess_game_screen"));
     public static final StreamCodec<ByteBuf, PacketOpenChessGameScreen> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.stringUtf8(128), PacketOpenChessGameScreen::fen,
             ByteBufCodecs.stringUtf8(SharedConstants.MAX_PLAYER_NAME_LENGTH), PacketOpenChessGameScreen::whitePlayer,
             ByteBufCodecs.stringUtf8(SharedConstants.MAX_PLAYER_NAME_LENGTH), PacketOpenChessGameScreen::blackPlayer,
+            ByteBufCodecs.BOOL, PacketOpenChessGameScreen::viewFromWhite,
             PacketOpenChessGameScreen::new
     );
 
@@ -30,6 +31,6 @@ public record PacketOpenChessGameScreen(String fen, String whitePlayer,
 
     @Override
     public void handle(IPayloadContext context) {
-        Minecraft.getInstance().setScreenAndShow(new ChessGameScreen(Component.literal("Chess"), fen, whitePlayer, blackPlayer));
+        Minecraft.getInstance().setScreenAndShow(new ChessGameScreen(Component.literal("Chess"), fen, whitePlayer, blackPlayer, viewFromWhite));
     }
 }

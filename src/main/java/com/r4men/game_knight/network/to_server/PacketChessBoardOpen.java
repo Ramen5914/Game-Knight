@@ -34,7 +34,7 @@ public record PacketChessBoardOpen(BlockPos pos, String name) implements IGameKn
         if (!name.isEmpty() && PacketUtils.blockEntity(context, pos) instanceof ChessBlockEntity be) {
             ServerPlayer player = (ServerPlayer) context.player();
 
-            be.setWhitePlayer(player);
+            be.setWhitePlayer(player.getUUID());
 
             GameKnight.LOGGER.info("Opening chess board for {}", name);
 
