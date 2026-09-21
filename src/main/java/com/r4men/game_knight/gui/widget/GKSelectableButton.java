@@ -14,23 +14,23 @@ public class GKSelectableButton extends AbstractWidget {
     private static final Identifier HOVERED = GameKnight.id("buttons/12px_hover");
     private static final Identifier SELECTED = GameKnight.id("buttons/12px_select");
 
-    private State state = State.NORMAL;
+    private SelectState selectState = SelectState.NORMAL;
 
     public GKSelectableButton(int x, int y, int width, int height) {
         super(x, y, width, height, Component.empty());
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setState(SelectState selectState) {
+        this.selectState = selectState;
     }
 
-    public State getState() {
-        return this.state;
+    public SelectState getState() {
+        return this.selectState;
     }
 
     @Override
     protected void extractWidgetRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        Identifier sprite = switch (this.state) {
+        Identifier sprite = switch (this.selectState) {
             case NORMAL -> NORMAL;
             case HOVERED -> HOVERED;
             case SELECTED -> SELECTED;
@@ -51,7 +51,7 @@ public class GKSelectableButton extends AbstractWidget {
 
     }
 
-    public enum State {
+    public enum SelectState {
         NORMAL, HOVERED, SELECTED
     }
 }

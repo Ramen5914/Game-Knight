@@ -1,13 +1,11 @@
 package com.r4men.game_knight.gui.screen;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import com.r4men.game_knight.GKConfig;
 import com.r4men.game_knight.GameKnight;
-import com.r4men.game_knight.engine.chess.Board;
 import com.r4men.game_knight.gui.GKScreen;
+import com.r4men.game_knight.gui.widget.GKButton;
 import com.r4men.game_knight.gui.widget.GKSelectableButton;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -15,17 +13,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Map;
-
-import static com.r4men.game_knight.GameKnightClient.FLIP_BOARD;
-
 public class ChessSetupScreen extends GKScreen {
     private static final Identifier BACKGROUND = GameKnight.id("backgrounds/17px");
+    private static final Identifier LICHESS_LOGO = GameKnight.id("icons/white_lichess");
 
-    private GKSelectableButton button1;
-    private GKSelectableButton button2;
-    private GKSelectableButton button3;
+    private GKSelectableButton select1;
+    private GKSelectableButton select2;
+    private GKSelectableButton select3;
+
+    private GKButton completeButton;
+
+    private Checkbox checkbox1;
 
     public ChessSetupScreen(Component title) {
         super(title, 256, 256);
@@ -37,7 +35,11 @@ public class ChessSetupScreen extends GKScreen {
     protected void init() {
         super.init();
 
-        this.button1 = this.addRenderableWidget(
+        this.checkbox1 = this.addRenderableWidget(
+                new Checkbox(80, 80, 1000, Component.literal("Test"), this.font, false, Checkbox.OnValueChange.NOP)
+        );
+
+        this.select1 = this.addRenderableWidget(
                 new GKSelectableButton(
                         this.leftPos + 5,
                         this.topPos + 5,
@@ -46,7 +48,9 @@ public class ChessSetupScreen extends GKScreen {
                 )
         );
 
-        this.button2 = this.addRenderableWidget(
+        this.select1.setState(GKSelectableButton.SelectState.SELECTED);
+
+        this.select2 = this.addRenderableWidget(
                 new GKSelectableButton(
                         this.leftPos + 88,
                         this.topPos + 5,
@@ -55,12 +59,21 @@ public class ChessSetupScreen extends GKScreen {
                 )
         );
 
-        this.button3 = this.addRenderableWidget(
+        this.select3 = this.addRenderableWidget(
                 new GKSelectableButton(
                         this.leftPos + 172,
                         this.topPos + 5,
                         79,
                         60
+                )
+        );
+
+        this.completeButton = this.addRenderableWidget(
+                new GKButton(
+                        this.leftPos + 42,
+                        this.topPos + 225,
+                        180,
+                        24
                 )
         );
     }
@@ -75,12 +88,16 @@ public class ChessSetupScreen extends GKScreen {
     @Override
     public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
+
+        this.extractLabels(graphics, mouseX, mouseY);
     }
 
 
     // TODO Do I need this?
     private void extractLabels(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        graphics.text(this.font, Component.literal("Lichess"), this.leftPos + 26, this.topPos + 20, 0xFFFFFFFF, false);
 
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, LICHESS_LOGO, this.leftPos + 38, this.topPos + 35, 16, 16, 0xFFFFFFFF);
     }
 
     // TODO Do I need this?
@@ -98,38 +115,46 @@ public class ChessSetupScreen extends GKScreen {
     // TODO Do I need this?
     @Override
     public void mouseMoved(double x, double y) {
-        GKSelectableButton.State state1 = button1.getState();
-        GKSelectableButton.State state2 = button1.getState();
-        GKSelectableButton.State state3 = button1.getState();
+        GKSelectableButton.SelectState selectState1 = select1.getState();
+        GKSelectableButton.SelectState selectState2 = select2.getState();
+        GKSelectableButton.SelectState selectState3 = select3.getState();
 
-        if (button1.isHoveredOrFocused()) {
-            if (state1 == GKSelectableButton.State.NORMAL) {
-                button1.setState(GKSelectableButton.State.HOVERED);
+        GKButton.ButtonState buttonState1 = completeButton.getState();
+
+        if (select1.isHoveredOrFocused()) {
+            if (selectState1 == GKSelectableButton.SelectState.NORMAL) {
+                select1.setState(GKSelectableButton.SelectState.HOVERED);
             }
         } else {
-            if (state1 != GKSelectableButton.State.SELECTED) {
-                button1.setState(GKSelectableButton.State.NORMAL);
+            if (selectState1 != GKSelectableButton.SelectState.SELECTED) {
+                select1.setState(GKSelectableButton.SelectState.NORMAL);
             }
         }
 
-        if (button2.isHoveredOrFocused()) {
-            if (state2 == GKSelectableButton.State.NORMAL) {
-                button2.setState(GKSelectableButton.State.HOVERED);
+        if (select2.isHoveredOrFocused()) {
+            if (selectState2 == GKSelectableButton.SelectState.NORMAL) {
+                select2.setState(GKSelectableButton.SelectState.HOVERED);
             }
         } else {
-            if (state2 != GKSelectableButton.State.SELECTED) {
-                button2.setState(GKSelectableButton.State.NORMAL);
+            if (selectState2 != GKSelectableButton.SelectState.SELECTED) {
+                select2.setState(GKSelectableButton.SelectState.NORMAL);
             }
         }
 
-        if (button3.isHoveredOrFocused()) {
-            if (state3 == GKSelectableButton.State.NORMAL) {
-                button3.setState(GKSelectableButton.State.HOVERED);
+        if (select3.isHoveredOrFocused()) {
+            if (selectState3 == GKSelectableButton.SelectState.NORMAL) {
+                select3.setState(GKSelectableButton.SelectState.HOVERED);
             }
         } else {
-            if (state3 != GKSelectableButton.State.SELECTED) {
-                button3.setState(GKSelectableButton.State.NORMAL);
+            if (selectState3 != GKSelectableButton.SelectState.SELECTED) {
+                select3.setState(GKSelectableButton.SelectState.NORMAL);
             }
+        }
+
+        if (completeButton.isHoveredOrFocused()) {
+            completeButton.setState(GKButton.ButtonState.HOVERED);
+        } else {
+            completeButton.setState(GKButton.ButtonState.NORMAL);
         }
 
         super.mouseMoved(x, y);
@@ -137,16 +162,28 @@ public class ChessSetupScreen extends GKScreen {
 
     @Override
     public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean doubleClick) {
-        if (button1.isHovered()) {
-            button1.setState(GKSelectableButton.State.SELECTED);
-        }
+        if (select1.isHovered()) {
+            select1.setState(GKSelectableButton.SelectState.SELECTED);
+            select2.setState(GKSelectableButton.SelectState.NORMAL);
+            select3.setState(GKSelectableButton.SelectState.NORMAL);
+        } else if (select2.isHovered()) {
+            select1.setState(GKSelectableButton.SelectState.NORMAL);
+            select2.setState(GKSelectableButton.SelectState.SELECTED);
+            select3.setState(GKSelectableButton.SelectState.NORMAL);
+        } else if (select3.isHovered()) {
+            select1.setState(GKSelectableButton.SelectState.NORMAL);
+            select2.setState(GKSelectableButton.SelectState.NORMAL);
+            select3.setState(GKSelectableButton.SelectState.SELECTED);
+        } else if (completeButton.isHovered()) {
+            completeButton.setState(GKButton.ButtonState.CLICKED);
 
-        if (button2.isHovered()) {
-            button2.setState(GKSelectableButton.State.SELECTED);
-        }
+            try {
+                wait(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-        if (button3.isHovered()) {
-            button3.setState(GKSelectableButton.State.SELECTED);
+            completeButton.setState(GKButton.ButtonState.NORMAL);
         }
 
         return super.mouseClicked(event, doubleClick);

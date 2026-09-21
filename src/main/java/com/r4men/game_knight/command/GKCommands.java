@@ -12,6 +12,8 @@ import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Util;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
@@ -23,6 +25,7 @@ public final class GKCommands {
     private GKCommands() {
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerClientCommands(RegisterClientCommandsEvent event) {
         event.getDispatcher().register(

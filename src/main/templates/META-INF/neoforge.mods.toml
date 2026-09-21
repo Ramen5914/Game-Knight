@@ -36,3 +36,10 @@ type = "required"
 versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "pane"
+type = "required"
+versionRange = "${pane_version_range}"
+ordering = "NONE"
+side = "CLIENT"

@@ -21,6 +21,11 @@ sourceSets.main.resources {
 }
 
 repositories {
+    exclusiveContent {
+        forRepository { maven { url = "https://api.modrinth.com/maven" } }
+        filter { includeGroup "maven.modrinth" }
+    }
+
     maven {
         name = "Jared's maven"
         url = "https://maven.blamejared.com"
@@ -123,6 +128,10 @@ dependencies {
     // Credential Store
     implementation "com.microsoft:credential-secure-storage:1.0.3"
 
+    // Pane
+    compileOnly "maven.modrinth:pane:${pane_version}"
+    runtimeOnly "maven.modrinth:bXdRPjye:mbdruwmV"
+
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
@@ -152,6 +161,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             credits                : credits,
             authors                : authors,
             mod_description        : mod_description,
+            pane_version_range     : pane_version_range,
     ]
     inputs.properties replaceProperties
     expand replaceProperties
