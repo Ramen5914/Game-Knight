@@ -8,7 +8,6 @@ import com.r4men.game_knight.engine.chess.helper.Util;
 import com.r4men.game_knight.engine.chess.type.Piece;
 import com.r4men.game_knight.gui.GKScreen;
 import com.r4men.game_knight.util.GKUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -19,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.r4men.game_knight.GameKnightClient.FLIP_BOARD;
 

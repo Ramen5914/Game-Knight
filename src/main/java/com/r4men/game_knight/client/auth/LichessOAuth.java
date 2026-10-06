@@ -1,7 +1,5 @@
 package com.r4men.game_knight.client.auth;
 
-import com.r4men.game_knight.GameKnight;
-
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
