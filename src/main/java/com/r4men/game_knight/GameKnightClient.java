@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Util;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -51,7 +52,7 @@ public class GameKnightClient {
         modEventBus.addListener(GameKnightClient::registerMenuScreens);
         modEventBus.addListener(GameKnightClient::registerBER);
         modEventBus.addListener(GameKnightClient::registerBindings);
-        modEventBus.addListener(GameKnightClient::registerClientCommands);
+//        modEventBus.addListener(GameKnightClient::registerClientCommands);
     }
 
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
@@ -67,6 +68,7 @@ public class GameKnightClient {
         event.register(FLIP_BOARD.get());
     }
 
+    @SubscribeEvent
     public static void registerClientCommands(RegisterClientCommandsEvent event) {
         event.getDispatcher().register(
                 Commands.literal("gk")
