@@ -35,7 +35,7 @@ public record PacketOpenChessScreenRequest(BlockPos pos) implements IGameKnightP
             MinecraftServer server = player.level().getServer();
 
             // TODO remove this line
-            be.setIsSetup(false);
+            be.setIsSetup(true);
 
             if (be.getWhitePlayerUUID() == null) {
                 be.setWhitePlayer(player.getUUID());
@@ -46,7 +46,7 @@ public record PacketOpenChessScreenRequest(BlockPos pos) implements IGameKnightP
             String whitePlayer = be.getWhitePlayerUUID() == null ? "Waiting..." : server.getPlayerList().getPlayer(be.getWhitePlayerUUID()).getName().getString();
             String blackPlayer = be.getBlackPlayerUUID() == null ? "Waiting..." : server.getPlayerList().getPlayer(be.getBlackPlayerUUID()).getName().getString();
 
-            if (be.getIsSetup() && false) {
+            if (be.getIsSetup() && true) {
                 PacketDistributor.sendToPlayer(player, new PacketOpenChessGameScreen(be.getFen(), whitePlayer, blackPlayer, player.getUUID().equals(be.getWhitePlayerUUID())));
             } else {
                 PacketDistributor.sendToPlayer(player, new PacketOpenChessSetupScreen(be.getFen(), whitePlayer, blackPlayer));
