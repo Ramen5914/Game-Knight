@@ -1,5 +1,6 @@
 package com.r4men.game_knight.client.network;
 
+import com.r4men.game_knight.gui.screen.ChessSetupPane;
 import com.r4men.game_knight.network.to_client.PacketOpenChessGameScreen;
 import com.r4men.game_knight.network.to_client.PacketOpenChessSetupScreen;
 import net.ethrocky.pane.core.Component;
@@ -34,15 +35,7 @@ public final class ClientPacketHandlers {
             IPayloadContext context
     ) {
         context.enqueueWork(() -> {
-            State<Integer> color = State.of(0xFFFFFF);
-
-            PaneScreen screen = new PaneScreen(
-                    "Chess Setup",
-                    new Component() {}
-                            .add(ColorPicker.of(color))
-            );
-
-            Minecraft.getInstance().setScreenAndShow(screen);
+            Minecraft.getInstance().setScreenAndShow(new ChessSetupPane());
         });
     }
 }
