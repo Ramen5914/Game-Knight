@@ -26,7 +26,7 @@ public final class ClientPacketHandlers {
                             .add(ColorPicker.of(color))
             );
 
-            Minecraft.getInstance().setScreenAndShow(screen);
+            Minecraft.getInstance().setScreenAndShow(new ChessSetupPane());
         });
     }
 
