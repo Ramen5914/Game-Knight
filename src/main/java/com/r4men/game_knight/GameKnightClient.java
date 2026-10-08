@@ -28,6 +28,7 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.Lazy;
 import org.lwjgl.glfw.GLFW;
 
@@ -52,7 +53,9 @@ public class GameKnightClient {
         modEventBus.addListener(GameKnightClient::registerMenuScreens);
         modEventBus.addListener(GameKnightClient::registerBER);
         modEventBus.addListener(GameKnightClient::registerBindings);
-//        modEventBus.addListener(GameKnightClient::registerClientCommands);
+
+        // Register game bus events
+        NeoForge.EVENT_BUS.addListener(GameKnightClient::registerClientCommands);
     }
 
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
@@ -68,7 +71,6 @@ public class GameKnightClient {
         event.register(FLIP_BOARD.get());
     }
 
-    @SubscribeEvent
     public static void registerClientCommands(RegisterClientCommandsEvent event) {
         event.getDispatcher().register(
                 Commands.literal("gk")
