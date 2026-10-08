@@ -10,6 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Map;
 
 public final class LichessAccountClient {
     private static final String ACCOUNT_ENDPOINT = "https://lichess.org/api/account";
@@ -46,9 +47,8 @@ public final class LichessAccountClient {
 
         JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
         String username = readString(json, "username", "unknown");
-        int rapid = readRapidRating(json);
 
-        return new LichessAccountStatus(username, rapid);
+        return new LichessAccountStatus(username, readRatings(json));
     }
 
     private static String readString(JsonObject json, String property, String fallback) {
@@ -58,24 +58,50 @@ public final class LichessAccountClient {
         return json.get(property).getAsString();
     }
 
-    private static int readRapidRating(JsonObject json) {
-        if (!json.has("perfs") || json.get("perfs").isJsonNull()) {
-            return -1;
+    private static java.util.Map<LichessTimeControl, Integer> readRatings(
+            JsonObject json
+    ) {
+        var ratings =
+                new java.util.EnumMap<LichessTimeControl, Integer>(
+                        LichessTimeControl.class
+                );
+
+        if (!json.has("perfs") || !json.get("perfs").isJsonObject()) {
+            return ratings;
         }
 
         JsonObject perfs = json.getAsJsonObject("perfs");
-        if (!perfs.has("rapid") || perfs.get("rapid").isJsonNull()) {
-            return -1;
+
+        for (LichessTimeControl control : LichessTimeControl.values()) {
+            if (!perfs.has(control.perfKey())
+                    || !perfs.get(control.perfKey()).isJsonObject()) {
+                continue;
+            }
+
+            JsonObject perf = perfs.getAsJsonObject(control.perfKey());
+
+            if (perf.has("rating") && !perf.get("rating").isJsonNull()) {
+                ratings.put(control, perf.get("rating").getAsInt());
+            }
         }
 
-        JsonObject rapid = perfs.getAsJsonObject("rapid");
-        if (!rapid.has("rating") || rapid.get("rating").isJsonNull()) {
-            return -1;
-        }
-
-        return rapid.get("rating").getAsInt();
+        return ratings;
     }
 
-    public record LichessAccountStatus(String username, int rapidRating) {
+    public record LichessAccountStatus(
+            String username,
+            Map<LichessTimeControl, Integer> ratings
+    ) {
+        public LichessAccountStatus {
+            ratings = Map.copyOf(ratings);
+        }
+
+        public int rating(LichessTimeControl control) {
+            return ratings.getOrDefault(control, -1);
+        }
+
+        public int rapidRating() {
+            return rating(LichessTimeControl.RAPID);
+        }
     }
 }
