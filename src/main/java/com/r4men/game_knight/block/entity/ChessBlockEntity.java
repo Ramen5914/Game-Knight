@@ -18,8 +18,8 @@ public class ChessBlockEntity extends BlockEntity {
     private static final String STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     private final Board board = new Board(STARTING_FEN);
     private boolean isSetup = false;
-    private long timeControlSeconds = 0;
-    private long incrementSeconds = 0;
+    private float timeControlSeconds = 0;
+    private float incrementSeconds = 0;
     private long whiteTimeMs = 0;
     private long blackTimeMs = 0;
     private long lastMoveTimestamp = System.currentTimeMillis();
@@ -71,20 +71,20 @@ public class ChessBlockEntity extends BlockEntity {
         setChanged();
     }
 
-    public long getTimeControlSeconds() {
+    public float getTimeControlSeconds() {
         return timeControlSeconds;
     }
 
-    public void setTimeControlSeconds(long timeControlSeconds) {
+    public void setTimeControlSeconds(float timeControlSeconds) {
         this.timeControlSeconds = timeControlSeconds;
         setChanged();
     }
 
-    public long getIncrementSeconds() {
+    public float getIncrementSeconds() {
         return incrementSeconds;
     }
 
-    public void setIncrementSeconds(long incrementSeconds) {
+    public void setIncrementSeconds(float incrementSeconds) {
         this.incrementSeconds = incrementSeconds;
         setChanged();
     }
