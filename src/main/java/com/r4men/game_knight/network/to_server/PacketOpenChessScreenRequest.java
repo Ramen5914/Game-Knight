@@ -16,7 +16,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record PacketOpenChessScreenRequest(BlockPos pos) implements IGameKnightPacket {
+public record PacketOpenChessScreenRequest(
+        BlockPos pos
+) implements IGameKnightPacket {
     public static final CustomPacketPayload.Type<PacketOpenChessScreenRequest> TYPE = new CustomPacketPayload.Type<>(GameKnight.id("open_chess_board_request"));
     public static final StreamCodec<ByteBuf, PacketOpenChessScreenRequest> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, PacketOpenChessScreenRequest::pos,

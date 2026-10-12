@@ -15,7 +15,10 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record PacketMakeChessMove(BlockPos pos, Move move) implements IGameKnightPacket {
+public record PacketMakeChessMove(
+        BlockPos pos,
+        Move move
+) implements IGameKnightPacket {
     public static final CustomPacketPayload.Type<PacketMakeChessMove> TYPE = new CustomPacketPayload.Type<>(GameKnight.id("make_chess_move"));
     public static final StreamCodec<FriendlyByteBuf, PacketMakeChessMove> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, PacketMakeChessMove::pos,

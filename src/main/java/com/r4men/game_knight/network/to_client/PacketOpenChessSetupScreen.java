@@ -11,8 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.r4men.game_knight.client.network.ClientPacketHandlers.handleOpenChessSetupScreen;
 
-public record PacketOpenChessSetupScreen(String fen, String whitePlayer,
-                                         String blackPlayer) implements IGameKnightPacket {
+public record PacketOpenChessSetupScreen(
+        String fen,
+        String whitePlayer,
+        String blackPlayer
+) implements IGameKnightPacket {
     public static final Type<PacketOpenChessSetupScreen> TYPE = new Type<>(GameKnight.id("open_chess_setup_screen"));
     public static final StreamCodec<ByteBuf, PacketOpenChessSetupScreen> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.stringUtf8(128), PacketOpenChessSetupScreen::fen,

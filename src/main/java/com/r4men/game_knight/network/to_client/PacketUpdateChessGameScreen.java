@@ -9,7 +9,9 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record PacketUpdateChessGameScreen(String t) implements IGameKnightPacket {
+public record PacketUpdateChessGameScreen(
+        String t
+) implements IGameKnightPacket {
     public static final Type<PacketUpdateChessGameScreen> TYPE = new CustomPacketPayload.Type<>(GameKnight.id("update_chess_game_screen"));
     public static final StreamCodec<ByteBuf, PacketUpdateChessGameScreen> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.stringUtf8(100), PacketUpdateChessGameScreen::t,
