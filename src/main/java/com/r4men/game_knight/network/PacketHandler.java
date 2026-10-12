@@ -6,6 +6,7 @@ import com.r4men.game_knight.network.to_client.PacketOpenChessSetupScreen;
 import com.r4men.game_knight.network.to_client.PacketUpdateChessGameScreen;
 import com.r4men.game_knight.network.to_server.PacketMakeChessMove;
 import com.r4men.game_knight.network.to_server.PacketOpenChessScreenRequest;
+import com.r4men.game_knight.network.to_server.PacketSetupChessBoard;
 import net.minecraft.network.protocol.configuration.ServerConfigurationPacketListener;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.network.event.RegisterConfigurationTasksEvent;
@@ -32,6 +33,7 @@ public class PacketHandler extends BasePacketHandler {
     protected void registerClientToServer(PacketRegistrar registrar) {
         registrar.play(PacketOpenChessScreenRequest.TYPE, PacketOpenChessScreenRequest.STREAM_CODEC);
         registrar.play(PacketMakeChessMove.TYPE, PacketMakeChessMove.STREAM_CODEC);
+        registrar.play(PacketSetupChessBoard.TYPE, PacketSetupChessBoard.STREAM_CODEC);
     }
 
     // Server to client packets
