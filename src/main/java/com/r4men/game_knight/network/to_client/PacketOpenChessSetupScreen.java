@@ -1,9 +1,11 @@
 package com.r4men.game_knight.network.to_client;
 
+import com.jcraft.jorbis.Block;
 import com.r4men.game_knight.GameKnight;
 import com.r4men.game_knight.network.IGameKnightPacket;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -12,12 +14,14 @@ import org.jetbrains.annotations.NotNull;
 import static com.r4men.game_knight.client.network.ClientPacketHandlers.handleOpenChessSetupScreen;
 
 public record PacketOpenChessSetupScreen(
+        BlockPos pos,
         String fen,
         String whitePlayer,
         String blackPlayer
 ) implements IGameKnightPacket {
     public static final Type<PacketOpenChessSetupScreen> TYPE = new Type<>(GameKnight.id("open_chess_setup_screen"));
     public static final StreamCodec<ByteBuf, PacketOpenChessSetupScreen> STREAM_CODEC = StreamCodec.composite(
+            BlockPos.STREAM_CODEC, PacketOpenChessSetupScreen::pos,
             ByteBufCodecs.stringUtf8(128), PacketOpenChessSetupScreen::fen,
             ByteBufCodecs.stringUtf8(SharedConstants.MAX_PLAYER_NAME_LENGTH), PacketOpenChessSetupScreen::whitePlayer,
             ByteBufCodecs.stringUtf8(SharedConstants.MAX_PLAYER_NAME_LENGTH), PacketOpenChessSetupScreen::blackPlayer,
