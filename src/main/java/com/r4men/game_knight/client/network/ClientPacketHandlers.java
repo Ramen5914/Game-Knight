@@ -1,5 +1,6 @@
 package com.r4men.game_knight.client.network;
 
+import com.r4men.game_knight.gui.screen.ChessGameScreen;
 import com.r4men.game_knight.gui.screen.ChessSetupPane;
 import com.r4men.game_knight.network.to_client.PacketOpenChessGameScreen;
 import com.r4men.game_knight.network.to_client.PacketOpenChessSetupScreen;
@@ -18,15 +19,7 @@ public final class ClientPacketHandlers {
             IPayloadContext context
     ) {
         context.enqueueWork(() -> {
-            State<Integer> color = State.of(0xFFFFFF);
-
-            PaneScreen screen = new PaneScreen(
-                    "Chess Setup",
-                    new Component() {}
-                            .add(ColorPicker.of(color))
-            );
-
-            Minecraft.getInstance().setScreenAndShow(new ChessSetupPane());
+            Minecraft.getInstance().setScreenAndShow(new ChessSetupPane(payload.pos()));
         });
     }
 
@@ -35,7 +28,7 @@ public final class ClientPacketHandlers {
             IPayloadContext context
     ) {
         context.enqueueWork(() -> {
-            Minecraft.getInstance().setScreenAndShow(new ChessSetupPane());
+            Minecraft.getInstance().setScreenAndShow(new ChessGameScreen(net.minecraft.network.chat.Component.literal("Chess"), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", "Omar Rahman", "Taskin Rahman", true));
         });
     }
 }
