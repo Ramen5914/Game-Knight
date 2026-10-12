@@ -6,6 +6,8 @@ import com.r4men.game_knight.client.auth.LichessTimeControl;
 import com.r4men.game_knight.gui.widget.DiscreteSlider;
 import com.r4men.game_knight.gui.widget.EvenTabs;
 import com.r4men.game_knight.gui.widget.FloatLabel;
+import com.r4men.game_knight.network.to_server.PacketOpenChessScreenRequest;
+import com.r4men.game_knight.network.to_server.PacketSetupChessBoard;
 import net.ethrocky.pane.core.State;
 import net.ethrocky.pane.core.layout.Flex;
 import net.ethrocky.pane.core.style.Theme;
@@ -17,6 +19,9 @@ import net.ethrocky.pane.widget.Panel;
 import net.ethrocky.pane.widget.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.core.BlockPos;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -39,7 +44,11 @@ public class ChessSetupPane extends PaneScreen {
     private String screenToast;
     private long screenToastShownAt;
 
-    public ChessSetupPane() {
+    private final BlockPos pos;
+
+    public ChessSetupPane(BlockPos pos) {
+        this.pos = pos;
+
         PaneOverlay.setTheme(new Theme(0xE61E1F24, 0xF2292A31, 0xFFE8E8EC, 0xFF9A9AA5,
                 0xFFA85CFF, 0xFF3A3B44, 6, 4));
 
@@ -165,7 +174,15 @@ public class ChessSetupPane extends PaneScreen {
                                 .grow(1))
                 );
 
-        w.add(Button.of("Start"));
+        Button startButton = Button.of("Start");
+
+        startButton.onClick(() -> {
+            Minecraft.getInstance().gui.setScreen(null);
+            ClientPacketDistributor.sendToServer(new PacketSetupChessBoard(pos, this.minutes.get(), this.increment.get()));
+            ClientPacketDistributor.sendToServer(new PacketOpenChessScreenRequest(pos));
+        });
+
+        w.add(startButton);
 
         loadAccount();
 
