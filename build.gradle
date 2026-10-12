@@ -121,9 +121,9 @@ configurations {
 
 dependencies {
     // Iris
-    implementation "curse.maven:irisshaders-455508:8396844"
+    implementation "curse.maven:irisshaders-455508:8868972"
     // Sodium
-    implementation "curse.maven:sodium-394468:8396429"
+    implementation "curse.maven:sodium-394468:8859536"
 
     // Credential Store
     implementation "com.microsoft:credential-secure-storage:1.0.3"
