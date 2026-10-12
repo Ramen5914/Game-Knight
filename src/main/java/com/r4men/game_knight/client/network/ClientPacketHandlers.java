@@ -24,7 +24,7 @@ public final class ClientPacketHandlers {
             IPayloadContext context
     ) {
         context.enqueueWork(() -> {
-            Minecraft.getInstance().setScreenAndShow(new ChessGameScreen(net.minecraft.network.chat.Component.literal("Chess"), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", "Omar Rahman", "Taskin Rahman", true));
+            Minecraft.getInstance().setScreenAndShow(new ChessGameScreen(net.minecraft.network.chat.Component.literal("Chess"), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", "Dev1", "Dev2", true));
         });
     }
 }
