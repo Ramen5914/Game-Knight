@@ -1,14 +1,14 @@
 package com.r4men.game_knight.gui.widget;
 
-import java.util.Objects;
-import java.util.function.Function;
-
 import net.ethrocky.pane.core.Component;
 import net.ethrocky.pane.core.Rect;
 import net.ethrocky.pane.core.Size;
 import net.ethrocky.pane.core.State;
 import net.ethrocky.pane.core.style.Theme;
 import net.ethrocky.pane.render.PaneRenderer;
+
+import java.util.Objects;
+import java.util.function.Function;
 
 public class FloatLabel extends Component {
     private String text;

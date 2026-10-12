@@ -1,7 +1,6 @@
 package com.r4men.game_knight.network.to_server;
 
 import com.r4men.game_knight.GameKnight;
-import com.r4men.game_knight.block.custom.ChessBlock;
 import com.r4men.game_knight.block.entity.ChessBlockEntity;
 import com.r4men.game_knight.common.network.PacketUtils;
 import com.r4men.game_knight.network.IGameKnightPacket;

@@ -4,10 +4,6 @@ import com.r4men.game_knight.gui.screen.ChessGameScreen;
 import com.r4men.game_knight.gui.screen.ChessSetupPane;
 import com.r4men.game_knight.network.to_client.PacketOpenChessGameScreen;
 import com.r4men.game_knight.network.to_client.PacketOpenChessSetupScreen;
-import net.ethrocky.pane.core.Component;
-import net.ethrocky.pane.core.State;
-import net.ethrocky.pane.runtime.PaneScreen;
-import net.ethrocky.pane.widget.ColorPicker;
 import net.minecraft.client.Minecraft;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
