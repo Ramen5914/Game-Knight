@@ -36,9 +36,6 @@ public record PacketOpenChessScreenRequest(
             ServerPlayer player = (ServerPlayer) context.player();
             MinecraftServer server = player.level().getServer();
 
-            // TODO remove this line
-            be.setIsSetup(true);
-
             if (be.getWhitePlayerUUID() == null) {
                 be.setWhitePlayer(player.getUUID());
             } else if (be.getBlackPlayerUUID() == null && !player.getUUID().equals(be.getWhitePlayerUUID())) {
@@ -48,10 +45,10 @@ public record PacketOpenChessScreenRequest(
             String whitePlayer = be.getWhitePlayerUUID() == null ? "Waiting..." : server.getPlayerList().getPlayer(be.getWhitePlayerUUID()).getName().getString();
             String blackPlayer = be.getBlackPlayerUUID() == null ? "Waiting..." : server.getPlayerList().getPlayer(be.getBlackPlayerUUID()).getName().getString();
 
-            if (be.getIsSetup() && true) {
+            if (be.getIsSetup()) {
                 PacketDistributor.sendToPlayer(player, new PacketOpenChessGameScreen(be.getFen(), whitePlayer, blackPlayer, player.getUUID().equals(be.getWhitePlayerUUID())));
             } else {
-                PacketDistributor.sendToPlayer(player, new PacketOpenChessSetupScreen(be.getFen(), whitePlayer, blackPlayer));
+                PacketDistributor.sendToPlayer(player, new PacketOpenChessSetupScreen(pos, be.getFen(), whitePlayer, blackPlayer));
             }
         }
     }
