@@ -224,7 +224,6 @@ public final class MoveGenerator {
         return count;
     }
 
-    // TODO add pawn attack moves
     // TODO add pawn en passant moves
     // TODO check for check before adding move to movelist
     private static int generatePawnMoves(List<Move> moveList, Board board, int from10x12, Piece piece) {
@@ -245,6 +244,18 @@ public final class MoveGenerator {
                     count++;
                 }
             }
+
+            // North-East
+            Piece nePiece = board.getPieceAt10x12(from10x12 + Direction.D10X12.NE.toInt());
+            if (nePiece.isBlack()) {
+                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.NE.toInt(), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, nePiece))) count++;
+            }
+
+            // North-West
+            Piece nwPiece = board.getPieceAt10x12(from10x12 + Direction.D10X12.NW.toInt());
+            if (nwPiece.isBlack()) {
+                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.NW.toInt(), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, nwPiece))) count++;
+            }
         } else {
             if (board.getPieceAt10x12(from10x12 - Direction.D10X12.N.toInt()).isEmpty()) {
                 moveList.add(new Move(from8x8, from8x8 - Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
@@ -254,6 +265,18 @@ public final class MoveGenerator {
                     moveList.add(new Move(from8x8, from8x8 - Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
                     count++;
                 }
+            }
+
+            // South-East
+            Piece sePiece = board.getPieceAt10x12(from10x12 + Direction.D10X12.SE.toInt());
+            if (sePiece.isWhite()) {
+                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.SE.toInt(), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, sePiece))) count++;
+            }
+
+            // South-West
+            Piece swPiece = board.getPieceAt10x12(from10x12 + Direction.D10X12.SW.toInt());
+            if (swPiece.isWhite()) {
+                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.SW.toInt(), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, swPiece))) count++;
             }
         }
 
