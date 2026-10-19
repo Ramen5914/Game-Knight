@@ -243,35 +243,43 @@ public final class MoveGenerator {
             }
 
             // North-East
-            Piece nePiece = board.getPieceAt10x12(from10x12 + Direction.D10X12.NE.toInt());
-            if (nePiece.isBlack()) {
-                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.NE.toInt(), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, nePiece))) count++;
+            int neSquare = from10x12 + Direction.D10X12.NE.toInt();
+            boolean isNEEnPassant = neSquare == enPassantSquare10x12;
+            Piece nePiece = board.getPieceAt10x12(neSquare);
+            if (nePiece.isBlack() || isNEEnPassant) {
+                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.NE.toInt(), isNEEnPassant ? Move.Flag.EN_PASSANT_CAPTURE_FLAG : Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, nePiece))) count++;
             }
 
             // North-West
-            Piece nwPiece = board.getPieceAt10x12(from10x12 + Direction.D10X12.NW.toInt());
-            if (nwPiece.isBlack()) {
-                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.NW.toInt(), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, nwPiece))) count++;
+            int nwSquare = from10x12 + Direction.D10X12.NW.toInt();
+            boolean isNWEnPassant = nwSquare == enPassantSquare10x12;
+            Piece nwPiece = board.getPieceAt10x12(nwSquare);
+            if (nwPiece.isBlack() || isNWEnPassant) {
+                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.NW.toInt(), isNWEnPassant ? Move.Flag.EN_PASSANT_CAPTURE_FLAG : Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, nwPiece))) count++;
             }
         } else {
-            if (board.getPieceAt10x12(from10x12 - Direction.D10X12.N.toInt()).isEmpty()) {
+            if (board.getPieceAt10x12(from10x12 + Direction.D10X12.S.toInt()).isEmpty()) {
                 if (isLegalMove(moveList, board, new Move(from8x8, from8x8 - Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY))) count++;
 
-                if (board.getPieceAt10x12(from10x12 - Direction.D10X12.N.toInt() * 2).isEmpty() && Util.getRank10x12(from10x12) == 6) {
+                if (board.getPieceAt10x12(from10x12 + Direction.D10X12.S.toInt() * 2).isEmpty() && Util.getRank10x12(from10x12) == 6) {
                     if (isLegalMove(moveList, board, new Move(from8x8, from8x8 - Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY))) count++;
                 }
             }
 
             // South-East
-            Piece sePiece = board.getPieceAt10x12(from10x12 + Direction.D10X12.SE.toInt());
-            if (sePiece.isWhite()) {
-                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.SE.toInt(), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, sePiece))) count++;
+            int seSquare = from10x12 + Direction.D10X12.SE.toInt();
+            boolean isSEEnPassant = seSquare == enPassantSquare10x12;
+            Piece sePiece = board.getPieceAt10x12(seSquare);
+            if (sePiece.isWhite() || isSEEnPassant) {
+                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.SE.toInt(), isSEEnPassant ? Move.Flag.EN_PASSANT_CAPTURE_FLAG : Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, sePiece))) count++;
             }
 
             // South-West
-            Piece swPiece = board.getPieceAt10x12(from10x12 + Direction.D10X12.SW.toInt());
-            if (swPiece.isWhite()) {
-                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.SW.toInt(), Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, swPiece))) count++;
+            int swSquare = from10x12 + Direction.D10X12.SW.toInt();
+            boolean isSWEnPassant = swSquare == enPassantSquare10x12;
+            Piece swPiece = board.getPieceAt10x12(swSquare);
+            if (swPiece.isWhite() || isSWEnPassant) {
+                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.SW.toInt(), isSWEnPassant ? Move.Flag.EN_PASSANT_CAPTURE_FLAG : Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, swPiece))) count++;
             }
         }
 
