@@ -227,36 +227,55 @@ public final class MoveApplier {
 //
         int leftIndex10x12 = move.getTo10x12() + Direction.D10X12.W.toInt();
         Piece left = board.getPieceAt10x12(leftIndex10x12);
-        boolean leftIsPawn = left.isPawn() && left.matchesColor(board.getPlayerToMove());
+        boolean leftIsPawn = left.isPawn() && left.matchesColor(board.getPlayerToMove().opposite());
 
         int rightIndex10x12 = move.getTo10x12() + Direction.D10X12.E.toInt();
         Piece right = board.getPieceAt10x12(rightIndex10x12);
-        boolean rightIsPawn = right.isPawn() && right.matchesColor(board.getPlayerToMove());
+        boolean rightIsPawn = right.isPawn() && right.matchesColor(board.getPlayerToMove().opposite());
 
         if (leftIsPawn || rightIsPawn) {
-            board.setEnPassantSquare10x12(switch (board.getPlayerToMove()) {
-                case WHITE -> to + Direction.D10X12.N.toInt();
-                case BLACK -> to + Direction.D10X12.S.toInt();
+            int potentialEpSquare = switch (board.getPlayerToMove()) {
+                case WHITE -> to + Direction.D10X12.S.toInt();
+                case BLACK -> to + Direction.D10X12.N.toInt();
                 default -> throw new IllegalStateException("PlayerToMove is neither WHITE nor BLACK");
-            });
+            };
 
-            board.setEnPassantSquare10x12(findEnPassantMove(leftIndex10x12, leftIsPawn, rightIndex10x12, rightIsPawn, board.getEnPassantSquare10x12()));
+            board.setEnPassantSquare10x12(findEnPassantMove(board, leftIndex10x12, leftIsPawn, rightIndex10x12, rightIsPawn, potentialEpSquare));
         } else {
             board.setEnPassantSquare10x12(-1);
         }
     }
 
-    // TODO
-    static int findEnPassantMove(int leftIndex10x12, boolean leftIsPawn, int rightIndex10x12, boolean rightIsPawn, int ep10x12) {
-//        if (leftIsPawn && !wouldBeInCheckAfterMove(new Move(Util.convert10x12to8x8(leftIndex10x12), Util.convert10x12to8x8(ep10x12), Move.Flag.EN_PASSANT_CAPTURE_FLAG, ep10x12, castlingRights, halfmoveClock, board10x12.get(ep10x12)))) {
-//            return ep10x12;
-//        } else if (rightIsPawn && !wouldBeInCheckAfterMove(new Move(Util.convert10x12to8x8(rightIndex10x12), Util.convert10x12to8x8(ep10x12), Move.Flag.EN_PASSANT_CAPTURE_FLAG, ep10x12, castlingRights, halfmoveClock, board10x12.get(ep10x12)))) {
-//            return ep10x12;
-//        } else {
-//            return -1;
-//        }
+    static int findEnPassantMove(Board board, int leftIndex10x12, boolean leftIsPawn, int rightIndex10x12, boolean rightIsPawn, int ep10x12) {
+        int ep8x8 = Util.convert10x12to8x8(ep10x12);
+        Piece.Color previousPlayerToMove = board.getPlayerToMove();
+
+        if (leftIsPawn) {
+            Move epMove = new Move(Util.convert10x12to8x8(leftIndex10x12), ep8x8, Move.Flag.EN_PASSANT_CAPTURE_FLAG, ep10x12, board.getCastlingRights(), board.getHalfmoveClock(), board.getPieceAt10x12(ep10x12));
+            if (isLegalEnPassantMove(board, epMove, previousPlayerToMove)) {
+                return ep10x12;
+            }
+        }
+
+        if (rightIsPawn) {
+            Move epMove = new Move(Util.convert10x12to8x8(rightIndex10x12), ep8x8, Move.Flag.EN_PASSANT_CAPTURE_FLAG, ep10x12, board.getCastlingRights(), board.getHalfmoveClock(), board.getPieceAt10x12(ep10x12));
+            if (isLegalEnPassantMove(board, epMove, previousPlayerToMove)) {
+                return ep10x12;
+            }
+        }
 
         return -1;
+    }
+
+    private static boolean isLegalEnPassantMove(Board board, Move move, Piece.Color previousPlayerToMove) {
+        board.advancePlayerToMove();
+        board.setEnPassantSquare10x12(move.enPassantSquare10x12());
+        MoveApplier.makeMove(board, move, true);
+
+        boolean legal = !AttackDetector.isKingInCheck(board, board.getPlayerToMove());
+        MoveApplier.undoMove(board, move);
+        board.setPlayerToMove(previousPlayerToMove);
+        return legal;
     }
 
     static void removeEnPassantPawn(Board board, Move move) {
@@ -264,9 +283,9 @@ public final class MoveApplier {
         int s10x12;
 
         if (board.getPlayerToMove().isWhite()) {
-            s10x12 = to10x12 + Direction.D10X12.N.toInt();
-        } else {
             s10x12 = to10x12 + Direction.D10X12.S.toInt();
+        } else {
+            s10x12 = to10x12 + Direction.D10X12.N.toInt();
         }
 
         board.emptyPieceAt10x12(s10x12);
