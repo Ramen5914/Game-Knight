@@ -73,20 +73,20 @@ repositories {
 }
 
 base {
-    archivesName.set(mod_id)
+    archivesName.set(modId)
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 neoForge {
-    version = neo_version
+    version = neoVersion
 
     validateAccessTransformers = true
 
     runs {
         create("client") {
             client()
-            systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
         create("clientAuth1") {
@@ -108,18 +108,18 @@ neoForge {
         create("server") {
             server()
             programArgument("--nogui")
-            systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
         create("gameTestServer") {
             type = "gameTestServer"
-            systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
         create("data") {
             clientData()
             programArguments.addAll(
-                "--mod", mod_id, "--all", "--output",
+                "--mod", modId, "--all", "--output",
                 file("src/generated/resources/").absolutePath,
                 "--existing", file("src/main/resources/").absolutePath
             )
@@ -132,14 +132,14 @@ neoForge {
     }
 
     mods {
-        create(mod_id) {
+        create(modId) {
             sourceSet(sourceSets["main"])
         }
     }
 
     unitTest {
         enable()
-        testedMod = mods[mod_id]
+        testedMod = mods[modId]
     }
 }
 
@@ -159,11 +159,11 @@ dependencies {
     implementation("com.microsoft:credential-secure-storage:1.0.3")
 
     // Pane
-    compileOnly("maven.modrinth:pane:$pane_version")
+    compileOnly("maven.modrinth:pane:$paneVersion")
     runtimeOnly("maven.modrinth:bXdRPjye:mbdruwmV")
 
-    compileOnly("mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version")
-    runtimeOnly("mezz.jei:jei-$minecraft_version-neoforge:$jei_version")
+    compileOnly("mezz.jei:jei-$minecraftVersion-neoforge-api:$jeiVersion")
+    runtimeOnly("mezz.jei:jei-$minecraftVersion-neoforge:$jeiVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter:6.0.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -176,26 +176,28 @@ tasks.test {
 }
 
 val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata") {
+    dependsOn("stonecutterGenerate")
+
     val replaceProperties = mapOf(
-        "minecraft_version" to minecraft_version,
-        "minecraft_version_range" to minecraft_version_range,
-        "neo_version" to neo_version,
-        "mod_id" to mod_id,
-        "mod_name" to mod_name,
-        "mod_license" to mod_license,
-        "mod_version" to mod_version,
-        "update_json_url" to update_json_url,
-        "display_url" to display_url,
-        "banner_file" to banner_file,
-        "icon_file" to icon_file,
+        "minecraftVersion" to minecraftVersion,
+        "minecraftVersionRange" to minecraftVersionRange,
+        "neoVersion" to neoVersion,
+        "modId" to modId,
+        "modName" to modName,
+        "modLicense" to modLicense,
+        "modVersion" to modVersion,
+        "updateJsonUrl" to updateJsonUrl,
+        "displayUrl" to displayUrl,
+        "bannerFile" to bannerFile,
+        "iconFile" to iconFile,
         "credits" to credits,
         "authors" to authors,
-        "mod_description" to mod_description,
-        "pane_version_range" to pane_version_range
+        "modDescription" to modDescription,
+        "paneVersionRange" to paneVersionRange
     )
     inputs.properties(replaceProperties)
     expand(replaceProperties)
-    from("src/main/templates")
+    from(layout.buildDirectory.dir("generated/stonecutter/main/templates"))
     into("build/generated/sources/modMetadata")
 }
 
