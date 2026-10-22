@@ -23,6 +23,8 @@ val modDescription = property("modDescription") as String
 val paneVersion = property("paneVersion") as String
 val paneVersionRange = property("paneVersionRange") as String
 val jeiVersion = property("jeiVersion") as String
+val irisId = property("irisId") as String
+val sodiumId = property("sodiumId") as String
 
 tasks.withType<Wrapper>().configureEach {
     distributionType = Wrapper.DistributionType.BIN
@@ -151,9 +153,9 @@ afterEvaluate {
 
 dependencies {
     // Iris
-    implementation("curse.maven:irisshaders-455508:8868972")
+    implementation("curse.maven:irisshaders-455508:$irisId")
     // Sodium
-    implementation("curse.maven:sodium-394468:8859536")
+    implementation("curse.maven:sodium-394468:$sodiumId")
 
     // Credential Store
     implementation("com.microsoft:credential-secure-storage:1.0.3")
