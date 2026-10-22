@@ -28,8 +28,12 @@ tasks.withType<Wrapper>().configureEach {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = "$mod_version+mc$minecraft_version"
-group = mod_group_id
+tasks.matching { it.name == "createMinecraftArtifacts" }.configureEach {
+    dependsOn("stonecutterGenerate")
+}
+
+version = "$modVersion+mc$minecraftVersion"
+group = modGroupId
 
 sourceSets.named("main") {
     resources {
