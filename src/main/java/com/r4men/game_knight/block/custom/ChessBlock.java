@@ -1,5 +1,6 @@
 package com.r4men.game_knight.block.custom;
 
+//? if <=26.2
 import com.mojang.serialization.MapCodec;
 import com.r4men.game_knight.block.GKBlockEntities;
 import com.r4men.game_knight.block.entity.ChessBlockEntity;
@@ -18,16 +19,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ChessBlock extends SquareBoardBlock {
+    //? if <=26.2
     public static final MapCodec<ChessBlock> CODEC = simpleCodec(ChessBlock::new);
 
     public ChessBlock(Properties properties) {
         super(properties);
     }
 
+
+    //? if <=26.2 {
     @Override
     protected @NotNull MapCodec<? extends SquareBoardBlock> codec() {
         return CODEC;
     }
+    //?}
 
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {

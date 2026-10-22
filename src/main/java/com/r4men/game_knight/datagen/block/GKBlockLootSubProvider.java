@@ -1,8 +1,11 @@
 package com.r4men.game_knight.datagen.block;
 
 import com.r4men.game_knight.block.GKBlocks;
+//? if <=26.2
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
+//? if 26.3
+//import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -10,8 +13,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 public class GKBlockLootSubProvider extends BlockLootSubProvider {
+    //? if <=26.2
     public GKBlockLootSubProvider(HolderLookup.Provider lookupProvider) {
+    //? else
+    //public GKBlockLootSubProvider(LootTableSubProvider.Context context) {
+        //? if <=26.2
         super(Set.of(), FeatureFlags.DEFAULT_FLAGS, lookupProvider);
+        //? else
+        //super(Set.of(), FeatureFlags.DEFAULT_FLAGS, context);
     }
 
     @Override

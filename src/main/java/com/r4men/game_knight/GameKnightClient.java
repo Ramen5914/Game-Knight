@@ -1,5 +1,7 @@
 package com.r4men.game_knight;
 
+//? if 26.3
+//import com.mojang.blaze3d.Blaze3D;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.Command;
 import com.r4men.game_knight.block.GKBlockEntities;
@@ -15,6 +17,7 @@ import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+//? if <=26.2
 import net.minecraft.util.Util;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -29,6 +32,7 @@ import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.Lazy;
+//? if <=26.2
 import org.lwjgl.glfw.GLFW;
 
 import java.net.URI;
@@ -39,8 +43,14 @@ public class GameKnightClient {
     public static final Lazy<KeyMapping> FLIP_BOARD = Lazy.of(() -> new KeyMapping(
             "key.game_knight.flip_board",
             GKKeyConflictContext.CHESS,
+            //? if <=26.2
             InputConstants.Type.KEYSYM,
+            //? else
+            //InputConstants.Type.KEYBOARD,
+            //? if <=26.2
             GLFW.GLFW_KEY_F,
+            //? else
+            //InputConstants.KEY_F,
             CHESS_CATEGORY
     ));
 
@@ -188,12 +198,18 @@ public class GameKnightClient {
 
     private static void requestOpenBrowser(URI authorizationUri) {
         Minecraft minecraft = Minecraft.getInstance();
+        //? if <=26.2
         String shortUrl = "https://lichess.org/oauth";
+        //? else
+        //URI shortUrl = URI.create("https://lichess.org/oauth");
         String realUrl = authorizationUri.toASCIIString();
 
         minecraft.setScreenAndShow(new ConfirmLinkScreen(confirmed -> {
             if (confirmed) {
+                //? if <=26.2
                 Util.getPlatform().openUri(authorizationUri);
+                //? else
+                //Blaze3D.openUri(authorizationUri);
             }
             minecraft.setScreenAndShow(null);
         }, shortUrl, true));

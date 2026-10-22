@@ -40,8 +40,10 @@ public class GameKnight {
         GKBlockEntities.register(modEventBus);
 
         GKMenuTypes.register(modEventBus);
-
+        //? if <=26.2
         modContainer.registerConfig(ModConfig.Type.SERVER, GKConfig.SERVER_SPEC);
+        //? else
+        //modContainer.registerConfig(ModConfig.Type.SYNCED, GKConfig.SERVER_SPEC);
 
         packetHandler = new PacketHandler(modEventBus, versionNumber);
     }
