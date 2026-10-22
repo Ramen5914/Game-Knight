@@ -5,24 +5,24 @@ plugins {
     id("idea")
 }
 
-val minecraft_version: String by project
-val minecraft_version_range: String by project
-val neo_version: String by project
-val mod_id: String by project
-val mod_name: String by project
-val mod_license: String by project
-val mod_version: String by project
-val mod_group_id: String by project
-val update_json_url: String by project
-val display_url: String by project
-val banner_file: String by project
-val icon_file: String by project
-val credits: String by project
-val authors: String by project
-val mod_description: String by project
-val pane_version: String by project
-val pane_version_range: String by project
-val jei_version: String by project
+val minecraftVersion = property("minecraftVersion") as String
+val minecraftVersionRange = property("minecraftVersionRange") as String
+val neoVersion = property("neoVersion") as String
+val modId = property("modId") as String
+val modName = property("modName") as String
+val modLicense = property("modLicense") as String
+val modVersion = property("modVersion") as String
+val modGroupId = property("modGroupId") as String
+val updateJsonUrl = property("updateJsonUrl") as String
+val displayUrl = property("displayUrl") as String
+val bannerFile = property("bannerFile") as String
+val iconFile = property("iconFile") as String
+val credits = property("credits") as String
+val authors = property("authors") as String
+val modDescription = property("modDescription") as String
+val paneVersion = property("paneVersion") as String
+val paneVersionRange = property("paneVersionRange") as String
+val jeiVersion = property("jeiVersion") as String
 
 tasks.withType<Wrapper>().configureEach {
     distributionType = Wrapper.DistributionType.BIN
