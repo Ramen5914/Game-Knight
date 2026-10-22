@@ -1,18 +1,18 @@
-license = "${mod_license}"
+license = "${modLicense}"
 issueTrackerURL = "https://github.com/Ramen5914/Game-Knight/issues"
 
 [[mods]]
-modId = "${mod_id}"
-version = "${mod_version}"
-displayName = "${mod_name}"
-updateJSONURL = "${update_json_url}"
-displayURL = "${display_url}"
-iconFile = "${icon_file}"
-bannerFile = "${banner_file}"
+modId = "${modId}"
+version = "${modVersion}"
+displayName = "${modName}"
+updateJSONURL = "${updateJsonUrl}"
+displayURL = "${displayUrl}"
+iconFile = "${iconFile}"
+bannerFile = "${bannerFile}"
 credits = "${credits}"
 authors = "${authors}"
 description = '''
-${mod_description}
+${modDescription}
 '''
 
 [[accessTransformers]]
@@ -23,23 +23,23 @@ config = "game_knight.mixins.json"
 requiredMods = []
 behaviorVersion = "0.17.3"
 
-[[dependencies.${mod_id}]]
+[[dependencies.${modId}]]
 modId = "neoforge"
 type = "required"
-versionRange = "[${neo_version},)"
+versionRange = "[${neoVersion},)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.${mod_id}]]
+[[dependencies.${modId}]]
 modId = "minecraft"
 type = "required"
-versionRange = "${minecraft_version_range}"
+versionRange = "${minecraftVersionRange}"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.${mod_id}]]
+[[dependencies.${modId}]]
 modId = "pane"
 type = "required"
-versionRange = "${pane_version_range}"
+versionRange = "${paneVersionRange}"
 ordering = "NONE"
 side = "CLIENT"
