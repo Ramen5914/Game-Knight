@@ -9,7 +9,11 @@ public enum GKKeyConflictContext implements IKeyConflictContext {
     CHESS {
         @Override
         public boolean isActive() {
+            //? if <26.2 {
+            //return Minecraft.getInstance().screen instanceof ChessGameScreen;
+            //?} else {
             return Minecraft.getInstance().gui.screen() instanceof ChessGameScreen;
+            //?}
         }
 
         @Override

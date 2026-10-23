@@ -18,7 +18,10 @@ public class GKBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         tag(BlockTags.MINEABLE_WITH_AXE)
-                //? if <=26.2 {
+                //? if <26.2 {
+                /*.add(GKBlocks.CHESS.get())
+                .add(GKBlocks.MONOPOLY.get());
+                *///?} else if <=26.2 {
                 .add(GKBlocks.CHESS.getKey())
                 .add(GKBlocks.MONOPOLY.getKey());
                 //? else {

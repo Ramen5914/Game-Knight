@@ -20,7 +20,11 @@ public class UniversalKeyConflictMixin {
             remap = false
     )
     private boolean changeUniversalIsActive(boolean original) {
+        //? if <26.2 {
+        //return original && !(Minecraft.getInstance().screen instanceof GKScreen);
+        //?} else {
         return original && !(Minecraft.getInstance().gui.screen() instanceof GKScreen);
+        //?}
     }
 
     @ModifyReturnValue(

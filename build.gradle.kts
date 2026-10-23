@@ -21,6 +21,7 @@ val credits = property("credits") as String
 val authors = property("authors") as String
 val modDescription = property("modDescription") as String
 val paneVersion = property("paneVersion") as String
+val paneId = property("paneId") as String
 val paneVersionRange = property("paneVersionRange") as String
 val jeiVersion = property("jeiVersion") as String
 val irisId = property("irisId") as String
@@ -162,7 +163,7 @@ dependencies {
 
     // Pane
     compileOnly("maven.modrinth:pane:$paneVersion")
-    runtimeOnly("maven.modrinth:bXdRPjye:mbdruwmV")
+    runtimeOnly("maven.modrinth:bXdRPjye:$paneId")
 
     compileOnly("mezz.jei:jei-$minecraftVersion-neoforge-api:$jeiVersion")
     runtimeOnly("mezz.jei:jei-$minecraftVersion-neoforge:$jeiVersion")
