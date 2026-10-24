@@ -8,9 +8,6 @@ import com.r4men.game_knight.datagen.models.GKModelProvider;
 //? if <=26.2
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.LootTableProvider.SubProviderEntry;
-//? if 26.3
-//import net.minecraft.util.context.ContextKeySet;
-//? if <26.3
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -30,7 +27,7 @@ public class GKDataGenerators {
     public static void t(GatherDataRegistryEntriesEvent event) {
         event.lootTable(new SubProviderEntry(
                 GKBlockLootSubProvider::new,
-                ContextKeySet.EMPTY
+                LootContextParamSets.BLOCK
         ));
     }
     *///?}
