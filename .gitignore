@@ -25,11 +25,12 @@ eclipse
 run
 runs
 run-data
-
+datagen.log
 repo
 
 # Generated Files Cache
 /src/generated/resources/.cache/
+/versions/**/.cache/
 
 # MacOS
 .DS_Store
