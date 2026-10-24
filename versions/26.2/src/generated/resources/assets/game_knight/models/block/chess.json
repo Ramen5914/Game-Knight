@@ -1,0 +1,6 @@
+{
+  "parent": "game_knight:block/square_board",
+  "textures": {
+    "board": "game_knight:block/chess"
+  }
+}
