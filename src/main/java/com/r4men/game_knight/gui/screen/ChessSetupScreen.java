@@ -23,8 +23,6 @@ public class ChessSetupScreen extends GKScreen {
 
     private GKButton completeButton;
 
-    private Checkbox checkbox1;
-
     public ChessSetupScreen(Component title) {
         super(title, 256, 256);
 
@@ -34,10 +32,6 @@ public class ChessSetupScreen extends GKScreen {
     @Override
     protected void init() {
         super.init();
-
-        this.checkbox1 = this.addRenderableWidget(
-                new Checkbox(80, 80, 1000, Component.literal("Test"), this.font, false, Checkbox.OnValueChange.NOP)
-        );
 
         this.select1 = this.addRenderableWidget(
                 new GKSelectableButton(
