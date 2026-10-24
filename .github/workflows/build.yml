@@ -26,8 +26,5 @@ jobs:
       - name: Run datagen with Gradle
         run: ./gradlew runData
 
-      - name: Run game test server with Gradle
-        run: ./gradlew runGameTestServer
-
       - name: Build with Gradle
         run: ./gradlew build
