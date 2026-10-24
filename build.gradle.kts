@@ -63,6 +63,11 @@ repositories {
         url = uri("https://modmaven.dev")
     }
 
+    maven {
+        name = "Ramen5914's Maven"
+        url = uri("https://maven.r4men.com/releases")
+    }
+
     exclusiveContent {
         forRepository {
             maven {
@@ -162,8 +167,13 @@ dependencies {
     implementation("com.microsoft:credential-secure-storage:1.0.3")
 
     // Pane
-    compileOnly("maven.modrinth:pane:$paneVersion")
-    runtimeOnly("maven.modrinth:bXdRPjye:$paneId")
+    if (stonecutter.eval(stonecutter.current.version, ">=26.3")) {
+//        implementation("net.ethrocky:pane-neoforge:$paneVersion")
+        implementation("net.ethrocky:pane-neoforge:0.4.0+mc26.3")
+    } else {
+        compileOnly("maven.modrinth:pane:$paneVersion")
+        runtimeOnly("maven.modrinth:bXdRPjye:$paneId")
+    }
 
     compileOnly("mezz.jei:jei-$minecraftVersion-neoforge-api:$jeiVersion")
     runtimeOnly("mezz.jei:jei-$minecraftVersion-neoforge:$jeiVersion")

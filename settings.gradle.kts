@@ -16,7 +16,8 @@ plugins {
 stonecutter {
     centralScript = "build.gradle.kts"
 
-    create(getRootProject()) {
+    create(rootProject) {
         versions("26.1.2", "26.2", "26.3")
+        vcsVersion = "26.2"
     }
 }
