@@ -65,7 +65,7 @@ repositories {
 
     maven {
         name = "Ramen5914's Maven"
-        url = uri("https://maven.r4men.com/releases")
+        url = uri("https://maven.ramen.games/releases")
     }
 
     exclusiveContent {
