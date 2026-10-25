@@ -35,8 +35,8 @@ tasks.matching { it.name == "createMinecraftArtifacts" }.configureEach {
     dependsOn("stonecutterGenerate")
 }
 
-version = "$modVersion+mc$minecraftVersion"
-group = modGroupId
+version = modVersion
+group = "games.ramen"
 
 sourceSets.named("main") {
     resources {
@@ -168,8 +168,7 @@ dependencies {
 
     // Pane
     if (stonecutter.eval(stonecutter.current.version, ">=26.3")) {
-//        implementation("net.ethrocky:pane-neoforge:$paneVersion")
-        implementation("net.ethrocky:pane-neoforge:0.4.0+mc26.3")
+        implementation("net.ethrocky:pane-neoforge:$paneVersion")
     } else {
         compileOnly("maven.modrinth:pane:$paneVersion")
         runtimeOnly("maven.modrinth:bXdRPjye:$paneId")
@@ -189,6 +188,7 @@ tasks.test {
 }
 
 val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata") {
+    description = "Generates the mod metadata file for the mod"
     dependsOn("stonecutterGenerate")
 
     val replaceProperties = mapOf(
@@ -221,15 +221,54 @@ neoForge.ideSyncTask(generateModMetadata)
 
 publishing {
     publications {
-        register<MavenPublication>("mavenJava") {
-            from(components["java"])
+        val targetProjects = rootProject.subprojects.sortedBy { it.name }
+        val publicationProject = targetProjects.firstOrNull()
+
+        if (project == publicationProject) {
+            register<MavenPublication>("mavenJava") {
+                groupId = "games.ramen"
+                artifactId = modId
+                version = modVersion
+
+                targetProjects.forEach { targetProject ->
+                    artifact(targetProject.tasks.named<Jar>("jar"))
+                }
+
+                pom {
+                    name.set(modName)
+                    description.set(modDescription)
+                    url.set(displayUrl)
+                }
+            }
         }
     }
+
     repositories {
-        maven {
-            url = uri(layout.projectDirectory.dir("repo"))
+        val reposiliteUrl = providers.gradleProperty("reposiliteUrl")
+            .orElse(providers.environmentVariable("REPOSILITE_URL"))
+
+        val reposiliteToken = providers.gradleProperty("reposiliteToken")
+            .orElse(providers.environmentVariable("REPOSILITE_TOKEN"))
+
+        val reposiliteSecret = providers.gradleProperty("reposiliteSecret")
+            .orElse(providers.environmentVariable("REPOSILITE_SECRET"))
+
+        if (reposiliteUrl.isPresent) {
+            maven {
+                name = "reposilite"
+                url = uri(reposiliteUrl.get())
+
+                credentials {
+                    username = reposiliteToken.orNull
+                    password = reposiliteSecret.orNull
+                }
+            }
         }
     }
+}
+
+tasks.withType<Jar>().configureEach {
+    archiveClassifier.set("neoforge-$minecraftVersion")
 }
 
 tasks.withType<JavaCompile>().configureEach {
