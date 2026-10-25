@@ -233,7 +233,7 @@ public class ChessGameScreen extends GKScreen {
                 clickedSquare = 63 - clickedSquare;
             }
 
-            boolean validClick = (board.getBitBoard(board.getPlayerToMove(), Piece.PieceType.OCC) & (1L << clickedSquare)) > 0;
+            boolean validClick = (board.getBitBoard(board.getPlayerToMove(), Piece.PieceType.OCC) & (1L << clickedSquare)) != 0;
 
             if (validClick && this.clickedSquare != clickedSquare) {
                 this.clickedSquare = clickedSquare;
