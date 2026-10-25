@@ -83,8 +83,7 @@ public final class MoveGenerator {
                 continue;
             }
 
-            moveList.add(new Move(from8x8, to8x8, flag, enPassantSquare10x12, castlingRights, halfmoveClock, capturedPiece));
-            count++;
+            if (isLegalMove(moveList, board, new Move(from8x8, to8x8, flag, enPassantSquare10x12, castlingRights, halfmoveClock, capturedPiece))) count++;
         }
 
         if (color == Piece.Color.WHITE && ((castlingRights & 0b0011) != 0)) {
@@ -224,7 +223,6 @@ public final class MoveGenerator {
         return count;
     }
 
-    // TODO add pawn en passant moves
     private static int generatePawnMoves(List<Move> moveList, Board board, int from10x12, Piece piece) {
         int count = 0;
         int from8x8 = Util.convert10x12to8x8(from10x12);
