@@ -1,6 +1,7 @@
 package games.ramen.game_knight.engine.chess.helper;
 
 import games.ramen.game_knight.engine.chess.Board;
+import games.ramen.game_knight.engine.chess.type.Castling;
 import games.ramen.game_knight.engine.chess.type.Direction;
 import games.ramen.game_knight.engine.chess.type.Move;
 import games.ramen.game_knight.engine.chess.type.Piece;
@@ -88,25 +89,29 @@ public final class MoveGenerator {
 
         if (color == Piece.Color.WHITE && ((castlingRights & 0b0011) != 0)) {
             if ((castlingRights & 0b0001) == 0b0001) {
-                if (Util.isPathClear10x12(board, from10x12, 0x1C)) {
+                if (Util.isCastlingPathClear10x12(board, Castling.WHITE_SHORT)) {
                     moveList.add(new Move(from8x8, 7, Move.Flag.KING_CASTLE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
                     count++;
                 }
             }
             if ((castlingRights & 0b0010) == 0b0010) {
-                if (Util.isPathClear10x12(board, from10x12, 0x15)) {
+                if (Util.isCastlingPathClear10x12(board, Castling.WHITE_LONG)) {
                     moveList.add(new Move(from8x8, 0, Move.Flag.QUEEN_CASTLE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
                     count++;
                 }
             }
         } else if (color == Piece.Color.BLACK && ((castlingRights & 0b1100) != 0)) {
             if ((castlingRights & 0b0100) == 0b0100) {
-                moveList.add(new Move(from8x8, 63, Move.Flag.KING_CASTLE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
-                count++;
+                if (Util.isCastlingPathClear10x12(board, Castling.BLACK_SHORT)) {
+                    moveList.add(new Move(from8x8, 63, Move.Flag.KING_CASTLE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
+                    count++;
+                }
             }
             if ((castlingRights & 0b1000) == 0b1000) {
-                moveList.add(new Move(from8x8, 56, Move.Flag.QUEEN_CASTLE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
-                count++;
+                if (Util.isCastlingPathClear10x12(board, Castling.BLACK_LONG)) {
+                    moveList.add(new Move(from8x8, 56, Move.Flag.QUEEN_CASTLE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY));
+                    count++;
+                }
             }
         }
 
