@@ -1,6 +1,7 @@
 package games.ramen.game_knight.engine.chess.helper;
 
 import games.ramen.game_knight.engine.chess.Board;
+import games.ramen.game_knight.engine.chess.type.Castling;
 import games.ramen.game_knight.engine.chess.type.Direction;
 import games.ramen.game_knight.engine.chess.type.Piece;
 import org.jetbrains.annotations.Nullable;
@@ -284,12 +285,44 @@ public final class Util {
         }
     }
 
-    // TODO
-    public static boolean isCastlingPathClear10x12(Board board, int from10x12, int to10x12) {
-        boolean isPathClear = isPathClear10x12(board, from10x12, to10x12);
+    public static boolean isCastlingPathClear10x12(Board board, Castling type) {
+        int clearFrom, clearTo, checkFrom, checkTo;
+        switch (type) {
+            case WHITE_SHORT -> {
+                clearFrom = 0x19;
+                clearTo = 0x1C;
+                checkFrom = 0x19;
+                checkTo = 0x1B;
+            }
+            case WHITE_LONG -> {
+                clearFrom = 0x15;
+                clearTo = 0x19;
+                checkFrom = 0x17;
+                checkTo = 0x19;
+            }
+            case BLACK_SHORT -> {
+                clearFrom = 0x5F;
+                clearTo = 0x62;
+                checkFrom = 0x5F;
+                checkTo = 0x61;
+            }
+            case BLACK_LONG -> {
+                clearFrom = 0x5B;
+                clearTo = 0x5F;
+                checkFrom = 0x5D;
+                checkTo = 0x5F;
+            }
+            default -> throw new IllegalArgumentException("Invalid castling type: " + type);
+        }
 
-        for (int i = 0; i < Math.abs(to10x12 - from10x12); i++) {
+        if (!isPathClear10x12(board, clearFrom, clearTo)) {
+            return false;
+        }
 
+        for (int i = 0; i < (checkTo - checkFrom); i++) {
+            if (AttackDetector.isSquareAttacked(board, checkFrom + i, board.getPlayerToMove().opposite())) {
+                return false;
+            }
         }
 
         return true;
