@@ -173,8 +173,8 @@ public class Board {
         MoveApplier.undoMove(this, move);
     }
 
-    public Pair<List<Move>, Integer> generateLegalMoves() {
-        return MoveGenerator.generateLegalMoves(this);
+    public int generateLegalMoves() {
+        return MoveGenerator.generateLegalMoves(new ArrayList<>(256), this);
     }
 
     public String toFen() {

@@ -14,34 +14,38 @@ import java.util.List;
 
 public final class MoveGenerator {
     public static long perft(Board board, int depth) {
-        if (depth == 0) return 1L;
-
-        Pair<List<Move>, Integer> pair = generateLegalMoves(board);
-
+        List<Move> moveList = new ArrayList<>(256);
+        int nMoves, i;
         long nodes = 0;
-        for (int i = 0; i < pair.getB(); i++) {
-            MoveApplier.makeMove(board, pair.getA().get(i), false);
+
+        if (depth == 0) return 1;
+
+        nMoves = generateLegalMoves(moveList, board);
+
+        if (depth == 1) return nMoves;
+
+        for (i = 0; i < nMoves; i++) {
+            MoveApplier.makeMove(board, moveList.get(i), false);
             nodes += perft(board, depth - 1);
-            MoveApplier.undoMove(board, pair.getA().get(i));
+            MoveApplier.undoMove(board, moveList.get(i));
         }
 
         return nodes;
     }
 
-    public static Pair<List<Move>, Integer> generateLegalMoves(Board board) {
-        List<Move> moveList = new ArrayList<>(256);
-
+    public static int generateLegalMoves(List<Move> moveList, Board board) {
+        int count = 0;
         long occ = board.getBitBoard(board.getPlayerToMove(), Piece.PieceType.OCC);
 
         for (int s8x8 = 0; s8x8 < 64; s8x8++) {
             if ((occ & (1L << s8x8)) != 0) {
                 int from10x12 = Util.convert8x8to10x12(s8x8);
 
-                generateMovesForPiece(moveList, board, from10x12, board.getPieceAt10x12(from10x12));
+                count += generateMovesForPiece(moveList, board, from10x12, board.getPieceAt10x12(from10x12));
             }
         }
 
-        return new Pair<>(moveList, moveList.size());
+        return count;
     }
 
     private static int generateMovesForPiece(List<Move> moveList, Board board, int from10x12, Piece piece) {
