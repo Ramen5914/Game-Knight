@@ -297,11 +297,11 @@ public final class MoveGenerator {
         MoveApplier.makeMove(board, move, true);
         if (!AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
             moveList.add(move);
-            MoveApplier.undoMove(board, move);
+            MoveApplier.undoMove(board, move, false);
             return true;
         }
 
-        MoveApplier.undoMove(board, move);
+        MoveApplier.undoMove(board, move, false);
         return false;
     }
 

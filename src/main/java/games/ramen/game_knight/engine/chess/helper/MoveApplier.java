@@ -136,12 +136,18 @@ public final class MoveApplier {
     }
 
     public static void undoMove(Board board, Move move) {
+        undoMove(board, move, true);
+    }
+
+    static void undoMove(Board board, Move move, boolean playerAdvanced) {
         int from10x12 = move.getFrom10x12();
         int to10x12 = move.getTo10x12();
         Piece piece = board.getPieceAt10x12(to10x12);
 
         // p means previous
-        Piece.Color pPlayerToMove = board.getPlayerToMove();
+        Piece.Color pPlayerToMove = playerAdvanced
+                ? board.getPlayerToMove().opposite()
+                : board.getPlayerToMove();
         Piece pPiece = move.capturedPiece();
 
         if (move.isCapture()) {
@@ -208,7 +214,7 @@ public final class MoveApplier {
         board.setCastlingRights(move.castlingRights());
         board.setEnPassantSquare10x12(move.enPassantSquare10x12());
 
-        if (pPlayerToMove.isBlack()) {
+        if (playerAdvanced && board.getPlayerToMove().isWhite()) {
             board.decrementFullmoveNumber();
         }
     }
@@ -274,7 +280,7 @@ public final class MoveApplier {
         MoveApplier.makeMove(board, move, true);
 
         boolean legal = !AttackDetector.isKingInCheck(board, board.getPlayerToMove());
-        MoveApplier.undoMove(board, move);
+        MoveApplier.undoMove(board, move, false);
         board.setPlayerToMove(previousPlayerToMove);
         return legal;
     }
