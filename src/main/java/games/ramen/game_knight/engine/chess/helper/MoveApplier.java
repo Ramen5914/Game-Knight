@@ -6,13 +6,13 @@ import games.ramen.game_knight.engine.chess.type.Move;
 import games.ramen.game_knight.engine.chess.type.Piece;
 
 public final class MoveApplier {
-    public static boolean makeMove(Board board, Move move, boolean ignoreCheck) {
+    public static void makeMove(Board board, Move move, boolean ignoreCheck) {
         if (move == null) {
-            return false;
+            return;
         }
 
         if (!MoveValidator.isMoveValid(board, move)) {
-            return false;
+            return;
         }
 
         int from10x12 = move.getFrom10x12();
@@ -123,14 +123,12 @@ public final class MoveApplier {
 
         if (!ignoreCheck) {
             if (AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
-                undoMove(board, move);
-                return false;
+                undoMove(board, move, false);
+                return;
             } else {
                 board.advancePlayerToMove();
             }
         }
-
-        return true;
     }
 
     private static void doCastling(Board board, Move move, Piece movedPiece) {
