@@ -233,7 +233,7 @@ publishMods {
 
     curseforge {
         projectId.set("1421212")
-        accessToken = property("curseforgeToken") as String
+        accessToken = findProperty("curseforgeToken")?.toString() ?: ""
         minecraftVersions.add(stonecutter.current.version)
         client.set(true)
         server.set(true)
@@ -243,7 +243,7 @@ publishMods {
 
     modrinth {
         projectId.set("TiZi1TT1")
-        accessToken = property("modrinthPat") as String
+        accessToken = findProperty("modrinthPat")?.toString() ?: ""
         minecraftVersions.add(stonecutter.current.version)
         environment.set(CLIENT_AND_SERVER)
 
