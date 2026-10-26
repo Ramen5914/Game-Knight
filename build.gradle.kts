@@ -3,6 +3,7 @@ plugins {
     `maven-publish`
     id("net.neoforged.moddev") version "2.0.148"
     id("idea")
+    id("com.modrinth.minotaur") version "2.+"
 }
 
 val minecraftVersion = property("minecraftVersion") as String
@@ -218,6 +219,18 @@ sourceSets.named("main") {
     resources.srcDir(generateModMetadata)
 }
 neoForge.ideSyncTask(generateModMetadata)
+
+modrinth {
+    token = property("modrinthPat") as String
+    projectId.set("TiZi1TT1")
+    versionType.set("alpha")
+    uploadFile.set(tasks.jar)
+    gameVersions.set(listOf(stonecutter.current.version))
+    versionName.set("${modVersion} for NeoForge ${stonecutter.current.version}")
+    changelog.set("")
+
+    syncBodyFrom = rootProject.file("README.md").readText()
+}
 
 publishing {
     publications {
