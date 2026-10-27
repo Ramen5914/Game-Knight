@@ -238,54 +238,67 @@ public final class MoveGenerator {
         int enPassantSquare10x12 = board.getEnPassantSquare10x12();
         int castlingRights = board.getCastlingRights();
         int halfmoveClock = board.getHalfmoveClock();
+        int promotionRank = piece.isWhite() ? 7 : 0;
+        int pawnDirection10x12 = piece.isWhite() ? Direction.D10X12.N.toInt() : Direction.D10X12.S.toInt();
+        int pawnDirection8x8 = piece.isWhite() ? Direction.D8X8.N.toInt() : -Direction.D8X8.N.toInt();
 
-        if (piece.isWhite()) {
-            if (board.getPieceAt10x12(from10x12 + Direction.D10X12.N.toInt()).isEmpty()) {
-                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY))) count++;
+        if (board.getPieceAt10x12(from10x12 + pawnDirection10x12).isEmpty()) {
+            int to8x8 = from8x8 + pawnDirection8x8;
+            if (to8x8 >> 3 == promotionRank) {
+                count += generatePromotionMoves(moveList, board, from8x8, to8x8, false, Piece.EMPTY,
+                        enPassantSquare10x12, castlingRights, halfmoveClock);
+            } else if (isLegalMove(moveList, board, new Move(from8x8, to8x8, Move.Flag.QUIET_MOVE_FLAG,
+                    enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY))) {
+                count++;
+            }
 
-                if (board.getPieceAt10x12(from10x12 + Direction.D10X12.N.toInt() * 2).isEmpty() && Util.getRank10x12(from10x12) == 1) {
-                    if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY))) count++;
+            if (to8x8 >> 3 != promotionRank
+                    && board.getPieceAt10x12(from10x12 + pawnDirection10x12 * 2).isEmpty()
+                    && Util.getRank10x12(from10x12) == (piece.isWhite() ? 1 : 6)
+                    && isLegalMove(moveList, board, new Move(from8x8, from8x8 + pawnDirection8x8 * 2,
+                    Move.Flag.DOUBLE_PAWN_PUSH_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY))) {
+                count++;
+            }
+
+        }
+
+        int[] captureDirections10x12 = {Direction.D10X12.E.toInt(), Direction.D10X12.W.toInt()};
+        int[] captureDirections8x8 = {Direction.D8X8.E.toInt(), Direction.D8X8.W.toInt()};
+        for (int i = 0; i < captureDirections10x12.length; i++) {
+            int to10x12 = from10x12 + pawnDirection10x12 + captureDirections10x12[i];
+            boolean isEnPassant = to10x12 == enPassantSquare10x12;
+            Piece capturedPiece = board.getPieceAt10x12(to10x12);
+
+            if (capturedPiece.matchesColor(piece.getColor().opposite()) || isEnPassant) {
+                int to8x8 = from8x8 + pawnDirection8x8 + captureDirections8x8[i];
+                if (to8x8 >> 3 == promotionRank) {
+                    count += generatePromotionMoves(moveList, board, from8x8, to8x8, true, capturedPiece,
+                            enPassantSquare10x12, castlingRights, halfmoveClock);
+                } else if (isLegalMove(moveList, board, new Move(from8x8, to8x8,
+                        isEnPassant ? Move.Flag.EN_PASSANT_CAPTURE_FLAG : Move.Flag.CAPTURES_FLAG,
+                        enPassantSquare10x12, castlingRights, halfmoveClock, capturedPiece))) {
+                    count++;
                 }
             }
+        }
 
-            // North-East
-            int neSquare = from10x12 + Direction.D10X12.NE.toInt();
-            boolean isNEEnPassant = neSquare == enPassantSquare10x12;
-            Piece nePiece = board.getPieceAt10x12(neSquare);
-            if (nePiece.isBlack() || isNEEnPassant) {
-                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.NE.toInt(), isNEEnPassant ? Move.Flag.EN_PASSANT_CAPTURE_FLAG : Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, nePiece))) count++;
-            }
+        return count;
+    }
 
-            // North-West
-            int nwSquare = from10x12 + Direction.D10X12.NW.toInt();
-            boolean isNWEnPassant = nwSquare == enPassantSquare10x12;
-            Piece nwPiece = board.getPieceAt10x12(nwSquare);
-            if (nwPiece.isBlack() || isNWEnPassant) {
-                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.NW.toInt(), isNWEnPassant ? Move.Flag.EN_PASSANT_CAPTURE_FLAG : Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, nwPiece))) count++;
-            }
-        } else {
-            if (board.getPieceAt10x12(from10x12 + Direction.D10X12.S.toInt()).isEmpty()) {
-                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 - Direction.D8X8.N.toInt(), Move.Flag.QUIET_MOVE_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY))) count++;
+    private static int generatePromotionMoves(List<Move> moveList, Board board, int from8x8, int to8x8,
+                                              boolean capture, Piece capturedPiece, int enPassantSquare10x12,
+                                              int castlingRights, int halfmoveClock) {
+        int count = 0;
+        Move.Flag[] flags = capture
+                ? new Move.Flag[]{Move.Flag.KNIGHT_PROMOTION_CAPTURE_FLAG, Move.Flag.BISHOP_PROMOTION_CAPTURE_FLAG,
+                Move.Flag.ROOK_PROMOTION_CAPTURE_FLAG, Move.Flag.QUEEN_PROMOTION_CAPTURE_FLAG}
+                : new Move.Flag[]{Move.Flag.KNIGHT_PROMOTION_FLAG, Move.Flag.BISHOP_PROMOTION_FLAG,
+                Move.Flag.ROOK_PROMOTION_FLAG, Move.Flag.QUEEN_PROMOTION_FLAG};
 
-                if (board.getPieceAt10x12(from10x12 + Direction.D10X12.S.toInt() * 2).isEmpty() && Util.getRank10x12(from10x12) == 6) {
-                    if (isLegalMove(moveList, board, new Move(from8x8, from8x8 - Direction.D8X8.N.toInt() * 2, Move.Flag.DOUBLE_PAWN_PUSH_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, Piece.EMPTY))) count++;
-                }
-            }
-
-            // South-East
-            int seSquare = from10x12 + Direction.D10X12.SE.toInt();
-            boolean isSEEnPassant = seSquare == enPassantSquare10x12;
-            Piece sePiece = board.getPieceAt10x12(seSquare);
-            if (sePiece.isWhite() || isSEEnPassant) {
-                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.SE.toInt(), isSEEnPassant ? Move.Flag.EN_PASSANT_CAPTURE_FLAG : Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, sePiece))) count++;
-            }
-
-            // South-West
-            int swSquare = from10x12 + Direction.D10X12.SW.toInt();
-            boolean isSWEnPassant = swSquare == enPassantSquare10x12;
-            Piece swPiece = board.getPieceAt10x12(swSquare);
-            if (swPiece.isWhite() || isSWEnPassant) {
-                if (isLegalMove(moveList, board, new Move(from8x8, from8x8 + Direction.D8X8.SW.toInt(), isSWEnPassant ? Move.Flag.EN_PASSANT_CAPTURE_FLAG : Move.Flag.CAPTURES_FLAG, enPassantSquare10x12, castlingRights, halfmoveClock, swPiece))) count++;
+        for (Move.Flag flag : flags) {
+            if (isLegalMove(moveList, board, new Move(from8x8, to8x8, flag, enPassantSquare10x12,
+                    castlingRights, halfmoveClock, capturedPiece))) {
+                count++;
             }
         }
 
