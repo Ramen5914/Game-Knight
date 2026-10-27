@@ -2,11 +2,13 @@ name: Build
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: self-hosted
-    env:
-      GRADLE_USER_HOME: ${{ github.workspace }}/.gradle
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,9 +24,8 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: true
 
-      - name: Run datagen with Gradle
-        run: ./gradlew runData
-
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Generate data and build
+        run: ./gradlew runData build --build-cache --console=plain
