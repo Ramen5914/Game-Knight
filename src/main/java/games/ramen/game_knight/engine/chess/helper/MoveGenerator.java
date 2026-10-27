@@ -32,31 +32,6 @@ public final class MoveGenerator {
         return nodes;
     }
 
-    public static long divide(Board board, int depth) {
-        if (depth <= 0) {
-            System.out.println("Depth must be at least 1");
-            return 0;
-        }
-
-        List<Move> moveList = new ArrayList<>(256);
-        int nMoves = generateLegalMoves(moveList, board);
-
-        long total = 0;
-        for (int i = 0; i < nMoves; i++) {
-            Move move = moveList.get(i);
-
-            MoveApplier.makeMove(board, move, false);
-            long nodes = perft(board, depth - 1);
-            MoveApplier.undoMove(board, move);
-
-            System.out.printf("%s: %d%n", move.toUci(), nodes);
-            total += nodes;
-        }
-
-        System.out.printf("%nNodes searched: %d%n", total);
-        return total;
-    }
-
     public static int generateLegalMoves(List<Move> moveList, Board board) {
         int count = 0;
         long occ = board.getBitBoard(board.getPlayerToMove(), Piece.PieceType.OCC);
