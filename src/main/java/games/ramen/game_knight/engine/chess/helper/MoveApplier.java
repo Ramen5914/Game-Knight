@@ -19,6 +19,9 @@ public final class MoveApplier {
         int to10x12 = move.getTo10x12();
         Piece movedPiece = board.getPieceAt10x12(from10x12);
 
+        revokeCastlingRightsForRook(board, movedPiece, from10x12);
+        revokeCastlingRightsForRook(board, move.capturedPiece(), to10x12);
+
         if (movedPiece.isPawn() || move.isCapture()) {
             board.setHalfmoveClock(0);
         } else {
@@ -69,44 +72,9 @@ public final class MoveApplier {
                     removeEnPassantPawn(board, move);
                 }
             }
+
         } else if (move.isCastle()) {
             doCastling(board, move, movedPiece);
-        } else if (move.isKingCastle()) {
-            // For kingside castling, the move is encoded with 'to' == rook's original square
-            // King moves to the appropriate square, and rook is moved from its original square
-            if (movedPiece.isWhite()) {
-                // King from e1 to g1
-                board.setPieceAt10x12(6, movedPiece);
-//                        emptySquare10x12(from);
-                // Rook moves to f1 (which is 'to')
-                board.setPieceAt10x12(5, Piece.WHITE_ROOK);
-                board.emptyPieceAt10x12(7);
-            } else {
-                // King from e8 to g8
-                board.setPieceAt10x12(62, movedPiece);
-//                        emptySquare10x12(from);
-                // Rook moves to f8 (which is 'to')
-                board.setPieceAt10x12(61, Piece.BLACK_ROOK);
-                board.emptyPieceAt10x12(63);
-            }
-        } else if (move.isQueenCastle()) {
-            // For queenside castling, the move is encoded with 'to' == rook's original square
-            // King moves to the appropriate square, and rook is moved from its original square
-            if (movedPiece.isWhite()) {
-                // King from e1 to c1
-                board.setPieceAt10x12(0x17, movedPiece);
-//                        emptySquare10x12(from);
-                // Rook moves to d1 (which is 'to')
-                board.setPieceAt10x12(0x18, Piece.WHITE_ROOK);
-                board.emptyPieceAt10x12(0x15);
-            } else {
-                // King from e8 to c8
-                board.setPieceAt10x12(58, movedPiece);
-//                        emptySquare10x12(from);
-                // Rook moves to d8 (which is 'to')
-                board.setPieceAt10x12(59, Piece.BLACK_ROOK);
-                board.emptyPieceAt10x12(56);
-            }
         }
 
         if (!move.isDoublePawnPush()) {
@@ -131,8 +99,39 @@ public final class MoveApplier {
         }
     }
 
-    private static void doCastling(Board board, Move move, Piece movedPiece) {
+    private static void revokeCastlingRightsForRook(Board board, Piece piece, int square10x12) {
+        if (!piece.isRook()) {
+            return;
+        }
 
+        switch (square10x12) {
+            case 0x15 -> board.andCastlingRights(0b1101);
+            case 0x1C -> board.andCastlingRights(0b1110);
+            case 0x5B -> board.andCastlingRights(0b0111);
+            case 0x62 -> board.andCastlingRights(0b1011);
+        }
+    }
+
+    private static void doCastling(Board board, Move move, Piece movedPiece) {
+        if (movedPiece.isWhite()) {
+            if (move.isKingCastle()) {
+                board.setPieceAt10x12(0x1B, movedPiece);
+                board.setPieceAt10x12(0x1A, Piece.WHITE_ROOK);
+                board.emptyPieceAt10x12(0x1C);
+            } else {
+                board.setPieceAt10x12(0x17, movedPiece);
+                board.setPieceAt10x12(0x18, Piece.WHITE_ROOK);
+                board.emptyPieceAt10x12(0x15);
+            }
+        } else if (move.isKingCastle()) {
+            board.setPieceAt10x12(0x61, movedPiece);
+            board.setPieceAt10x12(0x60, Piece.BLACK_ROOK);
+            board.emptyPieceAt10x12(0x62);
+        } else {
+            board.setPieceAt10x12(0x5D, movedPiece);
+            board.setPieceAt10x12(0x5E, Piece.BLACK_ROOK);
+            board.emptyPieceAt10x12(0x5B);
+        }
     }
 
     public static void undoMove(Board board, Move move) {
