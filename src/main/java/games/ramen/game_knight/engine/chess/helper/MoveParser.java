@@ -7,15 +7,12 @@ import games.ramen.game_knight.engine.chess.type.Piece;
 import oshi.util.tuples.Triplet;
 
 public final class MoveParser {
-
-    // TODO add in promo piece logic
     public static Move fromInts(Board board, int from8x8, int to8x8) {
         if (from8x8 == to8x8) {
             return null;
         } else {
             int from10x12 = Util.convert8x8to10x12(from8x8);
             int to10x12 = Util.convert8x8to10x12(to8x8);
-            // TODO mentioned in above todo
             Piece.PieceType promotionPiece = null;
 
             Piece fromPiece = board.getPieceAt10x12(from10x12);
@@ -26,16 +23,15 @@ public final class MoveParser {
 
             if (fromPiece == Piece.EMPTY) {
                 return null;
-            } else if (fromPiece.getColor() == toPiece.getColor()) {
-                if (fromPiece.isKing() && toPiece.isRook()) {
-                    if (from8x8 - to8x8 == 4) {
-                        flag = Move.Flag.QUEEN_CASTLE_FLAG;
-                    } else if (from8x8 - to8x8 == -3) {
-                        flag = Move.Flag.KING_CASTLE_FLAG;
-                    } else {
-                        return null;
-                    }
+            } else if (fromPiece.isKing() && fromPiece.getColor() == board.getPlayerToMove()
+                    && from8x8 == (fromPiece.isWhite() ? 4 : 60)) {
+                if (to8x8 == (fromPiece.isWhite() ? 6 : 62)) {
+                    flag = Move.Flag.KING_CASTLE_FLAG;
+                } else if (to8x8 == (fromPiece.isWhite() ? 2 : 58)) {
+                    flag = Move.Flag.QUEEN_CASTLE_FLAG;
                 }
+            } else if (fromPiece.getColor() == toPiece.getColor()) {
+                return null;
             } else {
                 if (fromPiece.isPawn()) {
                     if (Math.abs(to8x8 - from8x8) == Direction.D8X8.N.toInt() * 2) {

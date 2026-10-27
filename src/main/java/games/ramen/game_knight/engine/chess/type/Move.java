@@ -49,6 +49,38 @@ public record Move(int move, int enPassantSquare10x12, int castlingRights, int h
                 Flag.fromInt(getFlags()));
     }
 
+    public String toUci() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(squareName8x8(getFrom8x8()));
+        sb.append(squareName8x8(getTo8x8()));
+
+        if (isPromotion()) {
+            sb.append(promotionPieceChar());
+        }
+
+        return sb.toString();
+    }
+
+    private static String squareName8x8(int square8x8) {
+        int file = square8x8 & 7;
+        int rank = square8x8 >> 3;
+
+        return "" + (char) ('a' + file) + (char) ('1' + rank);
+    }
+
+    private Character promotionPieceChar() {
+        if (isBishopPromotion()) {
+            return 'b';
+        } else if (isRookPromotion()) {
+            return 'r';
+        } else if (isQueenPromotion()) {
+            return 'q';
+        } else {
+            return null;
+        }
+    }
+
     public int getFrom8x8() {
         return (move >> 6) & 0x3f;
     }

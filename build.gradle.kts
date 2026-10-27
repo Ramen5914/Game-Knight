@@ -303,6 +303,25 @@ tasks.withType<Jar>().configureEach {
     archiveClassifier.set("neoforge-$minecraftVersion")
 }
 
+tasks.register<Jar>("perftreeJar") {
+    description = "Builds a standalone executable JAR for perftree."
+    group = "build"
+    archiveClassifier.set("perftree")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    isZip64 = true
+    exclude("META-INF/*.SF", "META-INF/*.RSA", "META-INF/*.DSA")
+    dependsOn(tasks.named("classes"))
+
+    from(sourceSets.main.get().output)
+    from(configurations.runtimeClasspath.get().map { file ->
+        if (file.isDirectory) file else zipTree(file)
+    })
+
+    manifest {
+        attributes["Main-Class"] = "games.ramen.game_knight.cli.PerftreeMain"
+    }
+}
+
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
 }

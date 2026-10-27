@@ -19,6 +19,9 @@ public final class MoveApplier {
         int to10x12 = move.getTo10x12();
         Piece movedPiece = board.getPieceAt10x12(from10x12);
 
+        revokeCastlingRightsForRook(board, movedPiece, from10x12);
+        revokeCastlingRightsForRook(board, move.capturedPiece(), to10x12);
+
         if (movedPiece.isPawn() || move.isCapture()) {
             board.setHalfmoveClock(0);
         } else {
@@ -34,34 +37,11 @@ public final class MoveApplier {
             if (move.isDoublePawnPush()) {
                 markEnPassantSquare(board, move);
             }
+        } else if (move.isPromotion()) {
+            setPromotedPiece(board, move, to10x12, movedPiece.getColor());
         } else if (move.isCapture()) {
             if (move.isPromotion()) {
-                Piece.Color color = movedPiece.getColor();
-
-                switch (color) {
-                    case WHITE -> {
-                        if (move.isQueenPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.WHITE_QUEEN);
-                        } else if (move.isRookPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.WHITE_ROOK);
-                        } else if (move.isBishopPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.WHITE_BISHOP);
-                        } else if (move.isKnightPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.WHITE_KNIGHT);
-                        }
-                    }
-                    case BLACK -> {
-                        if (move.isQueenPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.BLACK_QUEEN);
-                        } else if (move.isRookPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.BLACK_ROOK);
-                        } else if (move.isBishopPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.BLACK_BISHOP);
-                        } else if (move.isKnightPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.BLACK_KNIGHT);
-                        }
-                    }
-                }
+                setPromotedPiece(board, move, to10x12, movedPiece.getColor());
             } else {
                 board.setPieceAt10x12(to10x12, movedPiece);
 
@@ -69,44 +49,9 @@ public final class MoveApplier {
                     removeEnPassantPawn(board, move);
                 }
             }
+
         } else if (move.isCastle()) {
             doCastling(board, move, movedPiece);
-        } else if (move.isKingCastle()) {
-            // For kingside castling, the move is encoded with 'to' == rook's original square
-            // King moves to the appropriate square, and rook is moved from its original square
-            if (movedPiece.isWhite()) {
-                // King from e1 to g1
-                board.setPieceAt10x12(6, movedPiece);
-//                        emptySquare10x12(from);
-                // Rook moves to f1 (which is 'to')
-                board.setPieceAt10x12(5, Piece.WHITE_ROOK);
-                board.emptyPieceAt10x12(7);
-            } else {
-                // King from e8 to g8
-                board.setPieceAt10x12(62, movedPiece);
-//                        emptySquare10x12(from);
-                // Rook moves to f8 (which is 'to')
-                board.setPieceAt10x12(61, Piece.BLACK_ROOK);
-                board.emptyPieceAt10x12(63);
-            }
-        } else if (move.isQueenCastle()) {
-            // For queenside castling, the move is encoded with 'to' == rook's original square
-            // King moves to the appropriate square, and rook is moved from its original square
-            if (movedPiece.isWhite()) {
-                // King from e1 to c1
-                board.setPieceAt10x12(0x17, movedPiece);
-//                        emptySquare10x12(from);
-                // Rook moves to d1 (which is 'to')
-                board.setPieceAt10x12(0x18, Piece.WHITE_ROOK);
-                board.emptyPieceAt10x12(0x15);
-            } else {
-                // King from e8 to c8
-                board.setPieceAt10x12(58, movedPiece);
-//                        emptySquare10x12(from);
-                // Rook moves to d8 (which is 'to')
-                board.setPieceAt10x12(59, Piece.BLACK_ROOK);
-                board.emptyPieceAt10x12(56);
-            }
         }
 
         if (!move.isDoublePawnPush()) {
@@ -123,24 +68,75 @@ public final class MoveApplier {
 
         if (!ignoreCheck) {
             if (AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
-                undoMove(board, move);
+                undoMove(board, move, false);
+                return;
             } else {
                 board.advancePlayerToMove();
             }
         }
     }
 
-    private static void doCastling(Board board, Move move, Piece movedPiece) {
+    private static void revokeCastlingRightsForRook(Board board, Piece piece, int square10x12) {
+        if (!piece.isRook()) {
+            return;
+        }
 
+        switch (square10x12) {
+            case 0x15 -> board.andCastlingRights(0b1101);
+            case 0x1C -> board.andCastlingRights(0b1110);
+            case 0x5B -> board.andCastlingRights(0b0111);
+            case 0x62 -> board.andCastlingRights(0b1011);
+        }
+    }
+
+    private static void setPromotedPiece(Board board, Move move, int to10x12, Piece.Color color) {
+        Piece piece = switch (color) {
+            case WHITE -> move.isQueenPromotion() ? Piece.WHITE_QUEEN
+                    : move.isRookPromotion() ? Piece.WHITE_ROOK
+                    : move.isBishopPromotion() ? Piece.WHITE_BISHOP : Piece.WHITE_KNIGHT;
+            case BLACK -> move.isQueenPromotion() ? Piece.BLACK_QUEEN
+                    : move.isRookPromotion() ? Piece.BLACK_ROOK
+                    : move.isBishopPromotion() ? Piece.BLACK_BISHOP : Piece.BLACK_KNIGHT;
+            default -> throw new IllegalStateException("Promotion color is neither WHITE nor BLACK: " + color);
+        };
+        board.setPieceAt10x12(to10x12, piece);
+    }
+
+    private static void doCastling(Board board, Move move, Piece movedPiece) {
+        if (movedPiece.isWhite()) {
+            if (move.isKingCastle()) {
+                board.setPieceAt10x12(0x1B, movedPiece);
+                board.setPieceAt10x12(0x1A, Piece.WHITE_ROOK);
+                board.emptyPieceAt10x12(0x1C);
+            } else {
+                board.setPieceAt10x12(0x17, movedPiece);
+                board.setPieceAt10x12(0x18, Piece.WHITE_ROOK);
+                board.emptyPieceAt10x12(0x15);
+            }
+        } else if (move.isKingCastle()) {
+            board.setPieceAt10x12(0x61, movedPiece);
+            board.setPieceAt10x12(0x60, Piece.BLACK_ROOK);
+            board.emptyPieceAt10x12(0x62);
+        } else {
+            board.setPieceAt10x12(0x5D, movedPiece);
+            board.setPieceAt10x12(0x5E, Piece.BLACK_ROOK);
+            board.emptyPieceAt10x12(0x5B);
+        }
     }
 
     public static void undoMove(Board board, Move move) {
+        undoMove(board, move, true);
+    }
+
+    static void undoMove(Board board, Move move, boolean playerAdvanced) {
         int from10x12 = move.getFrom10x12();
         int to10x12 = move.getTo10x12();
         Piece piece = board.getPieceAt10x12(to10x12);
 
         // p means previous
-        Piece.Color pPlayerToMove = board.getPlayerToMove();
+        Piece.Color pPlayerToMove = playerAdvanced
+                ? board.getPlayerToMove().opposite()
+                : board.getPlayerToMove();
         Piece pPiece = move.capturedPiece();
 
         if (move.isCapture()) {
@@ -207,7 +203,7 @@ public final class MoveApplier {
         board.setCastlingRights(move.castlingRights());
         board.setEnPassantSquare10x12(move.enPassantSquare10x12());
 
-        if (pPlayerToMove.isBlack()) {
+        if (playerAdvanced && board.getPlayerToMove().isWhite()) {
             board.decrementFullmoveNumber();
         }
     }
@@ -273,7 +269,7 @@ public final class MoveApplier {
         MoveApplier.makeMove(board, move, true);
 
         boolean legal = !AttackDetector.isKingInCheck(board, board.getPlayerToMove());
-        MoveApplier.undoMove(board, move);
+        MoveApplier.undoMove(board, move, false);
         board.setPlayerToMove(previousPlayerToMove);
         return legal;
     }

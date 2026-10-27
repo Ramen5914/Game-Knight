@@ -1,6 +1,7 @@
 package games.ramen.game_knight.engine.chess.helper;
 
 import games.ramen.game_knight.engine.chess.Board;
+import games.ramen.game_knight.engine.chess.type.Castling;
 import games.ramen.game_knight.engine.chess.type.Direction;
 import games.ramen.game_knight.engine.chess.type.Move;
 import games.ramen.game_knight.engine.chess.type.Piece;
@@ -120,7 +121,25 @@ public final class MoveValidator {
         int to = move.getTo10x12();
 
         if (move.isCastle()) {
-            // TODO
+            if (color == Piece.Color.WHITE && from == 0x19) {
+                if (move.isKingCastle() && to == 0x1B) {
+                    return (board.getCastlingRights() & 0b0001) != 0
+                            && Util.isCastlingPathClear10x12(board, Castling.WHITE_SHORT);
+                }
+                if (move.isQueenCastle() && to == 0x17) {
+                    return (board.getCastlingRights() & 0b0010) != 0
+                            && Util.isCastlingPathClear10x12(board, Castling.WHITE_LONG);
+                }
+            } else if (color == Piece.Color.BLACK && from == 0x5F) {
+                if (move.isKingCastle() && to == 0x61) {
+                    return (board.getCastlingRights() & 0b0100) != 0
+                            && Util.isCastlingPathClear10x12(board, Castling.BLACK_SHORT);
+                }
+                if (move.isQueenCastle() && to == 0x5D) {
+                    return (board.getCastlingRights() & 0b1000) != 0
+                            && Util.isCastlingPathClear10x12(board, Castling.BLACK_LONG);
+                }
+            }
             return false;
         } else {
             int rankDiff = Util.getRankDiff10x12(from, to);
