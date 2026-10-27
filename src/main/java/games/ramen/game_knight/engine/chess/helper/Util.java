@@ -286,41 +286,54 @@ public final class Util {
     }
 
     public static boolean isCastlingPathClear10x12(Board board, Castling type) {
-        int clearFrom, clearTo, checkFrom, checkTo;
+        int clearFrom, clearTo, checkFrom, checkTo, rookSquare;
+        Piece.Color color;
         switch (type) {
             case WHITE_SHORT -> {
                 clearFrom = 0x19;
                 clearTo = 0x1C;
                 checkFrom = 0x19;
                 checkTo = 0x1B;
+                rookSquare = 0x1C;
+                color = Piece.Color.WHITE;
             }
             case WHITE_LONG -> {
-                clearFrom = 0x15;
-                clearTo = 0x19;
+                clearFrom = 0x19;
+                clearTo = 0x15;
                 checkFrom = 0x17;
                 checkTo = 0x19;
+                rookSquare = 0x15;
+                color = Piece.Color.WHITE;
             }
             case BLACK_SHORT -> {
                 clearFrom = 0x5F;
                 clearTo = 0x62;
                 checkFrom = 0x5F;
                 checkTo = 0x61;
+                rookSquare = 0x62;
+                color = Piece.Color.BLACK;
             }
             case BLACK_LONG -> {
-                clearFrom = 0x5B;
-                clearTo = 0x5F;
+                clearFrom = 0x5F;
+                clearTo = 0x5B;
                 checkFrom = 0x5D;
                 checkTo = 0x5F;
+                rookSquare = 0x5B;
+                color = Piece.Color.BLACK;
             }
             default -> throw new IllegalArgumentException("Invalid castling type: " + type);
         }
 
-        if (!isPathClear10x12(board, clearFrom, clearTo)) {
+        if (!board.getPieceAt10x12(clearFrom).isKing()
+                || !board.getPieceAt10x12(clearFrom).matchesColor(color)
+                || !board.getPieceAt10x12(rookSquare).isRook()
+                || !board.getPieceAt10x12(rookSquare).matchesColor(color)
+                || !isPathClear10x12(board, clearFrom, clearTo)) {
             return false;
         }
 
-        for (int i = 0; i < (checkTo - checkFrom); i++) {
-            if (AttackDetector.isSquareAttacked(board, checkFrom + i, board.getPlayerToMove().opposite())) {
+        for (int square = checkFrom; square <= checkTo; square += Direction.D10X12.E.toInt()) {
+            if (AttackDetector.isSquareAttacked(board, square, board.getPlayerToMove().opposite())) {
                 return false;
             }
         }
