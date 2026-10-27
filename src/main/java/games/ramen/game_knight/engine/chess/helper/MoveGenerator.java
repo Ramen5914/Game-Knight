@@ -6,7 +6,6 @@ import games.ramen.game_knight.engine.chess.type.Direction;
 import games.ramen.game_knight.engine.chess.type.Move;
 import games.ramen.game_knight.engine.chess.type.Piece;
 import org.jetbrains.annotations.NotNull;
-import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
