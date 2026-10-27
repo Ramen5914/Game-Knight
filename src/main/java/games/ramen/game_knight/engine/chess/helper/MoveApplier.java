@@ -37,34 +37,11 @@ public final class MoveApplier {
             if (move.isDoublePawnPush()) {
                 markEnPassantSquare(board, move);
             }
+        } else if (move.isPromotion()) {
+            setPromotedPiece(board, move, to10x12, movedPiece.getColor());
         } else if (move.isCapture()) {
             if (move.isPromotion()) {
-                Piece.Color color = movedPiece.getColor();
-
-                switch (color) {
-                    case WHITE -> {
-                        if (move.isQueenPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.WHITE_QUEEN);
-                        } else if (move.isRookPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.WHITE_ROOK);
-                        } else if (move.isBishopPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.WHITE_BISHOP);
-                        } else if (move.isKnightPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.WHITE_KNIGHT);
-                        }
-                    }
-                    case BLACK -> {
-                        if (move.isQueenPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.BLACK_QUEEN);
-                        } else if (move.isRookPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.BLACK_ROOK);
-                        } else if (move.isBishopPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.BLACK_BISHOP);
-                        } else if (move.isKnightPromotion()) {
-                            board.setPieceAt10x12(to10x12, Piece.BLACK_KNIGHT);
-                        }
-                    }
-                }
+                setPromotedPiece(board, move, to10x12, movedPiece.getColor());
             } else {
                 board.setPieceAt10x12(to10x12, movedPiece);
 
@@ -110,6 +87,19 @@ public final class MoveApplier {
             case 0x5B -> board.andCastlingRights(0b0111);
             case 0x62 -> board.andCastlingRights(0b1011);
         }
+    }
+
+    private static void setPromotedPiece(Board board, Move move, int to10x12, Piece.Color color) {
+        Piece piece = switch (color) {
+            case WHITE -> move.isQueenPromotion() ? Piece.WHITE_QUEEN
+                    : move.isRookPromotion() ? Piece.WHITE_ROOK
+                    : move.isBishopPromotion() ? Piece.WHITE_BISHOP : Piece.WHITE_KNIGHT;
+            case BLACK -> move.isQueenPromotion() ? Piece.BLACK_QUEEN
+                    : move.isRookPromotion() ? Piece.BLACK_ROOK
+                    : move.isBishopPromotion() ? Piece.BLACK_BISHOP : Piece.BLACK_KNIGHT;
+            default -> throw new IllegalStateException("Promotion color is neither WHITE nor BLACK: " + color);
+        };
+        board.setPieceAt10x12(to10x12, piece);
     }
 
     private static void doCastling(Board board, Move move, Piece movedPiece) {
