@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import games.ramen.game_knight.GKConfig;
 import games.ramen.game_knight.GameKnight;
 import games.ramen.game_knight.engine.chess.Board;
+import games.ramen.game_knight.engine.chess.helper.AttackDetector;
 import games.ramen.game_knight.engine.chess.helper.Util;
 import games.ramen.game_knight.engine.chess.type.Piece;
 import games.ramen.game_knight.gui.GKScreen;
@@ -115,6 +116,18 @@ public class ChessGameScreen extends GKScreen {
                         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, CAPTURE_HIGHLIGHT, x, y, imageWidth / 8, imageHeight / 8, this.captureColor);
                     }
                 }
+            }
+        } else {
+            if (AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
+                int kingSquare = Long.numberOfTrailingZeros(board.getBitBoard(board.getPlayerToMove(), Piece.PieceType.KING));
+                if (!viewingBoardAsWhite) {
+                    kingSquare = 63 - kingSquare;
+                }
+
+                int x = this.leftPos + (kingSquare % 8) * (imageWidth / 8);
+                int y = this.topPos + (7 - kingSquare / 8) * (imageHeight / 8);
+
+                graphics.fill(x, y, x + imageWidth / 8, y + imageHeight / 8, this.captureColor);
             }
         }
 
