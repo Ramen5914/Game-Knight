@@ -222,6 +222,8 @@ sourceSets.named("main") {
 neoForge.ideSyncTask(generateModMetadata)
 
 modrinth {
+    projectId.set("TiZi1TT1")
+    token.set(findProperty("modrinthPat")?.toString() ?: "")
     syncBodyFrom = rootProject.file("README.md").readText()
 }
 
