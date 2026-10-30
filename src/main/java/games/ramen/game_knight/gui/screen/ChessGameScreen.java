@@ -87,6 +87,8 @@ public class ChessGameScreen extends GKScreen {
     public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
 
+        int kingSquare = Long.numberOfTrailingZeros(board.getBitBoard(board.getPlayerToMove(), Piece.PieceType.KING));
+
         if (clickedSquare >= 0) {
             int adjustedSquare = clickedSquare;
             if (!viewingBoardAsWhite) {
@@ -117,18 +119,17 @@ public class ChessGameScreen extends GKScreen {
                     }
                 }
             }
-        } else {
-            if (AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
-                int kingSquare = Long.numberOfTrailingZeros(board.getBitBoard(board.getPlayerToMove(), Piece.PieceType.KING));
-                if (!viewingBoardAsWhite) {
-                    kingSquare = 63 - kingSquare;
-                }
+        }
 
-                int x = this.leftPos + (kingSquare % 8) * (imageWidth / 8);
-                int y = this.topPos + (7 - kingSquare / 8) * (imageHeight / 8);
-
-                graphics.fill(x, y, x + imageWidth / 8, y + imageHeight / 8, this.captureColor);
+        if (clickedSquare != kingSquare && AttackDetector.isKingInCheck(board, board.getPlayerToMove())) {
+            if (!viewingBoardAsWhite) {
+                kingSquare = 63 - kingSquare;
             }
+
+            int x = this.leftPos + (kingSquare % 8) * (imageWidth / 8);
+            int y = this.topPos + (7 - kingSquare / 8) * (imageHeight / 8);
+
+            graphics.fill(x, y, x + imageWidth / 8, y + imageHeight / 8, this.captureColor);
         }
 
         for (int y = 0; y < 8; y++) {
