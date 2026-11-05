@@ -43,6 +43,11 @@ public final class MoveValidator {
 
         Piece destinationPiece = board.getPieceAt10x12(to10x12);
         Direction.D10X12 direction = color == Piece.Color.WHITE ? Direction.D10X12.N : Direction.D10X12.S;
+        boolean reachesPromotionRank = Util.getRank10x12(to10x12) == (color == Piece.Color.WHITE ? 7 : 0);
+
+        if (reachesPromotionRank != move.isPromotion()) {
+            return false;
+        }
 
         if (move.isCapture()) {
             int east = from10x12 + direction.toInt() + Direction.D10X12.E.toInt();
