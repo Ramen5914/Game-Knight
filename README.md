@@ -1,7 +1,7 @@
 # ![Game Knight Banner](https://cdn.ramen.games/mods/game_knight/github-banner.png)
 
 [![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMS41IiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBjbGFzcz0iaC00IHctNCI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZjk5ZTZiIiBzdHJva2Utd2lkdGg9IjguMzMiIGQ9Ik02MS4wOTggMzIuMDI4VjYuNTI5TDg0LjAwMSAyNi43NHY1Mi45NDRMNTAuMzggOTMuNjA4IDE2Ljc1OSA3OS42ODRWMjYuNzRMMzkuNjYyIDYuNTI5djI1LjQ5OW0uMTQzLTYuNjAxaDIxLjE1TTM0LjIzIDU0LjQ5OHY3LjgxNW0zMS41NC03LjgxNXY3LjgxNW0tMTguNzM1IDE1LjMyaDYuNjkyTTIxLjcxOSA1MS42MDggNi40OTIgNDQuODg1bTE1LjIyNyAxOC42OTdMNi40OTIgNzAuMzA1bTcyLjU1MS0xOC42OTcgMTUuMjI3LTYuNzIzTTc5LjA0MyA2My41ODJsMTUuMjI3IDYuNzIzIj48L3BhdGg+PC9zdmc+&url=https%3A%2F%2Fcdn.ramen.games%2Fmods%2Fgame_knight%2Fupdates.json&query=%24.supportedVersions&style=for-the-badge&label=Neoforge&color=%23082274)](https://cdn.ramen.games/mods/game_knight/updates.json)
-[![Discord](https://img.shields.io/discord/1284033904344567828?style=for-the-badge&logo=discord&logoColor=white&color=%235865f2)](https://discord.gg/6szxQf9rg9)
+[![Discord](https://img.shields.io/discord/1566086200274587812?style=for-the-badge&logo=discord&logoColor=white&color=%235865f2)](https://discord.gg/xpu9rRqPCd)
 
 Play your favorite board games (and more) with your friends, all inside Minecraft!
 
@@ -22,7 +22,7 @@ Game Knight is an in-development Minecraft board and card game mod that brings p
 
 Chess is powered by a custom implementation built specifically for the mod, including the board, pieces, move handling, and game logic rather than relying on an external chess client. Game Knight also integrates with Lichess to connect Minecraft gameplay with the wider chess community and provide additional online chess functionality.
 
-> **Alpha notice:** Chess is currently the only available game and is only partially functional. Expect missing features, bugs, and balance changes as development continues!
+> **Alpha notice:** Chess is the only game available currently, and it is only partially functional. Expect missing features, bugs, and balance changes as development continues!
 <!-- modrinth_exclude.start -->
 ## Support Me :)
 
