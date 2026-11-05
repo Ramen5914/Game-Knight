@@ -22,7 +22,7 @@ Game Knight is an in-development Minecraft board and card game mod that brings p
 
 Chess is powered by a custom implementation built specifically for the mod, including the board, pieces, move handling, and game logic rather than relying on an external chess client. Game Knight also integrates with Lichess to connect Minecraft gameplay with the wider chess community and provide additional online chess functionality.
 
-> **Alpha notice:** Chess is currently the only available game and is only partially functional. Expect missing features, bugs, and balance changes as development continues!
+> **Alpha notice:** Chess is the only game available currently, and it is only partially functional. Expect missing features, bugs, and balance changes as development continues!
 <!-- modrinth_exclude.start -->
 ## Support Me :)
 
