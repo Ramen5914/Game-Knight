@@ -220,6 +220,21 @@ public final class Util {
     /**
      * Gets the rank of a square in 10x12 representation
      *
+     * @param s8x8 index of the square to get the rank for, in 8x8 representation
+     * @return an int from 0-7, where 0 is rank 1 and 7 is rank 8 on a chess board
+     * @throws IllegalArgumentException if the square is not on the board for 8x8 representation
+     */
+    public static int getRank8x8(int s8x8) {
+        if (isIntOffBoard8x8(s8x8)) {
+            throw new IllegalArgumentException("Invalid square (Off-Board on 8x8): " + s8x8);
+        }
+
+        return s8x8 / 8;
+    }
+
+    /**
+     * Gets the rank of a square in 10x12 representation
+     *
      * @param s10x12 index of the square to get the rank for, in 10x12 representation
      * @return an int from 0-7, where 0 is rank 1 and 7 is rank 8 on a chess board
      * @throws IllegalArgumentException if the square is not on the board for 10x12 representation
