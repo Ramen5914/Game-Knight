@@ -22,11 +22,13 @@ public final class MoveParser {
 
         if (fromPiece == Piece.EMPTY) {
             return null;
-        } else if (fromPiece.isKing() && toPiece.getColor() == board.getPlayerToMove()
-                && from8x8 == (fromPiece.isWhite() ? 4 : 60)) {
+        } else if (fromPiece.isKing() && toPiece.isEmpty()
+                && from8x8 == (fromPiece.isWhite() ? 4 : 60)
+                && (to8x8 == (fromPiece.isWhite() ? 2 : 58)
+                || to8x8 == (fromPiece.isWhite() ? 6 : 62))) {
             if (to8x8 == (fromPiece.isWhite() ? 6 : 62)) {
                 flag = Move.Flag.KING_CASTLE_FLAG;
-            } else if (to8x8 == (fromPiece.isWhite() ? 2 : 58)) {
+            } else {
                 flag = Move.Flag.QUEEN_CASTLE_FLAG;
             }
         } else if (fromPiece.getColor() == toPiece.getColor()) {
