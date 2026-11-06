@@ -81,7 +81,7 @@ class MoveApplierTest {
     void pawnCannotMoveToPromotionRankWithoutPromotionFlag() {
         Board board = new Board("4k3/P7/8/8/8/8/8/4K3 w - - 0 1");
 
-        board.makeMove(48, 56);
+        board.makeMove(48, 56, null);
 
         assertEquals(Piece.WHITE_PAWN, board.getPieceAt10x12(Util.convert8x8to10x12(48)));
         assertEquals(Piece.EMPTY, board.getPieceAt10x12(Util.convert8x8to10x12(56)));

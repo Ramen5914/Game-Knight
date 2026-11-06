@@ -176,11 +176,10 @@ public class ChessSetupPane extends PaneScreen {
         Button startButton = Button.of("Start");
 
         startButton.onClick(() -> {
-            //? if <26.2 {
+            //? if <26.2
             //Minecraft.getInstance().setScreen(null);
-            //?} else {
+            //? else
             Minecraft.getInstance().gui.setScreen(null);
-            //?}
             ClientPacketDistributor.sendToServer(new PacketSetupChessBoard(pos, this.minutes.get(), this.increment.get()));
             ClientPacketDistributor.sendToServer(new PacketOpenChessScreenRequest(pos));
         });

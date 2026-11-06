@@ -117,7 +117,19 @@ public enum Piece {
         ROOK,
         OCC,
         EMPTY,
-        OFF_BOARD
+        OFF_BOARD;
+
+        public char pieceChar() {
+            return switch (this) {
+                case BISHOP -> 'b';
+                case KING -> 'k';
+                case KNIGHT -> 'n';
+                case PAWN -> 'p';
+                case QUEEN -> 'q';
+                case ROOK -> 'r';
+                default -> throw new IllegalStateException("No piece character for " + this);
+            };
+        }
     }
 
     public enum Color {
