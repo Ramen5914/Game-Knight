@@ -4,6 +4,7 @@ import games.ramen.game_knight.engine.chess.helper.*;
 import games.ramen.game_knight.engine.chess.type.Move;
 import games.ramen.game_knight.engine.chess.type.Piece;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
@@ -164,8 +165,8 @@ public class Board {
         MoveApplier.makeMove(this, move, false);
     }
 
-    public void makeMove(int from8x8, int to8x8) {
-        Move move = MoveParser.fromInts(this, from8x8, to8x8);
+    public void makeMove(int from8x8, int to8x8, @Nullable Piece.PieceType promotionPiece) {
+        Move move = MoveParser.fromInts(this, from8x8, to8x8, promotionPiece);
         MoveApplier.makeMove(this, move, false);
     }
 
