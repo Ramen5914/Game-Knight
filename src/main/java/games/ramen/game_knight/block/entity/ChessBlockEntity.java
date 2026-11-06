@@ -4,6 +4,7 @@ import games.ramen.game_knight.block.GKBlockEntities;
 import games.ramen.game_knight.engine.chess.Board;
 import games.ramen.game_knight.engine.chess.helper.FenCodec;
 import games.ramen.game_knight.engine.chess.type.Move;
+import games.ramen.game_knight.engine.chess.type.Piece;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -174,8 +175,8 @@ public class ChessBlockEntity extends BlockEntity {
         return board.generate8x8MovesForPiece(piece);
     }
 
-    public void makeMove(int from8x8, int to8x8) {
-        board.makeMove(from8x8, to8x8);
+    public void makeMove(int from8x8, int to8x8, Piece.PieceType promotionPieceType) {
+        board.makeMove(from8x8, to8x8, promotionPieceType);
         setChanged();
     }
 
