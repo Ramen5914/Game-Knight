@@ -114,6 +114,10 @@ public class Board {
         this.castlingRights &= andBits;
     }
 
+    public Piece getPieceAt8x8(int s8x8) {
+        return board10x12.get(Util.convert8x8to10x12(s8x8));
+    }
+
     public Piece getPieceAt10x12(int s10x12) {
         return board10x12.get(s10x12);
     }
