@@ -212,7 +212,7 @@ val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata"
     )
     inputs.properties(replaceProperties)
     expand(replaceProperties)
-    from(layout.projectDirectory.dir("bin/main")) {
+    from(rootProject.layout.projectDirectory.dir("src/main/templates")) {
         include("META-INF/neoforge.mods.toml")
     }
     into("build/generated/sources/modMetadata")
