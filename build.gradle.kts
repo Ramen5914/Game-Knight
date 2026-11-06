@@ -212,7 +212,9 @@ val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata"
     )
     inputs.properties(replaceProperties)
     expand(replaceProperties)
-    from(layout.buildDirectory.dir("generated/stonecutter/main/templates"))
+    from(layout.projectDirectory.dir("bin/main")) {
+        include("META-INF/neoforge.mods.toml")
+    }
     into("build/generated/sources/modMetadata")
 }
 
@@ -265,6 +267,10 @@ publishing {
                 version = modVersion
 
                 targetProjects.forEach { targetProject ->
+                    if (targetProject != project) {
+                        project.evaluationDependsOn(targetProject.path)
+                    }
+
                     artifact(targetProject.tasks.named<Jar>("jar"))
                 }
 
