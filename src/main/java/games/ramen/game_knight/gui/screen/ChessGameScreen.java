@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
+//? if < 26.3
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -245,7 +246,10 @@ public class ChessGameScreen extends GKScreen {
     @Override
     public boolean keyPressed(@NotNull KeyEvent event) {
         if (isPromotionOpen()) {
+            //? if < 26.3
             if (InputConstants.getKey(event).getValue() == GLFW.GLFW_KEY_ESCAPE) {
+            //? else
+            //if (InputConstants.getKey(event).getValue() == InputConstants.KEY_ESCAPE) {
                 closePromotionDialog();
             }
 
@@ -280,7 +284,10 @@ public class ChessGameScreen extends GKScreen {
         double x = event.x();
         double y = event.y();
 
+        //? if < 26.3
         if (event.button() != GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        //? else
+        //if (event.button() != InputConstants.MOUSE_BUTTON_LEFT) {
             if (isPromotionOpen()) {
                 closePromotionDialog();
             } else {
