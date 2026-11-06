@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,16 @@ public class ChessGameScreen extends GKScreen {
     private static final Identifier MOVE_HIGHLIGHT = GameKnight.id("container/chess/move");
     private static final Identifier CAPTURE_HIGHLIGHT = GameKnight.id("container/chess/capture");
     private static final Identifier SELF_CAPTURE_HIGHLIGHT = GameKnight.id("textures/gui/container/self_capture.png");
+
+    private static final int PROMOTION_CELL_SIZE = 32;
+    private static final int PROMOTION_PADDING = 4;
+    private static final Piece.PieceType[] PROMOTION_CHOICES = {
+            Piece.PieceType.QUEEN,
+            Piece.PieceType.ROOK,
+            Piece.PieceType.BISHOP,
+            Piece.PieceType.KNIGHT
+    };
+
     private final Board board;
     private final Map<Character, Identifier> PIECE_SPRITES = Map.ofEntries(
             Map.entry('b', GameKnight.id("container/chess/black_bishop")),
@@ -43,16 +54,22 @@ public class ChessGameScreen extends GKScreen {
             Map.entry('Q', GameKnight.id("container/chess/white_queen")),
             Map.entry('R', GameKnight.id("container/chess/white_rook"))
     );
+
     private boolean viewingBoardAsWhite = true;
-    private int clickedSquare = -1;
-    private List<Integer> legalMoves = null;
     private String whitePlayer;
     private String blackPlayer;
+
+    private int clickedSquare = -1;
+    private List<Integer> legalMoves = null;
 
     private int selectColor;
     private int moveColor;
     private int captureColor;
     private int captureSameColor;
+
+    private int promotionFrom8x8 = -1;
+    private int promotionTo8x8 = -1;
+    private Boolean promotionIsWhite;
 
     public ChessGameScreen(Component title, String fen, String whitePlayer, String blackPlayer, Boolean viewFromWhite) {
         super(title, 256, 256);
@@ -150,6 +167,39 @@ public class ChessGameScreen extends GKScreen {
         }
 
         this.extractLabels(graphics, mouseX, mouseY);
+
+        if (isPromotionOpen()) {
+            graphics.fill(0, 0, this.width, this.height, 0x88000000);
+
+            int menuX = promotionMenuX();
+            int menuY = promotionMenuY();
+
+            graphics.fill(menuX - 1, menuY - 1, menuX + promotionMenuWidth() + 1, menuY + promotionMenuHeight() + 1, 0xFFFFFFFF);
+
+            graphics.fill(menuX, menuY, menuX + promotionMenuWidth(), menuY + promotionMenuHeight(), 0xFF202020);
+
+            for (int i = 0; i < PROMOTION_CHOICES.length; i++) {
+                int x = menuX + PROMOTION_PADDING + i * PROMOTION_CELL_SIZE;
+                int y = menuY + PROMOTION_PADDING;
+
+                boolean hovered = mouseX >= x && mouseX < x + PROMOTION_CELL_SIZE
+                        && mouseY >= y && mouseY < y + PROMOTION_CELL_SIZE;
+
+                graphics.fill(x, y, x + PROMOTION_CELL_SIZE, y + PROMOTION_CELL_SIZE, hovered ? 0xFF808080 : 0xFF505050);
+
+                char pieceChar = PROMOTION_CHOICES[i].pieceChar();
+                if (Boolean.TRUE.equals(promotionIsWhite)) {
+                    pieceChar = Character.toUpperCase(pieceChar);
+                }
+
+                graphics.blitSprite(
+                        RenderPipelines.GUI_TEXTURED,
+                        PIECE_SPRITES.get(pieceChar),
+                        x, y,
+                        PROMOTION_CELL_SIZE, PROMOTION_CELL_SIZE
+                );
+            }
+        }
     }
 
     private void extractLabels(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
@@ -194,6 +244,14 @@ public class ChessGameScreen extends GKScreen {
 
     @Override
     public boolean keyPressed(@NotNull KeyEvent event) {
+        if (isPromotionOpen()) {
+            if (InputConstants.getKey(event).getValue() == GLFW.GLFW_KEY_ESCAPE) {
+                closePromotionDialog();
+            }
+
+            return true;
+        }
+
         if (FLIP_BOARD.get().isActiveAndMatches(InputConstants.getKey(event))) {
             return flipBoard();
         }
@@ -222,6 +280,22 @@ public class ChessGameScreen extends GKScreen {
         double x = event.x();
         double y = event.y();
 
+        if (event.button() != GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+            if (isPromotionOpen()) {
+                closePromotionDialog();
+            } else {
+                clearSelection();
+            }
+
+            return super.mouseClicked(event, doubleClick);
+        }
+
+        if (isPromotionOpen()) {
+            handlePromotionClick(x, y);
+            return super.mouseClicked(event, doubleClick);
+
+        }
+
         if (this.clickedSquare >= 0 && this.legalMoves != null && clickedOnBoard(x, y)) {
             int targetSquare = getClickedSquare(x, y);
 
@@ -230,12 +304,16 @@ public class ChessGameScreen extends GKScreen {
             }
 
             if (this.legalMoves.contains(targetSquare)) {
+                if (requiresPromotion(this.clickedSquare, targetSquare)) {
+                    openPromotionDialog(this.clickedSquare, targetSquare);
+                    return super.mouseClicked(event, doubleClick);
+                }
+
                 GameKnight.LOGGER.info("Moving piece from {} to {}", this.clickedSquare, targetSquare);
 
-                board.makeMove(this.clickedSquare, targetSquare);
+                board.makeMove(this.clickedSquare, targetSquare, null);
 
-                this.clickedSquare = -1;
-                this.legalMoves = null;
+                clearSelection();
                 return super.mouseClicked(event, doubleClick);
             }
         }
@@ -269,6 +347,28 @@ public class ChessGameScreen extends GKScreen {
         return super.mouseClicked(event, doubleClick);
     }
 
+    private void handlePromotionClick(double x, double y) {
+        int choicesX = promotionMenuX() + PROMOTION_PADDING;
+        int choicesY = promotionMenuY() + PROMOTION_PADDING;
+
+        boolean clickedChoice = x >= choicesX && x < choicesX + PROMOTION_CHOICES.length * PROMOTION_CELL_SIZE
+                && y >= choicesY && y < choicesY + PROMOTION_CELL_SIZE;
+
+        int index = (int) ((x - choicesX) / PROMOTION_CELL_SIZE);
+        Piece.PieceType pieceType = PROMOTION_CHOICES[index];
+
+        GameKnight.LOGGER.info(
+                "Moving piece from {} to {} and promoting to {}",
+                promotionFrom8x8,
+                promotionTo8x8,
+                pieceType
+        );
+
+        board.makeMove(promotionFrom8x8, promotionTo8x8, pieceType);
+
+        closePromotionDialog();
+    }
+
     private void setLegalMoves() {
         this.legalMoves = board.generate8x8MovesForPiece(this.clickedSquare);
     }
@@ -281,7 +381,59 @@ public class ChessGameScreen extends GKScreen {
     }
 
     private boolean clickedOnBoard(double x, double y) {
-        return x >= leftPos && x <= leftPos + imageWidth && y >= topPos && y <= topPos + imageHeight;
+        return x >= leftPos
+                && x < leftPos + imageWidth
+                && y >= topPos
+                && y < topPos + imageHeight;
+    }
+
+    private boolean requiresPromotion(int from8x8, int to8x8) {
+        Piece piece = board.getPieceAt8x8(from8x8);
+
+        int targetRank = Util.getRank8x8(to8x8);
+
+        return piece.isPawn() && targetRank == (piece.isWhite() ? 7 : 0);
+    }
+
+    private void openPromotionDialog(int from8x8, int to8x8) {
+        promotionFrom8x8 = from8x8;
+        promotionTo8x8 = to8x8;
+
+        promotionIsWhite = board.getPieceAt8x8(from8x8).isWhite();
+    }
+
+    private boolean isPromotionOpen() {
+        return promotionFrom8x8 >= 0;
+    }
+
+    private void clearSelection() {
+        clickedSquare = -1;
+        legalMoves = null;
+    }
+
+    private void closePromotionDialog() {
+        promotionFrom8x8 = -1;
+        promotionTo8x8 = -1;
+        promotionIsWhite = null;
+
+        clearSelection();
+    }
+
+    private int promotionMenuWidth() {
+        return PROMOTION_PADDING * 2
+                + PROMOTION_CHOICES.length * PROMOTION_CELL_SIZE;
+    }
+
+    private int promotionMenuHeight() {
+        return PROMOTION_PADDING * 2 + PROMOTION_CELL_SIZE;
+    }
+
+    private int promotionMenuX() {
+        return leftPos + (imageWidth - promotionMenuWidth()) / 2;
+    }
+
+    private int promotionMenuY() {
+        return topPos + (imageHeight - promotionMenuHeight()) / 2;
     }
 
     @Override
